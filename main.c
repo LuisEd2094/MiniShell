@@ -3,6 +3,7 @@
 #include <readline/history.h>
 #include <stdlib.h>
 #include "./includes/libft.h"
+#include "history.h"
 
 
 void remove_new_line(char *line)
@@ -15,43 +16,71 @@ void remove_new_line(char *line)
     line[i] = '\0';
 }
 
-void    ft_read_history(const char *file)
+t_list    *ft_read_history(const char *file)
 {
+    t_list  *node;
+    t_list  *tmp;
+    t_list  *new;
     char    *line;
     int     fd;
 
     fd = open(file, O_RDONLY);
-    printf("%i\n", fd);
     if (fd <= 0)
-        return ;
+        return NULL;
     line = get_next_line(fd, 10);
     if (line)
     {
         remove_new_line(line);
-        add_history(line);
+        node = ft_lstnew(line); // need to check line?
+        if (!node)
+            exit(1);
     }
+    tmp = NULL;
+    node->next = tmp;
     while(line)
     {
         line = get_next_line(fd, 10);
         if (line)
         {
             remove_new_line(line);
-            add_history(line);
+            tmp = ft_lstnew(line);
+            //printf("TEMPS %s\n", (char *)tmp->content);
+            if (!tmp)
+                exit(0);
+            tmp->next = tmp;
+            tmp = tmp->next;
         }
-    }   
+    }
     close(fd);
+    return (node);
 }
 
+void init_history()
+{
+    static t_list *head = NULL;
+    static t_list *max_input = NULL;
+
+    if (!head)
+        head = ft_read_history("my_history.txt");
+    //history.head->next = ft_lstnew("adios");
+
+    t_list *temp = head;
+    while (temp)
+    {
+        printf(" %s\n", (char *)temp->content);
+        temp = temp->next;
+    }
+}
 
 int main() {
     char* input;
     HISTORY_STATE *myhist;
 
     // Readline setup
-    rl_bind_key('\t', rl_complete); // Enable tab-completion
 
     // Read previous history from a file
-    ft_read_history("my_history.txt");
+    init_history();
+
 
     // Main loop
     while (1) {
