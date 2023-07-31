@@ -1,3 +1,12 @@
 *.d
 *.o
 minishell
+my_history.txt
+libft.a
+includes/
+a.out
+create_lines
+create_2000_lines.c
+lines.c
+history
+macro.sh
