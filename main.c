@@ -6,7 +6,7 @@
 #include "history.h"
 
 
-void remove_new_line(char *line)
+static void remove_new_line(char *line)
 {
     int i;
     
@@ -16,7 +16,7 @@ void remove_new_line(char *line)
     line[i] = '\0';
 }
 
-t_list    *ft_read_history(int fd, t_list ** head, int *size)
+static t_list    *ft_read_history(int fd, t_list ** head, int *size)
 {
     t_list  *tmp;
     t_list  *new;
@@ -41,7 +41,6 @@ t_list    *ft_read_history(int fd, t_list ** head, int *size)
         {
             remove_new_line(line);
             new = ft_lstnew(line);
-            //printf("TEMPS %s\n", (char *)tmp->content);
             if (!new)
                 exit(0);
             *(size) += 1;
@@ -53,7 +52,7 @@ t_list    *ft_read_history(int fd, t_list ** head, int *size)
     close(fd);
 }
 
-void add_to_history(t_list *node)
+static void add_to_history(t_list *node)
 {
     t_list *temp;
 
@@ -66,21 +65,19 @@ void add_to_history(t_list *node)
 }
 
 
-t_list *get_max_input(t_list *head, int size)
+static t_list *get_max_input(t_list *head, int size)
 {
     t_list *temp;
     int i;
 
     i = size - MAX_H_SIZE;
-    printf("%i\n", i);
     temp = head;
     while (i-- >= 1)
         temp = temp->next;
-    printf("%i %s\n", i, (char *)temp->content);
     return (temp);
 }
 
-void update_history(t_list *head, char * input, int *size)
+void update_history(t_list **head, char * input, int *size)
 {
     t_list *new;
 
@@ -88,8 +85,16 @@ void update_history(t_list *head, char * input, int *size)
     new = ft_lstnew(input);
     if (!new)
         exit(1);
-    head->last->next = new;
-    head->last = new;
+    if (!(*head))
+    {
+        *head = new;
+        (*head)->last = new;
+    }
+    else 
+    {
+        (*head)->last->next = new;
+        (*head)->last = new;
+    }
     *(size) += 1;
     add_history(input);
 }
@@ -102,7 +107,6 @@ void work_history(int order, char *input)
     if (order == INIT)
     {
         ft_read_history(open(HISTORY_FILE, O_RDONLY), &head, &size);
-        printf("size %i\n", size);
         if (size > MAX_H_SIZE)
             add_to_history(get_max_input(head, size));
         else if (head)
@@ -110,14 +114,8 @@ void work_history(int order, char *input)
     }
     else if (order = UPDATE)
     {
-        update_history(head, input, &(size));
+        update_history(&(head), input, &(size));
     }
-    //history.head->next = ft_lstnew("adios");
-
-
-
-
-    
     t_list *temp = head;
     while (temp)
     {
