@@ -66,7 +66,7 @@ void add_to_history(t_list *node)
 }
 
 
-void    get_max_input(t_list *head, t_list **max_input, int size)
+t_list *get_max_input(t_list *head, int size)
 {
     t_list *temp;
     int i;
@@ -77,13 +77,26 @@ void    get_max_input(t_list *head, t_list **max_input, int size)
     while (i-- >= 1)
         temp = temp->next;
     printf("%i %s\n", i, (char *)temp->content);
-    *(max_input) = temp;
+    return (temp);
+}
+
+void update_history(t_list *head, char * input, int *size)
+{
+    t_list *new;
+
+    remove_new_line(input);
+    new = ft_lstnew(input);
+    if (!new)
+        exit(1);
+    head->last->next = new;
+    head->last = new;
+    *(size) += 1;
+    add_history(input);
 }
 
 void work_history(int order, char *input)
 {
     static t_list *head = NULL;
-    static t_list *max_input = NULL;
     static int  size = 0;
 
     if (order == INIT)
@@ -91,35 +104,32 @@ void work_history(int order, char *input)
         ft_read_history(open(HISTORY_FILE, O_RDONLY), &head, &size);
         printf("size %i\n", size);
         if (size > MAX_H_SIZE)
-            get_max_input(head, &max_input, size);
-        if (max_input)
-            add_to_history(max_input);
+            add_to_history(get_max_input(head, size));
         else if (head)
             add_to_history(head);
     }
     else if (order = UPDATE)
     {
-
+        update_history(head, input, &(size));
     }
     //history.head->next = ft_lstnew("adios");
 
 
 
 
-    /*
+    
     t_list *temp = head;
     while (temp)
     {
-        printf("size %i %s\n", size, (char *)temp->content);
+        printf("size %i %s %p %p\n", size, (char *)temp->content, (void *)temp, (void *)head->last);
         temp = temp->next;
     }
-    temp = max_input;
+  /*  t_list *temp = max_input;
     while (temp)
     {
-        printf("%p %s\n",&(temp->content),  (char *)temp->content);
-        temp = temp->next;
+        printf("%p %s\n",&(temp->next),  (char *)temp->content);
     }
-    printf("LAST %p %s\n",&(head->last->content), (char *)head->last->content);*/
+*/
 }
 
 int main() {
