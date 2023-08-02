@@ -108,7 +108,7 @@ void update_history(t_list **head, char * input, int *size)
     remove_new_line(input);
     content = malloc_content(input);
     new = ft_lstnew(content);
-    printf("new contenct address %p\n",(void *)new->content);
+    //printf("new contenct address %p\n",(void *)new->content);
     if (!new)
         exit(1);
     if (*(size) == 0)
@@ -131,14 +131,16 @@ void close_history(t_list *head, int size, int fd)
     t_list *temp;
 
     temp = head;
-    printf("%s\n", (char *)head->next->content);
-    while (temp)
-    {
-        printf("%s\n", (char *)(temp->content));
-        ft_putendl_fd((char *)(temp->content), fd);
-        temp = temp->next;
-    }
-    close(fd);
+    //printf("%s\n", (char *)head->next->content);
+        while (temp)
+        {
+            ft_putendl_fd((char *)(temp->content), fd);
+            temp = temp->next;
+        }
+        close(fd);
+    
+    ft_lstclear(&(head), free);
+    
 
 }
 
@@ -158,21 +160,21 @@ void work_history(int order, char *input)
     else if (order == UPDATE)
         update_history(&(head), input, &(size));
     else if (order == CLOSE)
-        close_history(head, size, open(HISTORY_FILE, O_WRONLY));
+        close_history(head, size, open(HISTORY_FILE, O_WRONLY | O_CREAT, 0644));
 
 
 
 
 
 
-
+/*
 
     t_list *temp = head;
     while (temp)
     {
         printf("size %i %s %p %p\n", size, (char *)temp->content, (void *)temp, (void *)head->last);
         temp = temp->next;
-    }
+    }*/
   /*  t_list *temp = max_input;
     while (temp)
     {

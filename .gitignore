@@ -10,3 +10,4 @@ create_2000_lines.c
 lines.c
 history
 macro.sh
+.vscode/MiniShell.code-workspace
