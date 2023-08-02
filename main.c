@@ -23,18 +23,17 @@ static t_list    *ft_read_history(int fd, t_list ** head, int *size)
     char    *line;
 
     if (fd <= 0)
-        return NULL;
+        return (NULL);
     line = get_next_line(fd, 10);
-    if (line)
-    {
-        remove_new_line(line);
-        *(head) = ft_lstnew(line); // need to check line?
-        if (!*head)
-            exit(1);
-        *(size) += 1;
-        (*head)->last = *(head);
-    }
-    tmp = *head;
+    if (!line)
+        return (NULL);
+    remove_new_line(line);
+    *(head) = ft_lstnew(line); // need to check line?
+    if (!*head)
+        exit(1);
+    *(size) += 1;
+    (*head)->last = *(head);
+    tmp = *(head);
     while(line)
     {
         line = get_next_line(fd, 10);
@@ -78,37 +77,19 @@ static t_list *get_max_input(t_list *head, int size)
     return (temp);
 }
 
-char *malloc_content(char *input)
-{
-    int i;
-    char *new;
-    
-    i = 0;
-    while (input[i])
-        i++;
-    new = (char *)malloc(sizeof(char) * i);
-    if (!new)
-        exit(1);
-    i = 0;
-    while (new[i])
-    {
-        new[i] = input[i];
-        i++;
-    }
-    return (new);
-    
-}
-
-void update_history(t_list **head, char * input, int *size)
+void update_history(t_list **head, char *input, int *size)
 {
     t_list  *new;
     t_list  *temp;
     char    *content;
 
+    if ((*head) && ft_strcmp((*head)->last->content, input) == 0)
+        return ;
     remove_new_line(input);
-    content = malloc_content(input);
+    content = ft_strdup(input);
+    if (!content)
+        return ;
     new = ft_lstnew(content);
-    //printf("new contenct address %p\n",(void *)new->content);
     if (!new)
         exit(1);
     if (*(size) == 0)
@@ -145,6 +126,7 @@ void close_history(t_list *head, int size, int fd)
     }
     close(fd);
     ft_lstclear(&(head), free);
+    rl_clear_history();
 }
 
 void work_history(int order, char *input)
@@ -165,19 +147,13 @@ void work_history(int order, char *input)
     else if (order == CLOSE)
         close_history(head, size, open(HISTORY_FILE, O_WRONLY | O_CREAT, 0644));
 
-
-
-
-
-
 /*
-
     t_list *temp = head;
     while (temp)
     {
-        printf("size %i %s %p %p\n", size, (char *)temp->content, (void *)temp, (void *)head->last);
+        printf("size %i CONTENT: %s TEMP ADDRES :%p \n", size, (char *)temp->content, (void *)temp->content);
         temp = temp->next;
-    }*/
+    };*/
   /*  t_list *temp = max_input;
     while (temp)
     {
