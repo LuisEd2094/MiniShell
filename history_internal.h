@@ -1,5 +1,5 @@
-#ifndef HISTORY_H
-# define HISTORY_H
+#ifndef HISTORY_INTERNAL_H
+# define HISTORY_INTERNAL_H
 # include "./includes/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>

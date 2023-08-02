@@ -1,4 +1,4 @@
-#include "history.h"
+#include "history_internal.h"
 
 t_list    *ft_read_history(int fd, t_list ** head, int *size)
 {

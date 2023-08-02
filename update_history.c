@@ -1,4 +1,4 @@
-#include "history.h"
+#include "history_internal.h"
 
 void update_history(t_list **head, char *input, int *size)
 {

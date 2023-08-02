@@ -1,4 +1,4 @@
-#include "history.h"
+#include "history_internal.h"
 
 void add_to_history(t_list *node)
 {

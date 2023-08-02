@@ -1,4 +1,4 @@
-#include "history.h"
+#include "history_internal.h"
 
 static t_list *get_max_input(t_list *head, int size)
 {

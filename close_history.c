@@ -1,4 +1,4 @@
-#include "history.h"
+#include "history_internal.h"
 
 void close_history(t_list *head, int size, int fd)
 {
