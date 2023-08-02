@@ -71,7 +71,7 @@ static t_list *get_max_input(t_list *head, int size)
     t_list *temp;
     int i;
 
-    i = size - MAX_H_SIZE;
+    i = size - MAX_LOG_SIZE;
     temp = head;
     while (i-- >= 1)
         temp = temp->next;
@@ -128,20 +128,23 @@ void update_history(t_list **head, char * input, int *size)
 
 void close_history(t_list *head, int size, int fd)
 {
-    t_list *temp;
+    t_list  *temp;
+    int     i;
 
     temp = head;
-    //printf("%s\n", (char *)head->next->content);
-        while (temp)
-        {
-            ft_putendl_fd((char *)(temp->content), fd);
+    if (size > MAX_FILE_LOG_SIZE)
+    {
+        i = size - MAX_FILE_LOG_SIZE;
+        while (i-- >= 1)
             temp = temp->next;
-        }
-        close(fd);
-    
+    }
+    while (temp)
+    {
+        ft_putendl_fd((char *)(temp->content), fd);
+        temp = temp->next;
+    }
+    close(fd);
     ft_lstclear(&(head), free);
-    
-
 }
 
 void work_history(int order, char *input)
@@ -152,7 +155,7 @@ void work_history(int order, char *input)
     if (order == INIT)
     {
         ft_read_history(open(HISTORY_FILE, O_RDONLY), &head, &size);
-        if (size > MAX_H_SIZE)
+        if (size > MAX_LOG_SIZE)
             add_to_history(get_max_input(head, size));
         else if (head)
             add_to_history(head);

@@ -16,7 +16,8 @@ typedef enum s_order
 
 } h_order;
 
-# define MAX_H_SIZE 1000
+# define MAX_LOG_SIZE 1000
+# define MAX_FILE_LOG_SIZE 2000
 # define HISTORY_FILE "my_history.txt"
 
 #endif
