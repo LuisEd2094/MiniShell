@@ -4,7 +4,11 @@ RM          = rm -f
 SRCS_PATH           = src/
 OBJS_PATH           = obj/
 HISTORY_PATH			= history/
-MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), $(HISTORY_PATH))
+
+## Add new path, just need name/
+MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), $(HISTORY_PATH)) ##
+#Add new path to objects
+
 DEPS_PATH	= deps/
 LIB_PATH	= 	./Libft
 LIB			=	$(LIB_PATH)/libft.a
@@ -34,14 +38,19 @@ SRC         =	main.c
 HISTORY		= 	add_to_history.c  close_history.c  history_init.c  \
 				remove_new_line.c  update_history.c work_history.c
 				
-
+## Add names of your files
 
 HISTORY_FILES	=	$(addprefix $(HISTORY_PATH), $(HISTORY))
 
+## append the path to your files
 
 DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) $(HISTORY:.c=.d))
 
+#add .d files to deps
+
 SRC			+=	$(HISTORY_FILES)
+
+## add to sercs
 
 OBJS        =	$(addprefix $(OBJS_PATH), $(SRC:.c=.o)) 
 				
