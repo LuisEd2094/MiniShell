@@ -1,14 +1,19 @@
 #include <history.h>
+#include <builtins.h>
+#include <stdlib.h>
 
 
-int main() {
+int main(int argc, char **argv, char **env) {
     char* input;
 
+    t_list *env_list;
     // Readline setup
+    init_env(env, &env_list);
 
     // Read previous history from a file
     work_history(INIT, NULL);
     int i = 0;
+
 
     // Main loop
     while (i++ < 3) {
@@ -22,6 +27,24 @@ int main() {
         if (input[0] != '\0') {
             // If the input is not empty, add it to the history
             work_history(UPDATE, input);
+            if (ft_strcmp(input, "env") == 0)
+                print_env(env_list);
+            // TODO ESTO DEBE DE ESTAR EN UNA FUNCION APROXIMADAMENTE;
+            // TOMAR EL NOMBRE DEL PROGRAMA; TOMAR LOS ARGUMENTS PARA EL PROGRAMA
+            /*
+            char **tab = ft_split(input, ' ');
+            int len = 0;
+            for (int i = 0; tab[i]; i++)
+                len++;
+            char ** arguments = malloc(sizeof(char *) *len - 1);
+            for (int i = 1, j = 0; tab[i]; i++, j++)
+                arguments[j] = tab[i];
+            for (int i = 0; arguments[i]; i++)
+                printf("%s\n", arguments[i]);*/
+            /*char * env = getenv("OLDPWD");
+            printf("%s\n", env);
+            ft_strlcpy(env, "hola", 5);
+            printf("%s\n", env);*/
         }
 
         // Your processing logic here...

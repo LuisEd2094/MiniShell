@@ -4,9 +4,13 @@ RM          = rm -f
 SRCS_PATH           = src/
 OBJS_PATH           = obj/
 HISTORY_PATH			= history/
+BUILTINTS			= builtins/
+EXPORT_PATH			= $(BUILTINTS)export/
+ENV_PATH			= $(BUILTINTS)env/
+BUILTINTS_PATH		= $(EXPORT_PATH) $(ENV_PATH)
 
 ## Add new path, just need name/
-MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), $(HISTORY_PATH)) ##
+MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), $(HISTORY_PATH) $(BUILTINTS_PATH)) ##
 #Add new path to objects
 
 DEPS_PATH	= deps/
@@ -37,18 +41,24 @@ SRC         =	main.c
 
 HISTORY		= 	add_to_history.c  close_history.c  history_init.c  \
 				remove_new_line.c  update_history.c work_history.c
-				
+
+EXPORT		=	export.c
+
+ENV			= 	env.c				
 ## Add names of your files
 
 HISTORY_FILES	=	$(addprefix $(HISTORY_PATH), $(HISTORY))
+EXPORT_FILES		=	$(addprefix $(EXPORT_PATH), $(EXPORT))
+ENV_FILES		= $(addprefix $(ENV_PATH), $(ENV))
 
 ## append the path to your files
 
-DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) $(HISTORY:.c=.d))
+DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) $(HISTORY:.c=.d) $(EXPORT:.c=.d) \
+					$(ENV:.c=.d))
 
 #add .d files to deps
 
-SRC			+=	$(HISTORY_FILES)
+SRC			+=	$(HISTORY_FILES) $(EXPORT_FILES) $(ENV_FILES)
 
 ## add to sercs
 
