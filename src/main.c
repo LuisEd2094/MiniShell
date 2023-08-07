@@ -27,8 +27,16 @@ int main(int argc, char **argv, char **env) {
         if (input[0] != '\0') {
             // If the input is not empty, add it to the history
             work_history(UPDATE, input);
-            if (ft_strcmp(input, "env") == 0)
+            char ** tab = ft_split(input, ' ');
+            if (ft_strcmp(tab[0], "env") == 0)
                 print_env(env_list);
+            
+            if (ft_strcmp(tab[0], "export") == 0)
+            {
+
+                t_list *temp = get_env_node(env_list, tab[1]);
+                printf("%s\n", (char *) temp->content);
+            }
             // TODO ESTO DEBE DE ESTAR EN UNA FUNCION APROXIMADAMENTE;
             // TOMAR EL NOMBRE DEL PROGRAMA; TOMAR LOS ARGUMENTS PARA EL PROGRAMA
             /*

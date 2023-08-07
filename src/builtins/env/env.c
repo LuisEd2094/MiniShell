@@ -1,6 +1,27 @@
 #include <libft.h>
 
 
+t_list *get_env_node(t_list *env_list, char *str)
+{
+    t_list  *temp;
+    char    content[100];
+    int     i;
+
+    temp = env_list;
+    while (temp)
+    {
+        i = 0;
+        while (((char *)temp->content)[i] && ((char *)temp->content)[i] != '=')
+            i++;
+        ft_strlcpy(content, (char *)temp->content, i + 1);
+        printf("%s\n", content);
+        if (ft_strcmp(content, str) == 0)
+            return (temp);
+        temp = temp->next;
+    }
+    return (NULL);
+}
+
 void print_env(t_list *env_list)
 {
     t_list *temp;
