@@ -15,7 +15,6 @@ t_list *get_env_node(t_list *env_list, char *str)
     return (NULL);
 }
 
-
 t_env *create_env_node(char *str)
 {
     t_env   *new;
@@ -45,5 +44,17 @@ void    add_new_env(t_list *env_list, char *str)
 
 void    update_env_value(t_env *env_node, char *str)
 {
-    env_node->value = str;
+    int     i;
+    char    *new;
+
+    free(env_node->value);
+    i = ft_strlen(str);
+    new = (char *)malloc(sizeof(char) * i  + 1);
+    if (!new)
+        exit(0);
+    i = -1;
+    while(str[++i])
+        new[i] = str[i];
+    new[i] = '\0';
+    env_node->value = new;
 }

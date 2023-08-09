@@ -47,7 +47,7 @@ EXPORT		=	export.c
 
 ENV			= 	env.c
 
-SHARED		=	builtins_shared.c
+SHARED		=	builtins_shared.c ft_single_split.c
 ## Add names of your files
 
 HISTORY_FILES		=$(addprefix $(HISTORY_PATH), $(HISTORY))
