@@ -1,4 +1,3 @@
-#include <libft.h>
 #include <builtins.h>
 
 t_list *get_env_node(t_list *env_list, char *str)

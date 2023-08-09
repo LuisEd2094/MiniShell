@@ -1,7 +1,4 @@
-#include <libft.h>
 #include <builtins.h>
-
-
 
 int work_on_export(t_list *env_list, char *str)
 {
