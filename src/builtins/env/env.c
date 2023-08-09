@@ -35,7 +35,7 @@ t_env *create_env(char *str)
     char    **tab;
 
     new = (t_env *)malloc(sizeof(t_env));
-    tab = ft_split(str, '=');
+    tab = ft_single_split(str, '=');
     if (!new || !tab)
         exit (1);
     new->variable = tab[0];

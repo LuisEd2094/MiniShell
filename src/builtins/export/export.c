@@ -1,16 +1,6 @@
 #include <libft.h>
 #include <builtins.h>
 
-int tab_len(char **tab)
-{
-    int i;
-
-    i = 0;
-    while (tab[i])
-        i++;
-    return (i);
-}
-
 char **ft_single_split(char const *s, char c)
 {
     char **tab;
@@ -27,7 +17,6 @@ char **ft_single_split(char const *s, char c)
     j = i;
     while(s[i])
         i++;
-    //printf("%i\n", (i - j) + 1);
     tab[1] = (char *)malloc(sizeof(char) * ((i - j) + 1));
     i = 0;
     while (i < j)
@@ -37,17 +26,13 @@ char **ft_single_split(char const *s, char c)
     }
     tab[0][i] = '\0';
     i = 0;
-    //printf("i=%i j=%i\n", i,j);
     while(s[j])
     {
         j++;
         tab[1][i] = s[j];
         i++;
-
-       // printf("HOLA i=%i j=%i\n", i, j);
     }
     tab[1][i] = '\0';
-    //printf("[%c]\n", tab[1][i]);
     return (tab);
 }
 
