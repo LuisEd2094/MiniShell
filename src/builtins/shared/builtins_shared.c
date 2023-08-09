@@ -25,6 +25,9 @@ t_env *create_env_node(char *str)
         exit (1);
     new->variable = tab[0];
     new->value = tab[1];
+    new->assigned = 1;
+    if (!tab[1])
+        new->assigned;
     return (new);
 }
 

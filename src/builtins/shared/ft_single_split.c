@@ -25,12 +25,18 @@ char **ft_single_split(char const *s, char c)
     }
     tab[0][i] = '\0';
     i = 0;
-    while(s[j])
+    if (s[j])
     {
-        j++;
-        tab[1][i] = s[j];
-        i++;
+        while(s[j])
+        {
+            j++;
+            tab[1][i] = s[j];
+            i++;
+        }
+        tab[1][i] = '\0';
     }
-    tab[1][i] = '\0';
+    else
+        tab[1] = NULL;
+
     return (tab);
 }

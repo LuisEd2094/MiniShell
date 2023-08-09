@@ -7,7 +7,8 @@ void print_all_env(t_list *env_list)
     temp = env_list;
     while (temp)
     {
-        printf("%s=%s\n", ((t_env *)(temp->content))->variable, \
+        if (((t_env *)(temp->content))->assigned)
+            printf("%s=%s\n", ((t_env *)(temp->content))->variable, \
         ((t_env *)(temp->content))->value);
         temp = temp->next;
     }
