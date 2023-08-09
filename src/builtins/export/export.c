@@ -52,14 +52,8 @@ int work_on_export(t_list *env_list, char *str)
     {
         temp = get_env_node(env_list, tab[0]);
         if (!temp)
-        {
-            temp = env_list->last;
-            env_node = create_env(str);
-            new = ft_lstnew(env_node);
-            temp->next = new;
-            env_list->last = new;
-        }
+            add_new_env(env_list, str);
         else
-            ((t_env *)(temp->content))->value = tab[1];
+            update_env_value(((t_env *)(temp->content)), tab[1]);
     }
 }

@@ -1,21 +1,6 @@
 #include <libft.h>
 #include <builtins.h>
 
-
-t_list *get_env_node(t_list *env_list, char *str)
-{
-    t_list  *temp;
-
-    temp = env_list;
-    while (temp)
-    {
-        if (ft_strcmp(((t_env *)(temp->content))->variable, str) == 0)
-            return (temp);
-        temp = temp->next;
-    }
-    return (NULL);
-}
-
 void print_all_env(t_list *env_list)
 {
     t_list *temp;
@@ -29,20 +14,6 @@ void print_all_env(t_list *env_list)
     }
 }
 
-t_env *create_env(char *str)
-{
-    t_env   *new;
-    char    **tab;
-
-    new = (t_env *)malloc(sizeof(t_env));
-    tab = ft_single_split(str, '=');
-    if (!new || !tab)
-        exit (1);
-    new->variable = tab[0];
-    new->value = tab[1];
-    return (new);
-}
-
 int init_env(char **env, t_list **env_list)
 {
     t_list  *tmp;
@@ -50,7 +21,7 @@ int init_env(char **env, t_list **env_list)
     t_env   *env_node;
     int     i;
 
-    env_node = create_env(env[0]);
+    env_node = create_env_node(env[0]);
     *(env_list) = ft_lstnew(env_node);
     if (!*env_list)
         exit(1);
@@ -59,7 +30,7 @@ int init_env(char **env, t_list **env_list)
     i = 1;
     while (env[i])
     {
-        env_node = create_env(env[i]);
+        env_node = create_env_node(env[i]);
         if (!env_node)
             exit(1);
         new = ft_lstnew(env_node);

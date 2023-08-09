@@ -7,7 +7,8 @@ HISTORY_PATH			= history/
 BUILTINTS			= builtins/
 EXPORT_PATH			= $(BUILTINTS)export/
 ENV_PATH			= $(BUILTINTS)env/
-BUILTINTS_PATH		= $(EXPORT_PATH) $(ENV_PATH)
+SHARED_PATH			= $(BUILTINTS)shared/
+BUILTINTS_PATH		= $(EXPORT_PATH) $(ENV_PATH) $(SHARED_PATH)
 
 ## Add new path, just need name/
 MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), $(HISTORY_PATH) $(BUILTINTS_PATH)) ##
@@ -44,21 +45,24 @@ HISTORY		= 	add_to_history.c  close_history.c  history_init.c  \
 
 EXPORT		=	export.c
 
-ENV			= 	env.c				
+ENV			= 	env.c
+
+SHARED		=	builtins_shared.c
 ## Add names of your files
 
-HISTORY_FILES	=	$(addprefix $(HISTORY_PATH), $(HISTORY))
-EXPORT_FILES		=	$(addprefix $(EXPORT_PATH), $(EXPORT))
-ENV_FILES		= $(addprefix $(ENV_PATH), $(ENV))
-
+HISTORY_FILES		=$(addprefix $(HISTORY_PATH), $(HISTORY))
+EXPORT_FILES		=$(addprefix $(EXPORT_PATH), $(EXPORT))
+ENV_FILES			=$(addprefix $(ENV_PATH), $(ENV))
+SHARED_BINS_FILES	=$(addprefix $(SHARED_PATH), $(SHARED))
+BUILTINTS_FILES		=$(EXPORT_FILES) $(ENV_FILES) $(SHARED_BINS_FILES)
 ## append the path to your files
 
-DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) $(HISTORY:.c=.d) $(EXPORT:.c=.d) \
-					$(ENV:.c=.d))
+DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) $(HISTORY:.c=.d) \
+				$(BUILTINTS_FILES:.c=.d))
 
 #add .d files to deps
 
-SRC			+=	$(HISTORY_FILES) $(EXPORT_FILES) $(ENV_FILES)
+SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES)
 
 ## add to sercs
 
