@@ -5,25 +5,18 @@
 t_list *get_env_node(t_list *env_list, char *str)
 {
     t_list  *temp;
-    char    content[100];
-    int     i;
 
     temp = env_list;
     while (temp)
     {
-        i = 0;
-        while (((char *)temp->content)[i] && ((char *)temp->content)[i] != '=')
-            i++;
-        ft_strlcpy(content, (char *)temp->content, i + 1);
-        printf("%s\n", content);
-        if (ft_strcmp(content, str) == 0)
+        if (ft_strcmp(((t_env *)(temp->content))->variable, str) == 0)
             return (temp);
         temp = temp->next;
     }
     return (NULL);
 }
 
-void print_env(t_list *env_list)
+void print_all_env(t_list *env_list)
 {
     t_list *temp;
 
@@ -62,8 +55,6 @@ int init_env(char **env, t_list **env_list)
     if (!*env_list)
         exit(1);
     (*env_list)->last = *(env_list);
-    printf("%s=%s\n", ((t_env *)((*env_list)->content))->variable, env_node->value);
-
     tmp = *(env_list);
     i = 1;
     while (env[i])

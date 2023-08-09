@@ -16,7 +16,7 @@ int main(int argc, char **argv, char **env) {
 
 
     // Main loop
-    while (i++ < 3) {
+    while (i++ < 5) {
         input = readline(">> "); // Prompt the user and read input
         if (!input) {
             // NULL input indicates EOF or an error (e.g., Ctrl+D)
@@ -29,15 +29,24 @@ int main(int argc, char **argv, char **env) {
             work_history(UPDATE, input);
             char ** tab = ft_split(input, ' ');
             if (ft_strcmp(tab[0], "env") == 0)
-                print_env(env_list);
-            
-            if (ft_strcmp(tab[0], "export") == 0 && tab[1])
+                print_all_env(env_list);
+            if (ft_strcmp(tab[0], "export") == 0)
             {
+                if (tab[1] != NULL)
+                {
+                    work_on_export(env_list, tab[1]);
 
-                t_list *temp = get_env_node(env_list, tab[1]);
+                }
+                else
+                {
+                    //printf("ADIOS");
+                    work_on_export(env_list, NULL);
+
+                }
+                /*t_list *temp = get_env_node(env_list, tab[1]);
                 if (temp)
-                    
-                    printf("%s\n", (char *)temp->content);
+                    printf("%s=%s\n", ((t_env *)(temp->content))->variable, \
+                    ((t_env *)(temp->content))->value);*/
             }
             // TODO ESTO DEBE DE ESTAR EN UNA FUNCION APROXIMADAMENTE;
             // TOMAR EL NOMBRE DEL PROGRAMA; TOMAR LOS ARGUMENTS PARA EL PROGRAMA
