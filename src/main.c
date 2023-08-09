@@ -1,6 +1,19 @@
 #include <minishell.h>
 #include <stdlib.h>
 
+void free_tab(char **tab)
+{
+    int i;
+
+    i = 0;
+    while (tab[i])
+    {
+        free(tab[i]);
+        i++;
+    }
+    free(tab);
+}
+
 int main(int argc, char **argv, char **env)
 {
     char        *input;
@@ -39,6 +52,8 @@ int main(int argc, char **argv, char **env)
                     work_on_export(mini.env_list, NULL);
                 }
             }
+            free_tab(tab);
+
         }
         printf("You entered: %s\n", input);
 

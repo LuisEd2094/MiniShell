@@ -1,6 +1,6 @@
 #include <builtins.h>
 
-void    free_tab(char **tab)
+static void    free_tab_export(char **tab)
 {
     free(tab[0]);
     free(tab[1]);
@@ -37,5 +37,5 @@ int work_on_export(t_list *env_list, char *str)
                 ((t_env *)(temp->content))->assigned = 0;
         }
     }
-    free_tab(tab);
+    free_tab_export(tab);
 }
