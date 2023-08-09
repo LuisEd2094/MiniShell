@@ -1,5 +1,12 @@
 #include <builtins.h>
 
+void    free_tab(char **tab)
+{
+    free(tab[0]);
+    free(tab[1]);
+    free(tab);
+}
+
 int work_on_export(t_list *env_list, char *str)
 {
     char **tab;
@@ -20,6 +27,15 @@ int work_on_export(t_list *env_list, char *str)
             add_new_env(env_list, str);
         }
         else
-            update_env_value(((t_env *)(temp->content)), tab[1]);
+        {
+            free(((t_env *)(temp->content))->value);
+            ((t_env *)(temp->content))->value = (char *)malloc(sizeof(char) * (ft_strlen(tab[1]) + 1));
+            ft_strlcpy(((t_env *)(temp->content))->value, tab[1], ft_strlen(tab[1]) + 1);
+            if (has_equal(str))
+                ((t_env *)(temp->content))->assigned = 1;
+            else
+                ((t_env *)(temp->content))->assigned = 0;
+        }
     }
+    free_tab(tab);
 }

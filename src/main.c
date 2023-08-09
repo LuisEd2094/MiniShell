@@ -1,10 +1,10 @@
 #include <minishell.h>
 #include <stdlib.h>
 
-int main(int argc, char **argv, char **env) {
+int main(int argc, char **argv, char **env)
+{
     char        *input;
     t_minishell mini;
-    
     
     int         i = 0;
 
@@ -13,11 +13,9 @@ int main(int argc, char **argv, char **env) {
     // Read previous history from a file
     work_history(INIT, NULL);
 
-    // Main loop
     while (i++ < 5) {
         input = readline(">> "); // Prompt the user and read input
         if (!input) {
-            // NULL input indicates EOF or an error (e.g., Ctrl+D)
             printf("\n");
             break;
         }
@@ -51,5 +49,5 @@ int main(int argc, char **argv, char **env) {
     work_history(CLOSE, NULL);
 
 
-    return 0;
+    return (0);
 }
