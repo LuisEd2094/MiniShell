@@ -26,12 +26,16 @@ int main(int argc, char **argv, char **env)
     // Read previous history from a file
     work_history(INIT, NULL);
 
-    while (i++ < 5) {
+    while (1) {
         input = readline(">> "); // Prompt the user and read input
         if (!input) {
             printf("\n");
             break;
         }
+
+        if (ft_strcmp(input, "exit") == 0)
+            exit(0);
+
 
         if (input[0] != '\0') 
         {
@@ -43,16 +47,16 @@ int main(int argc, char **argv, char **env)
                 print_all_env(mini.env_list);
             if (ft_strcmp(tab[0], "export") == 0)
             {
-                if (tab[1] != NULL)
-                {
-                    work_on_export(mini.env_list, tab[1]);
-                }
-                else
-                {
-                    work_on_export(mini.env_list, NULL);
-                }
+                work_on_export(mini.env_list, tab[1]);
             }
+            if (ft_strcmp(tab[0], "unset") == 0)
+            {
+                work_on_unset(mini.env_list, tab[1]);
+                continue;
+            }
+
             free_tab(tab);
+
 
         }
         printf("You entered: %s\n", input);

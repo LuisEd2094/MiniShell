@@ -2,9 +2,12 @@
 
 static void    free_tab_export(char **tab)
 {
-    free(tab[0]);
-    free(tab[1]);
-    free(tab);
+    if(tab[0])
+        free(tab[0]);
+    if (tab[1])
+        free(tab[1]);
+    if(tab)
+        free(tab);
 }
 
 int work_on_export(t_list *env_list, char *str)
@@ -15,7 +18,7 @@ int work_on_export(t_list *env_list, char *str)
     t_env   *env_node;
 
     tab = NULL;
-    if (str != NULL)
+    if (str)
         tab = ft_single_split(str, '=');
     if (!tab)
         printf("Need to print export declare\n");
@@ -37,5 +40,6 @@ int work_on_export(t_list *env_list, char *str)
                 ((t_env *)(temp->content))->assigned = 0;
         }
     }
-    free_tab_export(tab);
+    if (tab)
+        free_tab_export(tab);
 }
