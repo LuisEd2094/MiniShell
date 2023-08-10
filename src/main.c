@@ -34,7 +34,7 @@ int main(int argc, char **argv, char **env)
         }
 
         if (ft_strcmp(input, "exit") == 0)
-            exit(0);
+            break;
 
 
         if (input[0] != '\0') 
@@ -51,8 +51,9 @@ int main(int argc, char **argv, char **env)
             }
             if (ft_strcmp(tab[0], "unset") == 0)
             {
-                work_on_unset(mini.env_list, tab[1]);
-                continue;
+                printf("before mini.en list %p \t %p\n", mini.env_list, mini.env_list->content);
+                mini.env_list = work_on_unset(mini.env_list, tab[1]);
+                printf("after mini.en list %p \t %p\n", mini.env_list, mini.env_list->content);
             }
 
             free_tab(tab);

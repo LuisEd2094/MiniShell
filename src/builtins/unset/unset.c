@@ -5,6 +5,8 @@ t_list *get_env_before(t_list *env_list, char *str)
     t_list  *temp;
 
     temp = env_list;
+    if (ft_strcmp(((t_env *)(temp->content))->variable, str) == 0)
+        return (temp);
     while (temp->next)
     {
         if (ft_strcmp(((t_env *)(temp->next->content))->variable, str) == 0)
@@ -14,7 +16,7 @@ t_list *get_env_before(t_list *env_list, char *str)
     return (NULL);
 }
 
-int     work_on_unset(t_list *env_list, char *str)
+t_list *work_on_unset(t_list *env_list, char *str)
 {
     t_list *temp;
     t_list *next;
@@ -27,6 +29,11 @@ int     work_on_unset(t_list *env_list, char *str)
     if (!temp)
         return (0);
     next = temp->next;
+    if (env_list == before)
+    {
+        next->last = env_list->last;
+        env_list = next;
+    }
     free(((t_env *)(temp->content))->value);
     free(((t_env *)(temp->content))->variable);
     free(((t_env *)(temp->content)));
@@ -38,5 +45,5 @@ int     work_on_unset(t_list *env_list, char *str)
         before->next = NULL;
         env_list->last = before;
     }
-    
+    return (env_list);
 }

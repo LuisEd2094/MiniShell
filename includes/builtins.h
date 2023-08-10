@@ -23,7 +23,7 @@ void    free_tab(char **tab);
 
 int     work_on_export(t_list *env_list, char *str);
 void    print_all_env(t_list *env_list);
-int     work_on_unset(t_list *env_list, char *str);
+t_list *     work_on_unset(t_list *env_list, char *str);
 
 char    **ft_single_split(char const *s, char c);
 
