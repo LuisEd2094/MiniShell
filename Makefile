@@ -4,6 +4,9 @@ RM          = rm -f
 SRCS_PATH           = src/
 OBJS_PATH           = obj/
 HISTORY_PATH			= history/
+EXECVE_PATH			= execve/
+
+#BUILT INS variables
 BUILTINTS			= builtins/
 EXPORT_PATH			= $(BUILTINTS)export/
 ENV_PATH			= $(BUILTINTS)env/
@@ -12,7 +15,7 @@ UNSET_PATH			= $(BUILTINTS)unset/
 BUILTINTS_PATH		= $(EXPORT_PATH) $(ENV_PATH) $(SHARED_PATH) $(UNSET_PATH)
 
 ## Add new path, just need name/
-MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), $(HISTORY_PATH) $(BUILTINTS_PATH)) ##
+MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), $(HISTORY_PATH) $(BUILTINTS_PATH) $(EXECVE_PATH)) ##
 #Add new path to objects
 
 DEPS_PATH	= deps/
@@ -50,23 +53,28 @@ ENV			= 	env.c
 
 UNSET		=	unset.c
 
+EXECVE		=	execve.c
+
 SHARED		=	builtins_shared.c ft_single_split.c
 ## Add names of your files
 
 HISTORY_FILES		=$(addprefix $(HISTORY_PATH), $(HISTORY))
+#BUILT INS FILES
 EXPORT_FILES		=$(addprefix $(EXPORT_PATH), $(EXPORT))
 ENV_FILES			=$(addprefix $(ENV_PATH), $(ENV))
 SHARED_BINS_FILES	=$(addprefix $(SHARED_PATH), $(SHARED))
 UNSET_FILES			=$(addprefix $(UNSET_PATH), $(UNSET))
 BUILTINTS_FILES		=$(EXPORT_FILES) $(ENV_FILES) $(SHARED_BINS_FILES) $(UNSET_FILES)
+
+EXECVE_FILES		=$(addprefix $(EXECVE_PATH), $(EXECVE))
 ## append the path to your files
 
 DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) $(HISTORY:.c=.d) \
-				$(BUILTINTS_FILES:.c=.d))
+				$(BUILTINTS_FILES:.c=.d) $(EXECVE_FILES:.c=.d))
 
 #add .d files to deps
 
-SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES)
+SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES) $(EXECVE_FILES)
 
 ## add to sercs
 
