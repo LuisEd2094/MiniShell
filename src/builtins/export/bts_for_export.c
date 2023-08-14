@@ -32,7 +32,11 @@ void        print_in_order(t_tree_node* root)
     if (root != NULL)
     {
         print_in_order(root->left);
-        printf("declare -x %s=%c%s%c\n", ((t_env *)(root->data->content))->variable, '"',((t_env *)(root->data->content))->value, '"');
+        printf("declare -x %s=%c%s%c\n", \
+                ((t_env *)(root->data->content))->variable, \
+                '"', \
+                ((t_env *)(root->data->content))->value, \
+                '"');
         print_in_order(root->right);
     }
 }

@@ -11,6 +11,19 @@ static void    free_tab_export(char **tab)
 }
 
 
+static void free_tbs(t_tree_node *root)
+{
+    t_tree_node *temp;
+
+    if (root != NULL)
+    {
+        free_tbs(root->left);
+        temp = root->right;
+        free(root);
+        free_tbs(temp);       
+    }
+
+}
 static void work_on_print(t_list *env_list)
 {
     t_list *temp;
@@ -24,8 +37,10 @@ static void work_on_print(t_list *env_list)
         temp = temp->next;
     }
     print_in_order(root);
-
+    free_tbs(root);
 } 
+
+
 
 int work_on_export(t_list *env_list, char *str)
 {
