@@ -23,6 +23,7 @@ int main(int argc, char **argv, char **env)
 
 
     mini.env_list = init_env(env);
+
     // Read previous history from a file
     work_history(INIT, NULL);
 

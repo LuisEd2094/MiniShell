@@ -32,7 +32,22 @@ void        print_in_order(t_tree_node* root)
     if (root != NULL)
     {
         print_in_order(root->left);
-        printf("declare -x %s=%s\n", ((t_env *)(root->data->content))->variable, ((t_env *)(root->data->content))->value);
+        printf("declare -x %s=%c%s%c\n", ((t_env *)(root->data->content))->variable, '"',((t_env *)(root->data->content))->value, '"');
         print_in_order(root->right);
     }
+}
+
+t_tree_node *init_tbs_env(t_list *env_list)
+{
+    t_tree_node *root;
+    t_list      *temp;
+
+    root = NULL;
+    temp = env_list;
+    while (temp)
+    {
+        root = insert_to_tbs(root, temp);
+        temp = temp->next;
+    }
+    return (root);
 }

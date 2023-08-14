@@ -10,28 +10,36 @@ static void    free_tab_export(char **tab)
         free(tab);
 }
 
+
+static void work_on_print(t_list *env_list)
+{
+    t_list *temp;
+    t_tree_node *root;
+
+    temp = env_list;
+    root = NULL;
+    while (temp)
+    {
+        root = insert_to_tbs(root, temp);
+        temp = temp->next;
+    }
+    print_in_order(root);
+
+} 
+
 int work_on_export(t_list *env_list, char *str)
 {
     char **tab;
     t_list  *temp;
     t_list  *new;
     t_env   *env_node;
-    t_tree_node *root;
 
     tab = NULL;
-    root = NULL;
     if (str)
         tab = ft_single_split(str, '=');
     if (!tab)
     {
-        printf("Need to print export declare\n");
-        temp = env_list;
-        while (temp)
-        {
-            root = insert_to_tbs(root, temp);
-            temp = temp->next;
-        }
-        print_in_order(root);
+        work_on_print(env_list);
     }
     else
     {
@@ -39,7 +47,6 @@ int work_on_export(t_list *env_list, char *str)
         if (!temp)
         {
             temp = add_new_env(env_list, str);
-
         }
         else
         {
