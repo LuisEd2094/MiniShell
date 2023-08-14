@@ -46,7 +46,7 @@ t_env *create_env_node(char *str)
     return (new);
 }
 
-void    add_new_env(t_list *env_list, char *str)
+t_list *    add_new_env(t_list *env_list, char *str)
 {
     t_list  *temp;
     t_list  *new;
@@ -56,7 +56,8 @@ void    add_new_env(t_list *env_list, char *str)
     env_node = create_env_node(str);
     new = ft_lstnew(env_node);
     temp->next = new;
-    env_list->last = new; 
+    env_list->last = new;
+    return (new); 
 }
 
 void    update_env_value(char *env_node_str, char *str)

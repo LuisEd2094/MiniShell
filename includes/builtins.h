@@ -1,6 +1,6 @@
 #ifndef BUILTINS_H
 # define BUILTINS_H
-# include "./libft.h"
+# include <libft.h>
 #include <stdbool.h>
 
 
@@ -11,11 +11,21 @@ typedef struct s_env
     bool    assigned;
 } t_env;
 
+typedef struct s_tree_node {
+    t_list  * data; // Pointer to the linked list node
+    struct s_tree_node* left;
+    struct s_tree_node* right;
+} t_tree_node;
+
+
+t_tree_node *insert_to_tbs(t_tree_node* root, t_list* value);
+void        print_in_order(t_tree_node* root);
+
 t_list  *init_env(char **env);
 t_list  *get_env_node(t_list *env_list, char *str);
 t_env   *create_env_node(char *str);
 void    update_env_value(char *env_node_str, char *str);
-void    add_new_env(t_list *env_list, char *str);
+t_list *    add_new_env(t_list *env_list, char *str);
 
 
 bool    has_equal(char *str);

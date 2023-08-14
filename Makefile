@@ -44,7 +44,7 @@ SRC         =	main.c
 HISTORY		= 	add_to_history.c  close_history.c  history_init.c  \
 				remove_new_line.c  update_history.c work_history.c
 
-EXPORT		=	export.c
+EXPORT		=	export.c bts_for_export.c
 
 ENV			= 	env.c
 
