@@ -43,6 +43,7 @@ t_env *create_env_node(char *str)
         new->assigned = 1;
     else
         new->assigned = 0;
+    free(tab);
     return (new);
 }
 

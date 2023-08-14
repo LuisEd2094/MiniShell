@@ -14,6 +14,26 @@ void print_all_env(t_list *env_list)
     }
 }
 
+void free_env_list(t_list *env_list)
+{
+    t_list *cursor;
+    t_list *next;
+
+    cursor = env_list;
+    next = cursor->next;
+    while(cursor)
+    {
+        free(((t_env *)(cursor->content))->variable);
+        free(((t_env *)(cursor->content))->value);
+        free((cursor->content));
+        free(cursor);
+        cursor = next;
+        if (next)
+            next = next->next;
+    }
+
+}
+
 t_list *init_env(char **env)
 {
     t_list  *env_list;

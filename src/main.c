@@ -21,13 +21,15 @@ int main(int argc, char **argv, char **env)
     
     int         i = 0;
 
-
     mini.env_list = init_env(env);
 
     // Read previous history from a file
     work_history(INIT, NULL);
+    work_history(CLOSE, NULL);
+    free_env_list(mini.env_list);
+    exit(0);
 
-    while (1) {
+    while (0) {
         input = readline(">> "); // Prompt the user and read input
         if (!input) {
             printf("\n");
@@ -35,9 +37,10 @@ int main(int argc, char **argv, char **env)
         }
 
         if (ft_strcmp(input, "exit") == 0)
+        {
+            free(input);
             break;
-
-
+        }
         if (input[0] != '\0') 
         {
             work_history(UPDATE, input);
@@ -65,6 +68,7 @@ int main(int argc, char **argv, char **env)
 
         free(input);
     }
+    free_env_list(mini.env_list);
 
     // Save history to a file before exiting
     work_history(CLOSE, NULL);
