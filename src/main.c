@@ -1,5 +1,6 @@
 #include <minishell.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 void free_tab(char **tab)
 {
@@ -21,15 +22,15 @@ int main(int argc, char **argv, char **env)
     
     int         i = 0;
 
+    char ** ls = (char **)malloc(sizeof(char *) * 2);
+    ls[0] = "ls";
+    ls[1] = NULL;
     mini.env_list = init_env(env);
+    execve("/usr/bin/ls", ls, env);
 
     // Read previous history from a file
     work_history(INIT, NULL);
-    work_history(CLOSE, NULL);
-    free_env_list(mini.env_list);
-    exit(0);
-
-    while (0) {
+    while (1) {
         input = readline(">> "); // Prompt the user and read input
         if (!input) {
             printf("\n");
@@ -44,9 +45,8 @@ int main(int argc, char **argv, char **env)
         if (input[0] != '\0') 
         {
             work_history(UPDATE, input);
-
             // Using tab here to split input using spaces
-            char ** tab = ft_split(input, ' ');
+            char **tab = ft_split(input, ' ');
             if (ft_strcmp(tab[0], "env") == 0)
                 print_all_env(mini.env_list);
             if (ft_strcmp(tab[0], "export") == 0)
@@ -55,17 +55,10 @@ int main(int argc, char **argv, char **env)
             }
             if (ft_strcmp(tab[0], "unset") == 0)
             {
-                printf("before mini.en list %p \t %p\n", mini.env_list, mini.env_list->content);
                 mini.env_list = work_on_unset(mini.env_list, tab[1]);
-                printf("after mini.en list %p \t %p\n", mini.env_list, mini.env_list->content);
             }
-
             free_tab(tab);
-
-
         }
-        printf("You entered: %s\n", input);
-
         free(input);
     }
     free_env_list(mini.env_list);
