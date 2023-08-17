@@ -40,15 +40,29 @@ int main(int argc, char **argv, char **env)
 
     dup2(output_fd, 1);
     // Duplicate the file descriptor onto standard input (0)
-    dup2(file_descriptor, 0);
-
+    dup2(file_descriptor, 0);*/
+/*
     char ** ls = (char **)malloc(sizeof(char *) * 4);
     ls[0] = "cat";
-    ls[1] = NULL;
+    ls[1] = "/home/luised2094/MiniShell/test.txt  /home/luised2094/MiniShell/test1.txt";
     ls[2] = NULL;
     ls[3] = NULL;
 
     execve("/usr/bin/cat", ls, env);*/
+/*
+    bool *has_;
+
+    has_= (bool *)malloc(sizeof(bool) * 4);
+    has_[0] = 0;
+    has_[1] = 1;
+    has_[2] = 0;
+    has_[3] = NULL;
+
+
+    for (int j = 0; j < 3; j++)
+    {
+        printf("Has pos [%i] has this value =  [%i]\n", j, has_[j]);
+    }*/
     // Read previous history from a file
     work_history(INIT, NULL);
     while (1) {
@@ -63,6 +77,7 @@ int main(int argc, char **argv, char **env)
         }
         work_history(UPDATE, input);
         // Using tab here to split input using spaces
+        mini.cmd_list = get_cmd_list(input);
         tab = ft_split(input, ' ');
         for (int j = 0; tab[j]; j++)
             printf("[%s]\n", tab[j]);

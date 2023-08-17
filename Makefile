@@ -79,7 +79,7 @@ DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
 
 #add .d files to deps
 
-SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES)
+SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES) $(PARSE_FILES)
 
 ## add to sercs
 
