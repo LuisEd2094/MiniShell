@@ -3,8 +3,9 @@ CFLAGS      = -g ##-Wall -Wextra  -Werror -g
 RM          = rm -f
 SRCS_PATH           = src/
 OBJS_PATH           = obj/
-HISTORY_PATH			= history/
+HISTORY_PATH		= history/
 BUILTINTS			= builtins/
+PARSE_PATH			= parse_arguments/
 EXPORT_PATH			= $(BUILTINTS)export/
 ENV_PATH			= $(BUILTINTS)env/
 SHARED_PATH			= $(BUILTINTS)shared/
@@ -12,7 +13,10 @@ UNSET_PATH			= $(BUILTINTS)unset/
 BUILTINTS_PATH		= $(EXPORT_PATH) $(ENV_PATH) $(SHARED_PATH) $(UNSET_PATH)
 
 ## Add new path, just need name/
-MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), $(HISTORY_PATH) $(BUILTINTS_PATH)) ##
+MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), \
+											$(HISTORY_PATH) \
+											$(BUILTINTS_PATH) \
+											$(PARSE_PATH)) ##
 #Add new path to objects
 
 DEPS_PATH	= deps/
@@ -51,18 +55,27 @@ ENV			= 	env.c
 UNSET		=	unset.c
 
 SHARED		=	builtins_shared.c ft_single_split.c
+
+PARSE		=	parse_arguments.c
+
 ## Add names of your files
 
 HISTORY_FILES		=$(addprefix $(HISTORY_PATH), $(HISTORY))
+
+PARSE_FILES			=$(addprefix $(PARSE_PATH), $(PARSE))
+
 EXPORT_FILES		=$(addprefix $(EXPORT_PATH), $(EXPORT))
 ENV_FILES			=$(addprefix $(ENV_PATH), $(ENV))
 SHARED_BINS_FILES	=$(addprefix $(SHARED_PATH), $(SHARED))
 UNSET_FILES			=$(addprefix $(UNSET_PATH), $(UNSET))
+
 BUILTINTS_FILES		=$(EXPORT_FILES) $(ENV_FILES) $(SHARED_BINS_FILES) $(UNSET_FILES)
 ## append the path to your files
 
-DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) $(HISTORY:.c=.d) \
-				$(BUILTINTS_FILES:.c=.d))
+DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
+										$(HISTORY:.c=.d) \
+										$(BUILTINTS_FILES:.c=.d) \
+										$(PARSE_FILES:.c=.d))
 
 #add .d files to deps
 

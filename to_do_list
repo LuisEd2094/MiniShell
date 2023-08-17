@@ -1,0 +1,47 @@
+when '$HOLA' is provided (single quote), it should not check for the env value $HOLA
+when "$HOLA" is provided (double quote), it should
+
+
+Meta characters acording to CHATGPT:
+
+$ (Dollar Sign):
+
+In shell scripting, the dollar sign is used to indicate variable substitution. For example, $HOME refers to the user's home directory.
+` (Backtick or Grave Accent):
+
+In older versions of shells (like Bourne shell), backticks are used to execute commands and substitute their output into a command.
+" (Double Quote):
+
+Enclosing characters within double quotes preserves the literal value of all characters within the quotes, except for the dollar sign ($) and backtick (if used in a context that supports command substitution).
+' (Single Quote):
+
+Enclosing characters within single quotes preserves the literal value of all characters within the quotes, without any exceptions. This is often used to prevent variable expansion and command substitution.
+\ (Backslash):
+
+The backslash is used as an escape character. It allows you to use special characters as literals or to escape characters that would otherwise have special meanings. For example, \n represents a newline character.
+| (Pipe):
+
+The pipe symbol is used to redirect the output of one command to the input of another. It is used in pipelines to chain multiple commands together.
+> (Greater Than) and >> (Double Greater Than):
+
+These symbols are used for output redirection. > is used to redirect standard output to a file, while >> appends output to a file.
+< (Less Than):
+
+The less than symbol is used for input redirection, allowing a command to read input from a file.
+; (Semicolon):
+
+Semicolon is used to separate multiple commands on a single line. It allows you to execute one command after another.
+& (Ampersand):
+
+In the context of shell scripting, the ampersand can be used for background execution of commands. For example, command & runs the command in the background.
+*** (Asterisk)** and ? (Question Mark):
+
+In shell globbing and regular expressions, these symbols are used as wildcards. * represents zero or more characters, while ? represents a single character.
+[ ] (Square Brackets):
+
+In shell globbing, square brackets are used to define character classes for matching. For example, [abc] matches any one of the characters 'a', 'b', or 'c'.
+
+
+
+
+cat -e << EOF > test.txt << EOF1 > test1.txt This behavior is kinda weird
