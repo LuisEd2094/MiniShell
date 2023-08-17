@@ -9,6 +9,7 @@ typedef struct s_minishell
 {
     t_list      *env_list;
     t_list      *cmd_list;
+    char        *input;
 
 }   t_minishell;
 

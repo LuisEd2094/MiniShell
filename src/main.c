@@ -17,7 +17,6 @@ void free_tab(char **tab)
 
 int main(int argc, char **argv, char **env)
 {
-    char        *input;
     char        **tab;
     t_minishell mini;
     int         i = 0;
@@ -39,7 +38,7 @@ int main(int argc, char **argv, char **env)
     }
 
     dup2(output_fd, 1);
-    // Duplicate the file descriptor onto standard input (0)
+    // Duplicate the file descriptor onto standard mini.input (0)
     dup2(file_descriptor, 0);*/
 /*
     char ** ls = (char **)malloc(sizeof(char *) * 4);
@@ -64,21 +63,29 @@ int main(int argc, char **argv, char **env)
         printf("Has pos [%i] has this value =  [%i]\n", j, has_[j]);
     }*/
     // Read previous history from a file
+
+    //printf("%s", "hola\"");
     work_history(INIT, NULL);
     while (1) {
-        input = readline(">> "); // Prompt the user and read input
-        if (!input) {
+        mini.input = readline(">> "); // Prompt the user and read mini.input
+        if (mini.input[0] == '"' && mini.input[1] != '"')
+        {
+            char *second_input = readline(">> ");
+            printf ("first,<%s> second <%s>\n", mini.input, second_input);
+        }
+
+        if (!mini.input) {
             printf("\n");
         }
-        if (ft_strcmp(input, "exit") == 0)
+        if (ft_strcmp(mini.input, "exit") == 0)
         {
-            free(input);
+            free(mini.input);
             break;
         }
-        work_history(UPDATE, input);
-        // Using tab here to split input using spaces
-        mini.cmd_list = get_cmd_list(input);
-        tab = ft_split(input, ' ');
+        work_history(UPDATE, mini.input);
+        // Using tab here to split mini.input using spaces
+        //mini.cmd_list = get_cmd_list(mini.input);
+        tab = ft_split(mini.input, ' ');
         for (int j = 0; tab[j]; j++)
             printf("[%s]\n", tab[j]);
         if (ft_strcmp(tab[0], "env") == 0)
@@ -91,8 +98,9 @@ int main(int argc, char **argv, char **env)
         {
             mini.env_list = work_on_unset(mini.env_list, tab[1]);
         }
+        printf("<%s>\n", mini.input);
         free_tab(tab);
-    free(input);
+    free(mini.input);
     }
     free_env_list(mini.env_list);
 

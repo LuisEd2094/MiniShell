@@ -3,7 +3,7 @@
 # include <stdbool.h>
 # include <libft.h>
 
-typedef struct s_arguments
+typedef struct s_cmd_values
 {
     char    **cmd_line;
     bool    *cmd_has_env_value; //keep track of cmd_lines that have a $ to replace later
@@ -17,7 +17,7 @@ typedef struct s_arguments
     bool    output_redir; // >
     bool    append_output_redir; // >>
     char    *output_info; 
-}   t_arguments;
+}   t_cmd_values;
 
 t_list *get_cmd_list(char *input);
 
