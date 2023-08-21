@@ -37,19 +37,82 @@ int get_cmd_count(char *input, int i)
 }
 
 
+char *get_cmd_argument(char *input, int *start, int end)
+{
+    int i;
+    int j;
+
+    i = *start;
+    j = *start;
+    if(input[i] == '|')
+        i++;
+    while (input[i] && i <= end)
+    {
+        while (ft_isspace(input[i]) && input[i])
+            i++;
+        if (input[i] == '>')
+        {
+            if (input[i + 1] == '>')
+                i += 2;
+            else
+                i++;
+            while(ft_isspace(input[i]))
+                i++;
+            /*if (input[start] == '>' && input[start + 1] == '>')
+                continue;
+            else
+                continue;*/
+            while (input[i] && ft_isascii(input[i]) && !ft_isspace(input[i]))
+            {
+                i++;
+            }   
+            continue;
+        }
+        if (input[i] == '|')
+        {
+            i++;
+            continue; 
+        }
+        if (input[i] == '"' || input[i] == '\'')
+        {
+            char quote = input[i];
+            i++;
+            while(input[i] != quote)
+            {
+                printf("%c", input[i]);
+                i++;
+            }
+            printf("\n");
+
+            i++;
+            continue;
+        }
+        j = i;
+        while (input[i] && ft_isascii(input[i]) && !ft_isspace(input[i]))
+        {
+            printf("%c", input[i]);
+            i++;
+        }
+        printf(" [%i] size\n", i - j);
+    }
+    *start = i;
+
+}
+
 
 char **get_cmd_value_and_prep(char *input, int start, int end)
 {
     char            **new_cmd;
+    int             save_start;
     int             cmd_count;
     int             out_files_count;
     int             in_files_count;
 
 
     cmd_count = 0;
+    save_start = start;
     if (input [start] == '|')
     {
-        new_cmd;
         start++;
     }
     while (input[start] && start <= end)
@@ -103,25 +166,28 @@ char **get_cmd_value_and_prep(char *input, int start, int end)
         cmd_count++;
         printf("\n");
     }
+    new_cmd = (char **)malloc(sizeof(char *) * cmd_count + 1);
+    if (!new_cmd)
+        exit(1);
+    int i = 0;
+    while(i < cmd_count)
+    {
+        new_cmd[i] = get_cmd_argument(input, &save_start, end);
+        i++;
+    }
     printf("cmd_count [%i]\n", cmd_count);
     return NULL;
 }
 
 
-t_list *get_cmd_list(char *input)
+int execute_input(char *input)
 {
-    t_list          *cmd_list;
-    t_list          *temp;
     char            **cmd;
     int     i;
     int     j;
 
-    cmd_list = (t_list *)malloc(sizeof(t_list));
-    if (!cmd_list)
-        exit(1);
     i = 0;
     j = 0;
-    temp = cmd_list;
     while (input[i])
     {
         if (input[i] == '|' || !input[i + 1])
@@ -147,12 +213,12 @@ t_list *get_cmd_list(char *input)
 
 
     printf("%s\n", input);
-    return NULL;
+    return 1;
 }
 
 
 int main(int argc, char **argv)
 {
     printf("%s\n", argv[1]);
-    get_cmd_list(argv[1]);
+    execute_input(argv[1]);
 }
