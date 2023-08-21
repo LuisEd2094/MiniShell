@@ -20,11 +20,12 @@ int check_if_start_word(char c)
 
 void    skip_redirection(char *input, int *start)
 {
-    int i;
+    int     i;
+    char    symbol;
 
     i = 0;
-
-    if (input[i + 1] == '>')
+    symbol = input[i];
+    if (input[i + 1] == symbol)
         i += 2;
     else
         i++;
@@ -55,7 +56,7 @@ char *get_cmd_argument(char *input, int *start, int end)
     {
         while (ft_isspace(input[i]) && input[i])
             i++;
-        if (input[i] == '>')
+        if (input[i] == '>' || input[i] == '<')
         {
             skip_redirection(&input[i], &i);
             continue;
@@ -107,10 +108,13 @@ char *get_cmd_argument(char *input, int *start, int end)
 
 int    handle_redirection(char *input, int *start)
 {
-    int i;
+    int     i;
+    char    symbol;
 
     i = 0;
-    if (input[i + 1] == '>')
+    symbol = input[i];
+    printf("[%s] symbol\n", input);
+    if (input[i + 1] == symbol)
         i += 2;
     else
         i++;
@@ -163,7 +167,7 @@ int get_cmd_count_and_handle_redirections(char *input, int start, int end, int *
     {
         while (ft_isspace(input[start]) && input[start])
             start++;
-        if (input[start] == '>')
+        if (input[start] == '>' || input[start] == '<')
         {
             if (!handle_redirection(&input[start], &start))
                 return (0);
@@ -204,6 +208,7 @@ char **get_cmd_value_and_prep(char *input, int start, int end)
     new_cmd = (char **)malloc(sizeof(char *) * cmd_count + 1);
     if (!new_cmd)
         return(NULL);
+    printf("%i\n", start);
     save_start = start;
     i = 0;
     while(i < cmd_count)

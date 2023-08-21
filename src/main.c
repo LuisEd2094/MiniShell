@@ -30,7 +30,7 @@ int main(int argc, char **argv, char **env)
         perror("minishell: test3.txt asdads");
         return 1;
     }*/
-    int output_fd = open("test1.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644); // IF YOU NEED TO REAPLCE THE CONTENT LIKE IWTH ">"
+    int output_fd = open("test.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644); // IF YOU NEED TO REAPLCE THE CONTENT LIKE IWTH ">"
     //int output_fd = open("test1.txt", O_WRONLY | O_CREAT | O_APPEND, 0644); // IF YOU NEED TO APPEND THE CONTENT LIKE WITH ">>"
 
     if (output_fd == -1) {
@@ -54,7 +54,7 @@ int main(int argc, char **argv, char **env)
 
     char ** ls = (char **)malloc(sizeof(char *) * 4);
     ls[0] = "cat";
-    ls[1] = "test2.txt";
+    ls[1] = "test.txt";
     ls[2] = NULL;
     ls[3] = NULL;
 
