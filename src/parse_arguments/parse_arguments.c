@@ -75,6 +75,7 @@ char *get_cmd_argument(char *input, int *start, int end)
         }
         if (input[i] == '"' || input[i] == '\'')
         {
+            j = i;
             char quote = input[i];
             i++;
             while(input[i] != quote)
@@ -82,8 +83,7 @@ char *get_cmd_argument(char *input, int *start, int end)
                 printf("%c", input[i]);
                 i++;
             }
-            printf("\n");
-
+            printf(" [%i] size\n", i - 1 - j);
             i++;
             continue;
         }
