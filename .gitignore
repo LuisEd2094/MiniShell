@@ -2,6 +2,8 @@
 *.o
 minishell
 *.txt
+test*
+*.ext
 libft.a
 a.out
 create_lines
