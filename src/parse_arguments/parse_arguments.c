@@ -1,23 +1,6 @@
 #include <parse_arguments.h>
 #include "parse_internal.h"
 
-int check_if_start_word(char c)
-{
-    char    *values_to_check;
-    int     i;
-
-    i = 0;
-    values_to_check = "\"\'>< |&";
-    while (values_to_check[i])
-    {
-        printf("%c ", values_to_check[i]);
-        i++;
-    }
-    printf("\n");
-    return (1);
-}
-
-
 void    skip_redirection(char *input, int *start)
 {
     int     i;
@@ -25,21 +8,46 @@ void    skip_redirection(char *input, int *start)
 
     i = 0;
     symbol = input[i];
-    if (input[i + 1] == symbol)
+    if (input[i + 1] && input[i + 1] == symbol)
         i += 2;
     else
         i++;
     while(ft_isspace(input[i]))
         i++;
-    /*if (input[start] == '>' && input[start + 1] == '>')
-        continue;
-    else
-        continue;*/
     while (input[i] && ft_isascii(input[i]) && !ft_isspace(input[i]))
     {
         i++;
     }
     *start += i;   
+}
+
+
+char *get_quoted_arg(char *input, int *start)
+{
+    char quote;
+    char *new;
+    int i;
+    int j;
+
+    i = 0;
+    quote = input[i];
+    i++;
+    j = i;
+    while(input[i] != quote)
+    {
+        //printf("%c", input[i]);
+        i++;
+    }
+    new = (char *)malloc(sizeof(char) * i - j + 1);
+    if (!new)
+        return(NULL);
+    ft_strlcpy(new, &input[j], i - j + 1);
+    i++;
+    *start = i;
+
+    //printf(" [%i] size\n", i - 1 - j);
+
+    return (new);
 }
 
 char *get_cmd_argument(char *input, int *start, int end)
@@ -68,7 +76,7 @@ char *get_cmd_argument(char *input, int *start, int end)
         }
         if (input[i] == '"' || input[i] == '\'')
         {
-
+            return(get_quoted_arg(&input[i], start));
             char quote = input[i];
             i++;
             j = i;
@@ -113,22 +121,14 @@ int    handle_redirection(char *input, int *start)
 
     i = 0;
     symbol = input[i];
-    printf("[%s] symbol\n", input);
-    if (input[i + 1] == symbol)
+    if (input[i + 1] && input[i + 1] == symbol)
         i += 2;
     else
         i++;
     while(ft_isspace(input[i]))
         i++;
-
-    /*if (input[start] == '>' && input[start + 1] == '>')
-    continue;
-    else
-    continue;*/
     while (input[i] && ft_isascii(input[i]) && !ft_isspace(input[i]))
-    {
         i++;
-    }
     *start += i;
     return (1); 
 }
@@ -244,6 +244,7 @@ int execute_input(char *input)
                 return (errno);
 
             }
+            // once we get cmds, we should check if they are built ins or not, and execute the functions, I'm gonna need to get the env lists for this function 
             j = i;
             printf("GOT CMDS: \n");
             for (int k = 0; cmd[k]; k++)
@@ -260,6 +261,7 @@ int execute_input(char *input)
 
 int main(int argc, char **argv)
 {
-    printf("%s\n", argv[1]);
     execute_input(argv[1]);
+    //execute return 0 if no error and errno if error, it should be enough for minishell.er to get that value
+    // built ins might want to return a different error
 }
