@@ -16,29 +16,36 @@ bool check_if_start_word(char c)
     }
     printf("\n");
     return (1);
-
 }
 
 
-int get_cmd_count(char *input, int i)
+void    skip_redirection(char *input, int *start)
 {
-    int j;
-    int num_cmds;
+    int i;
 
-    j = i;
-    num_cmds = 0;
-    while(input[j])
+    i = 0;
+
+    if (input[i + 1] == '>')
+        i += 2;
+    else
+        i++;
+    while(ft_isspace(input[i]))
+        i++;
+    /*if (input[start] == '>' && input[start + 1] == '>')
+        continue;
+    else
+        continue;*/
+    while (input[i] && ft_isascii(input[i]) && !ft_isspace(input[i]))
     {
-        while (input[j] && ft_isspace(input[j]))
-            j++;
-        
+        i++;
     }
+    *start += i;   
 
 }
-
 
 char *get_cmd_argument(char *input, int *start, int end)
 {
+    char    *new;
     int i;
     int j;
 
@@ -52,20 +59,22 @@ char *get_cmd_argument(char *input, int *start, int end)
             i++;
         if (input[i] == '>')
         {
+            skip_redirection(&input[i], &i);
+            /*
             if (input[i + 1] == '>')
                 i += 2;
             else
                 i++;
             while(ft_isspace(input[i]))
                 i++;
-            /*if (input[start] == '>' && input[start + 1] == '>')
+            if (input[start] == '>' && input[start + 1] == '>')
                 continue;
             else
-                continue;*/
+                continue;
             while (input[i] && ft_isascii(input[i]) && !ft_isspace(input[i]))
             {
                 i++;
-            }   
+            } */
             continue;
         }
         if (input[i] == '|')
@@ -75,28 +84,85 @@ char *get_cmd_argument(char *input, int *start, int end)
         }
         if (input[i] == '"' || input[i] == '\'')
         {
-            j = i;
+
             char quote = input[i];
             i++;
+            j = i;
             while(input[i] != quote)
             {
-                printf("%c", input[i]);
+                //printf("%c", input[i]);
                 i++;
             }
-            printf(" [%i] size\n", i - 1 - j);
+            new = (char *)malloc(sizeof(char) * i - j + 1);
+            if (!new)
+                exit(1);
+
+            ft_strlcpy(new, &input[j], i - j + 1);
             i++;
-            continue;
+            *start = i;
+
+            //printf(" [%i] size\n", i - 1 - j);
+
+            return (new);
         }
         j = i;
         while (input[i] && ft_isascii(input[i]) && !ft_isspace(input[i]))
         {
-            printf("%c", input[i]);
+            //printf("%c", input[i]);
             i++;
         }
-        printf(" [%i] size\n", i - j);
+       // printf(" [%i] size\n", i - j);
+        new = (char *)malloc(sizeof(char) * i - j + 1);
+        if (!new)
+            exit(1);
+        ft_strlcpy(new, &input[j], i - j +1);
+        *start = i;
+        return (new);
     }
-    *start = i;
 
+}
+
+
+void    handle_redirection(char *input, int *start)
+{
+    int i;
+
+    i = *start;
+    if (input[i + 1] == '>')
+        i += 2;
+    else
+        i++;
+    while(ft_isspace(input[i]))
+        i++;
+
+    /*if (input[start] == '>' && input[start + 1] == '>')
+    continue;
+    else
+    continue;*/
+    while (input[i] && ft_isascii(input[i]) && !ft_isspace(input[i]))
+    {
+        i++;
+    }
+    *start = i; 
+}
+
+void    handle_quotes(char *input, int *start)
+{
+    char    quote;
+    int     i;
+    
+    i = 0;
+    quote = input[i];
+    i++;
+    
+    while(input[i] != quote)
+    {
+        i++;
+    }
+    //printf("\n");
+
+    i++;
+    *start += i;
 }
 
 
@@ -113,6 +179,7 @@ char **get_cmd_value_and_prep(char *input, int start, int end)
     save_start = start;
     if (input [start] == '|')
     {
+        //should start STDIN PIPE
         start++;
     }
     while (input[start] && start <= end)
@@ -121,21 +188,7 @@ char **get_cmd_value_and_prep(char *input, int start, int end)
             start++;
         if (input[start] == '>')
         {
-            if (input[start + 1] == '>')
-                start += 2;
-            else
-                start++;
-            while(ft_isspace(input[start]))
-                start++;
-            
-            /*if (input[start] == '>' && input[start + 1] == '>')
-                continue;
-            else
-                continue;*/
-            while (input[start] && ft_isascii(input[start]) && !ft_isspace(input[start]))
-            {
-                start++;
-            }   
+            handle_redirection(&input[start], &start);
             continue;
         }
         if (input[start] == '|')
@@ -145,26 +198,17 @@ char **get_cmd_value_and_prep(char *input, int start, int end)
         }
         if (input[start] == '"' || input[start] == '\'')
         {
-            char quote = input[start];
-            start++;
-            while(input[start] != quote)
-            {
-                printf("%c", input[start]);
-                start++;
-            }
-            printf("\n");
-
-            start++;
+            handle_quotes(&input[start], &start);
             cmd_count++;
             continue;
         }
         while (input[start] && ft_isascii(input[start]) && !ft_isspace(input[start]))
         {
-            printf("%c", input[start]);
+           // printf("%c", input[start]);
             start++;
         }   
         cmd_count++;
-        printf("\n");
+       // printf("\n");
     }
     new_cmd = (char **)malloc(sizeof(char *) * cmd_count + 1);
     if (!new_cmd)
@@ -175,8 +219,9 @@ char **get_cmd_value_and_prep(char *input, int start, int end)
         new_cmd[i] = get_cmd_argument(input, &save_start, end);
         i++;
     }
-    printf("cmd_count [%i]\n", cmd_count);
-    return NULL;
+    new_cmd[i] = NULL;
+    //printf("cmd_count [%i]\n", cmd_count);
+    return (new_cmd);
 }
 
 
@@ -194,26 +239,16 @@ int execute_input(char *input)
         {
             cmd = get_cmd_value_and_prep(input, j, i);
             j = i;
+            printf("GOT CMDS: \n");
+            for (int k = 0; cmd[k]; k++)
+            {
+                printf("[%s]\n", cmd[k]);
+            }
         }
         i++;
     }
-    /*    
-    temp = cmd_list;
-    while (input[pos])
-    {
-        cmd = get_cmd_value(input, &pos);
-        if (!cmd)
-            exit(1);
-        temp = ft_lstnew(cmd);
-        if (!temp)
-            exit(1);
-        temp = temp->next;
-
-*/
-
-
     printf("%s\n", input);
-    return 1;
+    return (1);
 }
 
 
