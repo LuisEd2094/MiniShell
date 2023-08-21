@@ -1,7 +1,7 @@
 #include <parse_arguments.h>
 #include "parse_internal.h"
 
-bool check_if_start_word(char c)
+int check_if_start_word(char c)
 {
     char    *values_to_check;
     int     i;
@@ -10,7 +10,6 @@ bool check_if_start_word(char c)
     values_to_check = "\"\'>< |&";
     while (values_to_check[i])
     {
-
         printf("%c ", values_to_check[i]);
         i++;
     }
@@ -40,7 +39,6 @@ void    skip_redirection(char *input, int *start)
         i++;
     }
     *start += i;   
-
 }
 
 char *get_cmd_argument(char *input, int *start, int end)
@@ -60,21 +58,6 @@ char *get_cmd_argument(char *input, int *start, int end)
         if (input[i] == '>')
         {
             skip_redirection(&input[i], &i);
-            /*
-            if (input[i + 1] == '>')
-                i += 2;
-            else
-                i++;
-            while(ft_isspace(input[i]))
-                i++;
-            if (input[start] == '>' && input[start + 1] == '>')
-                continue;
-            else
-                continue;
-            while (input[i] && ft_isascii(input[i]) && !ft_isspace(input[i]))
-            {
-                i++;
-            } */
             continue;
         }
         if (input[i] == '|')
@@ -95,8 +78,7 @@ char *get_cmd_argument(char *input, int *start, int end)
             }
             new = (char *)malloc(sizeof(char) * i - j + 1);
             if (!new)
-                exit(1);
-
+                return(NULL);
             ft_strlcpy(new, &input[j], i - j + 1);
             i++;
             *start = i;
@@ -114,7 +96,7 @@ char *get_cmd_argument(char *input, int *start, int end)
        // printf(" [%i] size\n", i - j);
         new = (char *)malloc(sizeof(char) * i - j + 1);
         if (!new)
-            exit(1);
+            return(NULL);
         ft_strlcpy(new, &input[j], i - j +1);
         *start = i;
         return (new);
@@ -123,11 +105,11 @@ char *get_cmd_argument(char *input, int *start, int end)
 }
 
 
-void    handle_redirection(char *input, int *start)
+int    handle_redirection(char *input, int *start)
 {
     int i;
 
-    i = *start;
+    i = 0;
     if (input[i + 1] == '>')
         i += 2;
     else
@@ -143,7 +125,8 @@ void    handle_redirection(char *input, int *start)
     {
         i++;
     }
-    *start = i; 
+    *start += i;
+    return (1); 
 }
 
 void    handle_quotes(char *input, int *start)
@@ -165,18 +148,12 @@ void    handle_quotes(char *input, int *start)
     *start += i;
 }
 
+int get_cmd_count_and_handle_redirections(char *input, int start, int end, int *og_count)
 
-char **get_cmd_value_and_prep(char *input, int start, int end)
 {
-    char            **new_cmd;
-    int             save_start;
-    int             cmd_count;
-    int             out_files_count;
-    int             in_files_count;
-
-
+    int cmd_count;
+    
     cmd_count = 0;
-    save_start = start;
     if (input [start] == '|')
     {
         //should start STDIN PIPE
@@ -188,7 +165,8 @@ char **get_cmd_value_and_prep(char *input, int start, int end)
             start++;
         if (input[start] == '>')
         {
-            handle_redirection(&input[start], &start);
+            if (!handle_redirection(&input[start], &start))
+                return (0);
             continue;
         }
         if (input[start] == '|')
@@ -204,23 +182,40 @@ char **get_cmd_value_and_prep(char *input, int start, int end)
         }
         while (input[start] && ft_isascii(input[start]) && !ft_isspace(input[start]))
         {
-           // printf("%c", input[start]);
             start++;
         }   
         cmd_count++;
-       // printf("\n");
     }
+    *og_count = cmd_count;
+    return (1);
+}
+
+
+char **get_cmd_value_and_prep(char *input, int start, int end)
+{
+    char    **new_cmd;
+    int     save_start;
+    int     cmd_count;
+    int     i;
+
+
+    if (!get_cmd_count_and_handle_redirections(input, start, end, &cmd_count))
+        return (NULL);
     new_cmd = (char **)malloc(sizeof(char *) * cmd_count + 1);
     if (!new_cmd)
-        exit(1);
-    int i = 0;
+        return(NULL);
+    save_start = start;
+    i = 0;
     while(i < cmd_count)
     {
         new_cmd[i] = get_cmd_argument(input, &save_start, end);
+        if (!new_cmd[i])
+        {
+            return (NULL);
+        }
         i++;
     }
     new_cmd[i] = NULL;
-    //printf("cmd_count [%i]\n", cmd_count);
     return (new_cmd);
 }
 
@@ -238,6 +233,12 @@ int execute_input(char *input)
         if (input[i] == '|' || !input[i + 1])
         {
             cmd = get_cmd_value_and_prep(input, j, i);
+            if (!cmd)
+            {
+                printf("IM HERE\n");
+                return (errno);
+
+            }
             j = i;
             printf("GOT CMDS: \n");
             for (int k = 0; cmd[k]; k++)
@@ -248,7 +249,7 @@ int execute_input(char *input)
         i++;
     }
     printf("%s\n", input);
-    return (1);
+    return (0); // should return 0 if no fail, so mini shell can save the last error,
 }
 
 
