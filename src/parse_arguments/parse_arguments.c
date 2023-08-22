@@ -171,16 +171,23 @@ int get_starting_pos(char *input)
 int open_file(char *file_name, int redir_type)
 {
     int fd;
+     mode_t old_umask = umask(0);
 
     if (redir_type == INPUT_REDIRECT)
         fd = open(file_name, O_RDONLY);
     else if (redir_type == OUTPUT_REDIRECT)
-        fd = open(file_name, O_WRONLY | O_CREAT | O_TRUNC | 0644);
+        fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC );
     else if (redir_type == APPEND_OUTPUT)
-        fd = open(file_name, O_WRONLY | O_CREAT | O_APPEND | 0644);
+    {
+        printf("IM HERE\n");
+        fd = open(file_name, O_RDWR | O_CREAT | O_APPEND );
+
+    }
     else
         printf("Should handle logic for Here document \n");
-    printf("%i redir_type %s file name\n" ,redir_type, file_name);
+    printf("{%i} redir_type {%s} file name\n" ,redir_type, file_name);
+        umask(old_umask);  // Restore the original umask
+
     return (fd);
 }
 
@@ -366,6 +373,11 @@ int execute_input(t_minishell *mini)
 int main(int argc, char **argv, char **env)
 {
     t_minishell mini;
+
+    int fd= open("test_input", O_WRONLY | O_CREAT | O_APPEND );
+    if (fd < 0)
+    {perror("MiniShell");
+    exit(0);}
 
     mini.input = argv[1];
     mini.fd_out = 0;
