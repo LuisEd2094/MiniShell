@@ -94,24 +94,6 @@ char *get_cmd_argument(char *input, int *start, int end)
         if (input[i] == '"' || input[i] == '\'')
         {
             return(get_quoted_arg(&input[i], start));
-            char quote = input[i];
-            i++;
-            j = i;
-            while(input[i] != quote)
-            {
-                //printf("%c", input[i]);
-                i++;
-            }
-            new = (char *)malloc(sizeof(char) * i - j + 1);
-            if (!new)
-                return(NULL);
-            ft_strlcpy(new, &input[j], i - j + 1);
-            i++;
-            *start = i;
-
-            //printf(" [%i] size\n", i - 1 - j);
-
-            return (new);
         }
         j = i;
         i += get_ascii_size(&input[i]);
@@ -196,16 +178,45 @@ int execute_dup2(int fd, int redir_type)
         std_fd = dup2(fd, STDIN_FILENO);
     close(fd);
 }
-int    handle_redirection(char *input, int *start)
+int    check_and_handle_redirections(t_minishell *mini, int start, int end)
 {
     char    *file_name;
     int     fd;
     int     i;
     int     redir_type;
 
-    i = get_starting_pos(input);
-    redir_type = get_redir_type(input);
-    file_name = get_file_name(&input[i], &i);
+
+    if (input [start] == '|')
+        start++;
+    while (input[start] && start <= end)
+    {
+        start += get_white_space_size(&input[start]);
+        if (input[start] == '>' || input[start] == '<')
+        {
+            start += skip_redirection(&input[start]);
+            continue;
+        }
+        if (input[start] == '|')
+        {
+            start++;
+            continue; 
+        }
+        if (input[start] == '"' || input[start] == '\'')
+        {
+            start += skip_quotes(&input[start]);
+            cmd_count++;
+            continue;
+        }
+        start += get_ascii_size(&input[start]);
+        cmd_count++;
+    }
+    return(cmd_count);
+
+    printf("Inside Handle [%s]\n", &(mini->input[start]));
+    i = get_starting_pos(&(mini->input[start]));
+    redir_type = get_redir_type(&(mini->input[start]));
+    file_name = get_file_name(&(mini->input[i]), &i);
+    printf("[%s]\n", file_name);
     if (!file_name)
         return(0);
     fd = execute_dup2(open_file(file_name, redir_type), redir_type);
@@ -221,7 +232,7 @@ int    handle_redirection(char *input, int *start)
     }
     printf("\n");*/
 
-    *start += i;
+    //*start += i;
     return (fd); 
 }
 
@@ -323,6 +334,7 @@ int execute_input(t_minishell *mini)
             {
                 return (errno);
             }
+            check_and_handle_redirections(mini, j, i);
             //handle redirection//
             //handle pipe//
             // once we get cmds, we should check if they are built ins or not, and execute the functions, I'm gonna need to get the env lists for this function 
