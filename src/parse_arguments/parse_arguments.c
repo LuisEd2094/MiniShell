@@ -171,38 +171,41 @@ int get_starting_pos(char *input)
 int open_file(char *file_name, int redir_type)
 {
     int fd;
-     mode_t old_umask = umask(0);
 
     if (redir_type == INPUT_REDIRECT)
         fd = open(file_name, O_RDONLY);
     else if (redir_type == OUTPUT_REDIRECT)
-        fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC );
+        fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
     else if (redir_type == APPEND_OUTPUT)
-    {
-        printf("IM HERE\n");
-        fd = open(file_name, O_RDWR | O_CREAT | O_APPEND );
-
-    }
+        fd = open(file_name, O_RDWR | O_CREAT | O_APPEND, 0644);
     else
         printf("Should handle logic for Here document \n");
-    printf("{%i} redir_type {%s} file name\n" ,redir_type, file_name);
-        umask(old_umask);  // Restore the original umask
-
     return (fd);
 }
 
 
-int execute_dup2(int fd, int redir_type)
+int execute_dup2(int fd, int redir_type, t_minishell *mini)
 {
     int std_fd;
+
 
     if (!fd)
         return (0);
     if (redir_type == OUTPUT_REDIRECT || redir_type == APPEND_OUTPUT)
-        std_fd = dup2(fd, STDOUT_FILENO);
+    {
+        mini->fd_out = dup2(fd, STDOUT_FILENO);
+        close(fd);
+        if (mini->fd_out < 0)
+            return (0);
+    }
     else
-        std_fd = dup2(fd, STDIN_FILENO);
-    close(fd);
+    {    
+        mini->fd_in = dup2(fd, STDIN_FILENO);
+        close(fd);
+        if (mini->fd_in < 0)
+            return (0);
+    }
+    return (1);
 }
 
 int handle_redirection(t_minishell *mini, char *input, int *start)
@@ -219,21 +222,12 @@ int handle_redirection(t_minishell *mini, char *input, int *start)
     printf("FILE NAME [%s]\n", file_name);
     if (!file_name)
         return(0);
-    fd = execute_dup2(open_file(file_name, redir_type), redir_type);
-    if (fd != 0)
+    //fd = open_file(file_name, redir_type);
+    if (!execute_dup2(open_file(file_name, redir_type), redir_type, mini))
         return (0);
-    //fd = handle_opening_file(symbol, file_name);
-    
-    /*
-    while (input[i] && ft_isascii(input[i]) && !ft_isspace(input[i]))
-    {
-        printf("%c", input[i]);
-        i++;
-    }
-    printf("\n");*/
-
+    //close (fd);
     *start += i;
-    return (fd); 
+    return (1); 
 }
 
 
@@ -331,6 +325,24 @@ char **get_cmd_value(char *input, int start, int end)
     return (new_cmd);
 }
 
+int close_redirections(t_minishell *mini)
+{
+    if (mini->fd_in == STDIN_FILENO)
+    {
+        mini->fd_in = close(mini->fd_in);
+        if (mini->fd_in == -1)
+            return (0);
+        mini->fd_in = 1;
+    }
+    if (mini->fd_out == STDOUT_FILENO)
+    {
+        mini->fd_out = close(mini->fd_out);
+        if (mini->fd_out == -1)
+            return (0);
+    }
+    return (1);
+}
+
 
 int execute_input(t_minishell *mini)
 {
@@ -346,6 +358,7 @@ int execute_input(t_minishell *mini)
     {
         if (input[i] == '|' || !input[i + 1])
         {
+            printf("\tI am starting a new comand \n");
             cmd = get_cmd_value(input, j, i);
             if (!cmd)
             {
@@ -357,11 +370,26 @@ int execute_input(t_minishell *mini)
             //handle pipe//
             // once we get cmds, we should check if they are built ins or not, and execute the functions, I'm gonna need to get the env lists for this function 
             j = i;
+            
+            char buffer[1024];
+            ssize_t bytesRead;
+            printf("mini->fd_in %i\n", mini->fd_in);
+            if (mini->fd_in == 0)
+            {
+                printf("I AM PRINT\n");
+                while ((bytesRead = read(STDIN_FILENO, buffer, sizeof(buffer))) > 0) {
+                // Process the data read from the file
+                    write(STDOUT_FILENO, buffer, bytesRead); // Output the data to standard output
+                }
+            }
             printf("GOT CMDS: \n");
             for (int k = 0; cmd[k]; k++)
             {
                 printf("[%s]\n", cmd[k]);
             }
+            if (!close_redirections(mini))
+                return (errno);
+            printf("I've finished closing\n");
         }
         i++;
     }
@@ -374,14 +402,9 @@ int main(int argc, char **argv, char **env)
 {
     t_minishell mini;
 
-    int fd= open("test_input", O_WRONLY | O_CREAT | O_APPEND );
-    if (fd < 0)
-    {perror("MiniShell");
-    exit(0);}
-
     mini.input = argv[1];
     mini.fd_out = 0;
-    mini.fd_in = 0;
+    mini.fd_in = 1;
     mini.env_list = init_env(env);
     mini.err = execute_input(&mini);
     if (mini.err)
