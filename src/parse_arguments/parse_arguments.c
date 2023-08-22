@@ -168,10 +168,29 @@ int get_starting_pos(char *input)
     return (i);
 }
 
+int print_error(char *err_description)
+{
+    if (err_description)
+        perror(err_description);
+    else
+        perror(NULL);
+    return (0);
+}
+
 int open_file(char *file_name, int redir_type)
 {
     int fd;
 
+    if (redir_type == INPUT_REDIRECT)
+    {
+        if (access(file_name, R_OK) != 0)
+            return(print_error(file_name));
+    }
+    else if ( redir_type == OUTPUT_REDIRECT ||  redir_type == APPEND_OUTPUT)
+    {
+        if (access(file_name, W_OK) != 0)
+            return(print_error(file_name));
+    }
     if (redir_type == INPUT_REDIRECT)
         fd = open(file_name, O_RDONLY);
     else if (redir_type == OUTPUT_REDIRECT)
@@ -329,8 +348,7 @@ int close_redirections(t_minishell *mini)
 {
     if (mini->fd_in == STDIN_FILENO)
     {
-        mini->fd_in = close(mini->fd_in);
-        if (mini->fd_in == -1)
+        if (close(mini->fd_in) == -1)
             return (0);
         mini->fd_in = 1;
     }
@@ -407,8 +425,6 @@ int main(int argc, char **argv, char **env)
     mini.fd_in = 1;
     mini.env_list = init_env(env);
     mini.err = execute_input(&mini);
-    if (mini.err)
-        perror("MiniShell");
     printf("%s\n", argv[1]);
     //execute return 0 if no error and errno if error, it should be enough for minishell.er to get that value
     // built ins might want to return a different error
