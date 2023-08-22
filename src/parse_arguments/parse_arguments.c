@@ -167,6 +167,34 @@ int get_starting_pos(char *input)
     return (i);
 }
 
+int open_file(char *file_name, int redir_type)
+{
+    int fd;
+
+    if (redir_type == INPUT_REDIRECT)
+        fd = open(file_name, O_RDONLY);
+    else if (redir_type == OUTPUT_REDIRECT)
+        fd = open(file_name, O_WRONLY | O_CREAT | O_TRUNC | 0644);
+    else if (redir_type == APPEND_OUTPUT)
+        fd = open(file_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
+    else
+        printf("Should handle logic for Here document \n");
+    return (fd);
+}
+
+
+int execute_dup2(int fd, int redir_type)
+{
+    int std_fd;
+
+    if (!fd)
+        return (0);
+    if (redir_type == OUTPUT_REDIRECT || redir_type == APPEND_OUTPUT)
+        std_fd = dup2(fd, STDOUT_FILENO);
+    else
+        std_fd = dup2(fd, STDIN_FILENO);
+    close(fd);
+}
 int    handle_redirection(char *input, int *start)
 {
     char    *file_name;
@@ -179,6 +207,9 @@ int    handle_redirection(char *input, int *start)
     file_name = get_file_name(&input[i], &i);
     if (!file_name)
         return(0);
+    fd = execute_dup2(open_file(file_name, redir_type), redir_type);
+    if (!fd)
+        return (0);
     //fd = handle_opening_file(symbol, file_name);
     
     /*
@@ -190,7 +221,7 @@ int    handle_redirection(char *input, int *start)
     printf("\n");*/
 
     *start += i;
-    return (1); 
+    return (fd); 
 }
 
 void    handle_quotes(char *input, int *start)
@@ -243,8 +274,7 @@ int get_cmd_count_and_handle_redirections(char *input, int start, int end, int *
             cmd_count++;
             continue;
         }
-        while (input[start] && ft_isascii(input[start]) && !ft_isspace(input[start]))
-            start++;   
+        start += get_ascii_size(&input[start]);
         cmd_count++;
     }
     *og_count = cmd_count;
