@@ -1,6 +1,24 @@
 #include <minishell.h>
 #include "parse_internal.h"
 
+int    skip_quotes(char *input)
+{
+    char    quote;
+    int     i;
+    
+    i = 0;
+    quote = input[i];
+    i++;
+    while(input[i] != quote)
+    {
+        i++;
+    }
+    //printf("\n");
+
+    i++;
+    return(i);
+}
+
 int get_white_space_size(char *input)
 {
     int i;
@@ -109,7 +127,7 @@ char *get_cmd_argument(char *input, int *start, int end)
 }
 
 
-char   *get_file_name(char * input, int *i)
+char   *get_file_name(char *input, int *i)
 {
     char    *new;
     int     j;
@@ -120,7 +138,7 @@ char   *get_file_name(char * input, int *i)
     if (!new)
         return(NULL);
     ft_strlcpy(new, input, j + 1);
-    *i += j;
+        *i += j;
     return(new);
 
 }
@@ -146,6 +164,7 @@ int get_starting_pos(char *input)
     else
         i = 1;
     i += get_white_space_size(&input[i]);
+
     return (i);
 }
 
@@ -161,7 +180,7 @@ int open_file(char *file_name, int redir_type)
         fd = open(file_name, O_WRONLY | O_CREAT | O_APPEND | 0644);
     else
         printf("Should handle logic for Here document \n");
-    printf("%iFD\n" ,fd);
+    printf("%i redir_type %s file name\n" ,redir_type, file_name);
     return (fd);
 }
 
@@ -178,49 +197,23 @@ int execute_dup2(int fd, int redir_type)
         std_fd = dup2(fd, STDIN_FILENO);
     close(fd);
 }
-int    check_and_handle_redirections(t_minishell *mini, int start, int end)
+
+int handle_redirection(t_minishell *mini, char *input, int *start)
 {
-    char    *file_name;
-    int     fd;
-    int     i;
-    int     redir_type;
-
-
-    if (input [start] == '|')
-        start++;
-    while (input[start] && start <= end)
-    {
-        start += get_white_space_size(&input[start]);
-        if (input[start] == '>' || input[start] == '<')
-        {
-            start += skip_redirection(&input[start]);
-            continue;
-        }
-        if (input[start] == '|')
-        {
-            start++;
-            continue; 
-        }
-        if (input[start] == '"' || input[start] == '\'')
-        {
-            start += skip_quotes(&input[start]);
-            cmd_count++;
-            continue;
-        }
-        start += get_ascii_size(&input[start]);
-        cmd_count++;
-    }
-    return(cmd_count);
-
-    printf("Inside Handle [%s]\n", &(mini->input[start]));
-    i = get_starting_pos(&(mini->input[start]));
-    redir_type = get_redir_type(&(mini->input[start]));
-    file_name = get_file_name(&(mini->input[i]), &i);
-    printf("[%s]\n", file_name);
+    int i;
+    char *file_name;
+    int redir_type;
+    int fd; 
+    
+    printf("inside handle_redirections[%s]\n", input);
+    i = get_starting_pos(input);
+    redir_type = get_redir_type(input);
+    file_name = get_file_name(&(input[i]), &i);
+    printf("FILE NAME [%s]\n", file_name);
     if (!file_name)
         return(0);
     fd = execute_dup2(open_file(file_name, redir_type), redir_type);
-    if (!fd)
+    if (fd != 0)
         return (0);
     //fd = handle_opening_file(symbol, file_name);
     
@@ -232,27 +225,46 @@ int    check_and_handle_redirections(t_minishell *mini, int start, int end)
     }
     printf("\n");*/
 
-    //*start += i;
+    *start += i;
     return (fd); 
 }
 
-int    skip_quotes(char *input)
-{
-    char    quote;
-    int     i;
-    
-    i = 0;
-    quote = input[i];
-    i++;
-    while(input[i] != quote)
-    {
-        i++;
-    }
-    //printf("\n");
 
-    i++;
-    return(i);
+int    check_and_handle_redirections(t_minishell *mini, int start, int end)
+{
+    char *input;
+
+    input = mini->input;
+    if (input [start] == '|')
+        start++;
+    while (input[start] && start <= end)
+    {
+        while(input[start] && start <= end && (input[start] != '>' && input[start] != '<'))
+            start++;
+        //start += get_white_space_size(&input[start]);
+        if (input[start] == '>' || input[start] == '<')
+        {
+            if (!handle_redirection(mini, &input[start], &start))
+                return (0);
+        }
+        /*
+        if (input[start] == '|')
+        {
+            start++;
+            continue; 
+        }
+        if (input[start] == '"' || input[start] == '\'')
+        {
+            start += skip_quotes(&input[start]);
+            continue;
+        }
+        start += get_ascii_size(&input[start]);*/
+    }
+    return(1);
+
 }
+
+
 
 int get_cmd_count(char *input, int start, int end)
 
@@ -305,9 +317,7 @@ char **get_cmd_value(char *input, int start, int end)
     {
         new_cmd[i] = get_cmd_argument(input, &start, end);
         if (!new_cmd[i])
-        {
             return (NULL);
-        }
         i++;
     }
     new_cmd[i] = NULL;
@@ -334,7 +344,8 @@ int execute_input(t_minishell *mini)
             {
                 return (errno);
             }
-            check_and_handle_redirections(mini, j, i);
+            if (!check_and_handle_redirections(mini, j, i))
+                return (errno);
             //handle redirection//
             //handle pipe//
             // once we get cmds, we should check if they are built ins or not, and execute the functions, I'm gonna need to get the env lists for this function 
@@ -357,9 +368,12 @@ int main(int argc, char **argv, char **env)
     t_minishell mini;
 
     mini.input = argv[1];
-    mini.std_out = 0;
+    mini.fd_out = 0;
+    mini.fd_in = 0;
     mini.env_list = init_env(env);
-    execute_input(&mini);
+    mini.err = execute_input(&mini);
+    if (mini.err)
+        perror("MiniShell");
     printf("%s\n", argv[1]);
     //execute return 0 if no error and errno if error, it should be enough for minishell.er to get that value
     // built ins might want to return a different error
