@@ -1,4 +1,4 @@
-#include <parse_arguments.h>
+#include <minishell.h>
 #include "parse_internal.h"
 
 int get_white_space_size(char *input)
@@ -23,7 +23,7 @@ int get_ascii_size(char *input)
     return (i);
 }
 
-void    skip_redirection(char *input, int *start)
+int    skip_redirection(char *input)
 {
     int     i;
     char    symbol;
@@ -36,7 +36,7 @@ void    skip_redirection(char *input, int *start)
         i++;
     i += get_white_space_size(&(input[i]));
     i += get_ascii_size(&input[i]);
-    *start += i;   
+    return (i); 
 }
 
 
@@ -83,7 +83,7 @@ char *get_cmd_argument(char *input, int *start, int end)
         i+= get_white_space_size(&input[i]);
         if (input[i] == '>' || input[i] == '<')
         {
-            skip_redirection(&input[i], &i);
+            i += skip_redirection(&input[i]);
             continue;
         }
         if (input[i] == '|')
@@ -176,9 +176,10 @@ int open_file(char *file_name, int redir_type)
     else if (redir_type == OUTPUT_REDIRECT)
         fd = open(file_name, O_WRONLY | O_CREAT | O_TRUNC | 0644);
     else if (redir_type == APPEND_OUTPUT)
-        fd = open(file_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
+        fd = open(file_name, O_WRONLY | O_CREAT | O_APPEND | 0644);
     else
         printf("Should handle logic for Here document \n");
+    printf("%iFD\n" ,fd);
     return (fd);
 }
 
@@ -224,7 +225,7 @@ int    handle_redirection(char *input, int *start)
     return (fd); 
 }
 
-void    handle_quotes(char *input, int *start)
+int    skip_quotes(char *input)
 {
     char    quote;
     int     i;
@@ -232,7 +233,6 @@ void    handle_quotes(char *input, int *start)
     i = 0;
     quote = input[i];
     i++;
-    
     while(input[i] != quote)
     {
         i++;
@@ -240,27 +240,23 @@ void    handle_quotes(char *input, int *start)
     //printf("\n");
 
     i++;
-    *start += i;
+    return(i);
 }
 
-int get_cmd_count_and_handle_redirections(char *input, int start, int end, int *og_count)
+int get_cmd_count(char *input, int start, int end)
 
 {
     int cmd_count;
     
     cmd_count = 0;
     if (input [start] == '|')
-    {
-        //should start STDIN PIPE
         start++;
-    }
     while (input[start] && start <= end)
     {
         start += get_white_space_size(&input[start]);
         if (input[start] == '>' || input[start] == '<')
         {
-            if (!handle_redirection(&input[start], &start))
-                return (0);
+            start += skip_redirection(&input[start]);
             continue;
         }
         if (input[start] == '|')
@@ -270,27 +266,26 @@ int get_cmd_count_and_handle_redirections(char *input, int start, int end, int *
         }
         if (input[start] == '"' || input[start] == '\'')
         {
-            handle_quotes(&input[start], &start);
+            start += skip_quotes(&input[start]);
             cmd_count++;
             continue;
         }
         start += get_ascii_size(&input[start]);
         cmd_count++;
     }
-    *og_count = cmd_count;
-    return (1);
+    return(cmd_count);
 }
 
 
-char **get_cmd_value_and_prep(char *input, int start, int end)
+char **get_cmd_value(char *input, int start, int end)
 {
     char    **new_cmd;
     int     cmd_count;
     int     i;
 
 
-    if (!get_cmd_count_and_handle_redirections(input, start, end, &cmd_count))
-        return (NULL);
+
+    cmd_count = get_cmd_count(input, start, end);
     new_cmd = (char **)malloc(sizeof(char *) * cmd_count + 1);
     if (!new_cmd)
         return(NULL);
@@ -309,23 +304,27 @@ char **get_cmd_value_and_prep(char *input, int start, int end)
 }
 
 
-int execute_input(char *input)
+int execute_input(t_minishell *mini)
 {
-    char            **cmd;
+    char    **cmd;
+    char    *input;
     int     i;
     int     j;
 
     i = 0;
     j = 0;
+    input = mini->input;
     while (input[i])
     {
         if (input[i] == '|' || !input[i + 1])
         {
-            cmd = get_cmd_value_and_prep(input, j, i);
+            cmd = get_cmd_value(input, j, i);
             if (!cmd)
             {
                 return (errno);
             }
+            //handle redirection//
+            //handle pipe//
             // once we get cmds, we should check if they are built ins or not, and execute the functions, I'm gonna need to get the env lists for this function 
             j = i;
             printf("GOT CMDS: \n");
@@ -336,14 +335,20 @@ int execute_input(char *input)
         }
         i++;
     }
-    printf("%s\n", input);
+
     return (0); // should return 0 if no fail, so mini shell can save the last error,
 }
 
 
-int main(int argc, char **argv)
+int main(int argc, char **argv, char **env)
 {
-    execute_input(argv[1]);
+    t_minishell mini;
+
+    mini.input = argv[1];
+    mini.std_out = 0;
+    mini.env_list = init_env(env);
+    execute_input(&mini);
+    printf("%s\n", argv[1]);
     //execute return 0 if no error and errno if error, it should be enough for minishell.er to get that value
     // built ins might want to return a different error
 }
