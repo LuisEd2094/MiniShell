@@ -1,134 +1,9 @@
 #include <minishell.h>
 #include "parse_internal.h"
-#include <curses.h>
-#include <term.h>
+
 
 #include <unistd.h>
 
-int    skip_quotes(char *input)
-{
-    char    quote;
-    int     i;
-    
-    i = 0;
-    quote = input[i];
-    i++;
-    while(input[i] != quote)
-    {
-        i++;
-    }
-    //ft_printf("\n");
-
-    i++;
-    return(i);
-}
-
-int get_white_space_size(char *input)
-{
-    int i;
-
-    i = 0;
-    while(input[i] && ft_isspace(input[i]))
-        i++;
-    return (i);
-}
-
-int get_ascii_size(char *input)
-{
-    int i;
-
-    i = 0;
-    while (input[i] && ft_isascii(input[i]) && !ft_isspace(input[i]))
-    {
-        i++;
-    }
-    return (i);
-}
-
-int    skip_redirection(char *input)
-{
-    int     i;
-    char    symbol;
-
-    i = 0;
-    symbol = input[i];
-    if (input[i + 1] && input[i + 1] == symbol)
-        i += 2;
-    else
-        i++;
-    i += get_white_space_size(&(input[i]));
-    i += get_ascii_size(&input[i]);
-    return (i); 
-}
-
-
-char *get_quoted_arg(char *input, int *start)
-{
-    char quote;
-    char *new;
-    int i;
-    int j;
-
-    i = 0;
-    quote = input[i];
-    i++;
-    j = i;
-    while(input[i] != quote)
-    {
-        //ft_printf("%c", input[i]);
-        i++;
-    }
-    new = (char *)malloc(sizeof(char) * i - j + 1);
-    if (!new)
-        return(NULL);
-    ft_strlcpy(new, &input[j], i - j + 1);
-    i++;
-    *start = i;
-
-    //ft_printf(" [%i] size\n", i - 1 - j);
-
-    return (new);
-}
-
-char *get_cmd_argument(char *input, int *start, int end)
-{
-    char    *new;
-    int i;
-    int j;
-
-    i = *start;
-    j = *start;
-    if(input[i] == '|')
-        i++;
-    while (input[i] && i <= end)
-    {
-        i+= get_white_space_size(&input[i]);
-        if (input[i] == '>' || input[i] == '<')
-        {
-            i += skip_redirection(&input[i]);
-            continue;
-        }
-        if (input[i] == '|')
-        {
-            i++;
-            continue; 
-        }
-        if (input[i] == '"' || input[i] == '\'')
-        {
-            return(get_quoted_arg(&input[i], start));
-        }
-        j = i;
-        i += get_ascii_size(&input[i]);
-       // ft_printf(" [%i] size\n", i - j);
-        new = (char *)malloc(sizeof(char) * i - j + 1);
-        if (!new)
-            return(NULL);
-        ft_strlcpy(new, &input[j], i - j +1);
-        *start = i;
-        return (new);
-    }
-
-}
 
 
 char   *get_file_name(char *input, int *i)
@@ -168,7 +43,6 @@ int get_starting_pos(char *input)
     else
         i = 1;
     i += get_white_space_size(&input[i]);
-
     return (i);
 }
 
@@ -229,13 +103,10 @@ int handle_redirection(char *input, int *start, t_minishell *mini)
     i = get_starting_pos(input);
     redir_type = get_redir_type(input);
     file_name = get_file_name(&(input[i]), &i);
-    ft_printf("FILE NAME [%s]\n", file_name);
     if (!file_name)
         return(0);
-    //fd = open_file(file_name, redir_type);
     if (!execute_dup2(open_file(file_name, redir_type), redir_type, mini))
         return (0);
-    //close (fd);
     *start += i;
     return (1); 
 }
@@ -252,24 +123,11 @@ int    check_and_handle_redirections(t_minishell *mini, int start, int end)
     {
         while(input[start] && start <= end && (input[start] != '>' && input[start] != '<'))
             start++;
-        //start += get_white_space_size(&input[start]);
         if (input[start] == '>' || input[start] == '<')
         {
             if (!handle_redirection(&input[start], &start, mini))
                 return (0);
         }
-        /*
-        if (input[start] == '|')
-        {
-            start++;
-            continue; 
-        }
-        if (input[start] == '"' || input[start] == '\'')
-        {
-            start += skip_quotes(&input[start]);
-            continue;
-        }
-        start += get_ascii_size(&input[start]);*/
     }
     return(1);
 
@@ -277,68 +135,10 @@ int    check_and_handle_redirections(t_minishell *mini, int start, int end)
 
 
 
-int get_cmd_count(char *input, int start, int end)
-
-{
-    int cmd_count;
-    
-    cmd_count = 0;
-    if (input [start] == '|')
-        start++;
-    while (input[start] && start <= end)
-    {
-        start += get_white_space_size(&input[start]);
-        if (input[start] == '>' || input[start] == '<')
-        {
-            start += skip_redirection(&input[start]);
-            continue;
-        }
-        if (input[start] == '|')
-        {
-            start++;
-            continue; 
-        }
-        if (input[start] == '"' || input[start] == '\'')
-        {
-            start += skip_quotes(&input[start]);
-            cmd_count++;
-            continue;
-        }
-        start += get_ascii_size(&input[start]);
-        cmd_count++;
-    }
-    return(cmd_count);
-}
-
-
-char **get_cmd_value(char *input, int start, int end)
-{
-    char    **new_cmd;
-    int     cmd_count;
-    int     i;
-
-    cmd_count = get_cmd_count(input, start, end);
-    new_cmd = (char **)malloc(sizeof(char *) * cmd_count + 1);
-    if (!new_cmd)
-        return(NULL);
-    i = 0;
-    while(i < cmd_count)
-    {
-        new_cmd[i] = get_cmd_argument(input, &start, end);
-        if (!new_cmd[i])
-            return (NULL);
-        i++;
-    }
-    new_cmd[i] = NULL;
-    return (new_cmd);
-}
-
 int close_redirections(t_minishell *mini)
 {
     dup2(mini->og_in, STDIN_FILENO);
-    ft_printf("I AM INSIDE CLOSE\n");
     dup2(mini->og_out, STDOUT_FILENO);
-    ft_printf("I JUST DUP2 CLOSE\n");
 
     //if (mini->fd_out)
     //mini->fd_out = close(mini->fd_out);
@@ -352,51 +152,42 @@ int close_redirections(t_minishell *mini)
 int execute_input(t_minishell *mini)
 {
     char    **cmd;
-    char    *input;
     int     i;
     int     j;
 
     i = 0;
     j = 0;
-    input = mini->input;
-    while (input[i])
+    while (mini->input[i])
     {
-        if (input[i] == '|' || !input[i + 1])
+        if (mini->input[i] == '|' || !mini->input[i + 1])
         {
-            ft_printf("\tI am starting a new comand \n\n");
-            cmd = get_cmd_value(input, j, i);
+            printf("\t I am working on a new command\t\n");
+            cmd = get_cmd_value(mini->input, j, i);
             if (!cmd)
-            {
                 return (errno);
-            }
             if (!check_and_handle_redirections(mini, j, i))
                 return (errno);
-            //handle redirection//
             //handle pipe//
             // once we get cmds, we should check if they are built ins or not, and execute the functions, I'm gonna need to get the env lists for this function 
             j = i;
             
+            //check cmds to decide what to execute, if built ins or excev
+
             char buffer[1024];
             ssize_t bytesRead;
             if (cmd[0][0] == 'c')
             {
-                ft_printf("I AM PRINT\n");
-                while ((bytesRead = read(STDIN_FILENO, buffer, sizeof(buffer))) > 0) {
-                // Process the data read from the file
-                    write(STDOUT_FILENO, buffer, bytesRead); // Output the data to standard output
-                }
+                execve("/usr/bin/cat", cmd, NULL);
             }
             ft_printf("GOT CMDS: \n");
             for (int k = 0; cmd[k]; k++)
             {
                 ft_printf("[%s]\n", cmd[k]);
             }
-            ft_printf("Before close [%i]\n", mini->og_out);
             if (!close_redirections(mini))
             {
                 return (errno);
             }
-            ft_printf("After Close %i\n", mini->og_out);
         }
         i++;
     }
