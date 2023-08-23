@@ -347,13 +347,15 @@ int close_redirections(t_minishell *mini)
             return (0);
         mini->fd_in = 1;
     }
-    if (mini->fd_out == STDOUT_FILENO)
-    {
+    //if (mini->fd_out == mini->og_out)
+    //{
         dup2(mini->og_out, STDOUT_FILENO);
-        mini->fd_out = close(mini->fd_out);
-        if (mini->fd_out == -1)
-            return (0);
-    }
+        close(mini->og_out);
+        //if (mini->fd_out)
+            mini->fd_out = close(mini->fd_out);
+      //  if (mini->fd_out == -1)
+        //    return (0);
+    //}
     return (1);
 }
 
@@ -372,7 +374,7 @@ int execute_input(t_minishell *mini)
     {
         if (input[i] == '|' || !input[i + 1])
         {
-            printf("\tI am starting a new comand \n");
+            printf("\tI am starting a new comand \n\n");
             cmd = get_cmd_value(input, j, i);
             if (!cmd)
             {
@@ -387,7 +389,6 @@ int execute_input(t_minishell *mini)
             
             char buffer[1024];
             ssize_t bytesRead;
-            printf("mini->fd_in %i\n", mini->fd_in);
             if (mini->fd_in == 0)
             {
                 printf("I AM PRINT\n");
@@ -401,9 +402,12 @@ int execute_input(t_minishell *mini)
             {
                 printf("[%s]\n", cmd[k]);
             }
+            printf("Before close [%i]\n", mini->og_out);
             if (!close_redirections(mini))
+            {
                 return (errno);
-            printf("I've finished closing\n");
+            }
+            printf("After Close %i\n", mini->og_out);
         }
         i++;
     }
