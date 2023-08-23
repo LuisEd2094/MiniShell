@@ -16,7 +16,7 @@ void print_from_file(char *err_file)
             if (bites)
             {
                 buffer[bites] = '\0';
-                printf("%s", buffer);
+                ft_printf("%s", buffer);
             }
         }
     }
@@ -34,7 +34,7 @@ int print_error(char *err_description)
     original_stderr = dup(STDERR_FILENO);
     temp_stderr = open(err_file, O_WRONLY | O_CREAT, 0666);
     dup2(temp_stderr, STDERR_FILENO);
-    printf("MiniShell: ");
+    ft_printf("MiniShell: ");
     if (err_description)
         perror(err_description);
     else

@@ -14,7 +14,7 @@
 
 int	put_char(char c)
 {
-	if (write (1, &c, 1) != 1)
+	if (write (STDOUT_FILENO, &c, 1) != 1)
 		return (-1);
 	return (1);
 }
