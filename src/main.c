@@ -30,15 +30,15 @@ int main(int argc, char **argv, char **env)
         perror("minishell: test3.txt asdads");
         return 1;
     }*/
-    int output_fd = open("test.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644); // IF YOU NEED TO REAPLCE THE CONTENT LIKE IWTH ">"
+    /*
+    int input_file = open("test.txt", O_RDONLY); // IF YOU NEED TO REAPLCE THE CONTENT LIKE IWTH ">"
     //int output_fd = open("test1.txt", O_WRONLY | O_CREAT | O_APPEND, 0644); // IF YOU NEED TO APPEND THE CONTENT LIKE WITH ">>"
 
-    if (output_fd == -1) {
+    if (input_file == -1) {
         perror("open");
         return 1;
     }
-
-    dup2(output_fd, 1);/*
+    dup2(input_file, 1);/*
     output_fd = open("prueba.txt", O_WRONLY | O_CREAT | O_APPEND, 0644);
 
     if (output_fd == -1) {
@@ -52,13 +52,12 @@ int main(int argc, char **argv, char **env)
     // Duplicate the file descriptor onto standard mini.input (0)
     dup2(file_descriptor, 0);*/
 
-    char ** ls = (char **)malloc(sizeof(char *) * 4);
+    /*char ** ls = (char **)malloc(sizeof(char *) * 2);
     ls[0] = "cat";
-    ls[1] = "test.txt";
-    ls[2] = NULL;
-    ls[3] = NULL;
+    ls[1] = NULL;
 
-    execve("/usr/bin/cat", ls, env);
+
+    execve("/usr/bin/cat", ls, env);*/
 
 
 /*

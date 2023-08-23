@@ -175,7 +175,7 @@ int get_starting_pos(char *input)
 
 
 
-int open_file(char *file_name, int redir_type, t_minishell *mini)
+int open_file(char *file_name, int redir_type)
 {
     int fd;
 
@@ -232,7 +232,6 @@ int handle_redirection(t_minishell *mini, char *input, int *start)
     int redir_type;
     int fd; 
     
-    printf("inside handle_redirections[%s]\n", input);
     i = get_starting_pos(input);
     redir_type = get_redir_type(input);
     file_name = get_file_name(&(input[i]), &i);
