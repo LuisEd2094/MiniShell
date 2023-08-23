@@ -1,5 +1,9 @@
 #include <minishell.h>
 #include "parse_internal.h"
+#include <curses.h>
+#include <term.h>
+
+#include <unistd.h>
 
 int    skip_quotes(char *input)
 {
@@ -168,16 +172,10 @@ int get_starting_pos(char *input)
     return (i);
 }
 
-int print_error(char *err_description)
-{
-    if (err_description)
-        perror(err_description);
-    else
-        perror(NULL);
-    return (0);
-}
 
-int open_file(char *file_name, int redir_type)
+
+
+int open_file(char *file_name, int redir_type, t_minishell *mini)
 {
     int fd;
 
@@ -242,7 +240,7 @@ int handle_redirection(t_minishell *mini, char *input, int *start)
     if (!file_name)
         return(0);
     //fd = open_file(file_name, redir_type);
-    if (!execute_dup2(open_file(file_name, redir_type), redir_type, mini))
+    if (!execute_dup2(open_file(file_name, redir_type, mini), redir_type, mini))
         return (0);
     //close (fd);
     *start += i;
