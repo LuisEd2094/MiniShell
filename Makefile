@@ -5,7 +5,7 @@ SRCS_PATH           = src/
 OBJS_PATH           = obj/
 HISTORY_PATH		= history/
 BUILTINTS			= builtins/
-PARSE_PATH			= parse_arguments/
+EXECUTE_PATH		= execute_arguments/
 ERROR_PATH			= print_error/
 EXPORT_PATH			= $(BUILTINTS)export/
 ENV_PATH			= $(BUILTINTS)env/
@@ -17,10 +17,10 @@ BUILTINTS_PATH		= $(EXPORT_PATH) $(ENV_PATH) $(SHARED_PATH) $(UNSET_PATH)
 MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), \
 											$(HISTORY_PATH) \
 											$(BUILTINTS_PATH) \
-											$(PARSE_PATH) \
+											$(EXECUTE_PATH) \
 											$(ERROR_PATH) \
 											) 
-											 ##
+										
 #Add new path to objects
 
 DEPS_PATH	= deps/
@@ -60,7 +60,8 @@ UNSET		=	unset.c
 
 SHARED		=	builtins_shared.c ft_single_split.c
 
-PARSE		=	parse_arguments.c
+EXECUTE		=	execute_arguments.c get_cmd_value.c skips.c \
+				handle_redirections.c aux_handle_redirections.c
 
 ERROR		=	print_error.c
 
@@ -68,7 +69,7 @@ ERROR		=	print_error.c
 
 HISTORY_FILES		=$(addprefix $(HISTORY_PATH), $(HISTORY))
 
-PARSE_FILES			=$(addprefix $(PARSE_PATH), $(PARSE))
+EXECUTE_FILES			=$(addprefix $(EXECUTE_PATH), $(EXECUTE))
 
 ERROR_FILES			=$(addprefix $(ERROR_PATH), $(ERROR))
 
@@ -83,12 +84,12 @@ BUILTINTS_FILES		=$(EXPORT_FILES) $(ENV_FILES) $(SHARED_BINS_FILES) $(UNSET_FILE
 DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
 										$(HISTORY:.c=.d) \
 										$(BUILTINTS_FILES:.c=.d) \
-										$(PARSE_FILES:.c=.d)) \
+										$(EXECUTE_FILES:.c=.d)) \
 										$(ERROR_FILES:.c=.d)
 
 #add .d files to deps
 
-SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES) $(PARSE_FILES) $(ERROR_FILES)
+SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES) $(EXECUTE_FILES) $(ERROR_FILES)
 
 ## add to sercs
 

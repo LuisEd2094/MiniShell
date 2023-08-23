@@ -3,7 +3,6 @@
 # include <builtins.h>
 # include <history.h>
 # include <libft.h>
-# include <parse_arguments.h>
 
 typedef struct s_minishell
 {
@@ -19,6 +18,8 @@ typedef struct s_minishell
 }   t_minishell;
 
 int print_error(char *err_description);
+int execute_input(t_minishell *mini);
+
 
 
 #endif
