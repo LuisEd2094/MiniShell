@@ -184,11 +184,6 @@ int open_file(char *file_name, int redir_type)
         if (access(file_name, R_OK) != 0)
             return(print_error(file_name));
     }
-    else if ( redir_type == OUTPUT_REDIRECT ||  redir_type == APPEND_OUTPUT)
-    {
-        if (access(file_name, W_OK) != 0)
-            return(print_error(file_name));
-    }
     if (redir_type == INPUT_REDIRECT)
         fd = open(file_name, O_RDONLY);
     else if (redir_type == OUTPUT_REDIRECT)
@@ -197,6 +192,8 @@ int open_file(char *file_name, int redir_type)
         fd = open(file_name, O_RDWR | O_CREAT | O_APPEND, 0644);
     else
         printf("Should handle logic for Here document \n");
+    if (fd < 0)
+        return (print_error(file_name));
     return (fd);
 }
 
@@ -210,6 +207,7 @@ int execute_dup2(int fd, int redir_type, t_minishell *mini)
         return (0);
     if (redir_type == OUTPUT_REDIRECT || redir_type == APPEND_OUTPUT)
     {
+        mini->og_out = dup(STDOUT_FILENO);
         mini->fd_out = dup2(fd, STDOUT_FILENO);
         close(fd);
         if (mini->fd_out < 0)
@@ -217,6 +215,7 @@ int execute_dup2(int fd, int redir_type, t_minishell *mini)
     }
     else
     {    
+        mini->og_in = dup(STDIN_FILENO);
         mini->fd_in = dup2(fd, STDIN_FILENO);
         close(fd);
         if (mini->fd_in < 0)
@@ -225,7 +224,7 @@ int execute_dup2(int fd, int redir_type, t_minishell *mini)
     return (1);
 }
 
-int handle_redirection(t_minishell *mini, char *input, int *start)
+int handle_redirection(char *input, int *start, t_minishell *mini)
 {
     int i;
     char *file_name;
@@ -239,7 +238,7 @@ int handle_redirection(t_minishell *mini, char *input, int *start)
     if (!file_name)
         return(0);
     //fd = open_file(file_name, redir_type);
-    if (!execute_dup2(open_file(file_name, redir_type, mini), redir_type, mini))
+    if (!execute_dup2(open_file(file_name, redir_type), redir_type, mini))
         return (0);
     //close (fd);
     *start += i;
@@ -261,7 +260,7 @@ int    check_and_handle_redirections(t_minishell *mini, int start, int end)
         //start += get_white_space_size(&input[start]);
         if (input[start] == '>' || input[start] == '<')
         {
-            if (!handle_redirection(mini, &input[start], &start))
+            if (!handle_redirection(&input[start], &start, mini))
                 return (0);
         }
         /*
@@ -323,8 +322,6 @@ char **get_cmd_value(char *input, int start, int end)
     int     cmd_count;
     int     i;
 
-
-
     cmd_count = get_cmd_count(input, start, end);
     new_cmd = (char **)malloc(sizeof(char *) * cmd_count + 1);
     if (!new_cmd)
@@ -345,12 +342,14 @@ int close_redirections(t_minishell *mini)
 {
     if (mini->fd_in == STDIN_FILENO)
     {
+        dup2(mini->og_in, STDIN_FILENO);
         if (close(mini->fd_in) == -1)
             return (0);
         mini->fd_in = 1;
     }
     if (mini->fd_out == STDOUT_FILENO)
     {
+        dup2(mini->og_out, STDOUT_FILENO);
         mini->fd_out = close(mini->fd_out);
         if (mini->fd_out == -1)
             return (0);

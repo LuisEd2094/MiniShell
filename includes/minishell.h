@@ -11,7 +11,9 @@ typedef struct s_minishell
     t_list      *cmd_list;
     char        *input;
     int         fd_out;
+    int         og_out;
     int         fd_in;
+    int         og_in;
     int         err;
 
 }   t_minishell;
