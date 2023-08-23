@@ -17,7 +17,7 @@ int    skip_quotes(char *input)
     {
         i++;
     }
-    //printf("\n");
+    //ft_printf("\n");
 
     i++;
     return(i);
@@ -75,7 +75,7 @@ char *get_quoted_arg(char *input, int *start)
     j = i;
     while(input[i] != quote)
     {
-        //printf("%c", input[i]);
+        //ft_printf("%c", input[i]);
         i++;
     }
     new = (char *)malloc(sizeof(char) * i - j + 1);
@@ -85,7 +85,7 @@ char *get_quoted_arg(char *input, int *start)
     i++;
     *start = i;
 
-    //printf(" [%i] size\n", i - 1 - j);
+    //ft_printf(" [%i] size\n", i - 1 - j);
 
     return (new);
 }
@@ -119,7 +119,7 @@ char *get_cmd_argument(char *input, int *start, int end)
         }
         j = i;
         i += get_ascii_size(&input[i]);
-       // printf(" [%i] size\n", i - j);
+       // ft_printf(" [%i] size\n", i - j);
         new = (char *)malloc(sizeof(char) * i - j + 1);
         if (!new)
             return(NULL);
@@ -187,11 +187,11 @@ int open_file(char *file_name, int redir_type)
     if (redir_type == INPUT_REDIRECT)
         fd = open(file_name, O_RDONLY);
     else if (redir_type == OUTPUT_REDIRECT)
-        fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
+        fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC, 0666);
     else if (redir_type == APPEND_OUTPUT)
-        fd = open(file_name, O_RDWR | O_CREAT | O_APPEND, 0644);
+        fd = open(file_name, O_RDWR | O_CREAT | O_APPEND, 0666);
     else
-        printf("Should handle logic for Here document \n");
+        ft_printf("Should handle logic for Here document \n");
     if (fd < 0)
         return (print_error(file_name));
     return (fd);
@@ -202,23 +202,18 @@ int execute_dup2(int fd, int redir_type, t_minishell *mini)
 {
     int std_fd;
 
-
-    if (!fd)
-        return (0);
     if (redir_type == OUTPUT_REDIRECT || redir_type == APPEND_OUTPUT)
     {
-        mini->og_out = dup(STDOUT_FILENO);
-        mini->fd_out = dup2(fd, STDOUT_FILENO);
+        std_fd = dup2(fd, STDOUT_FILENO);
         close(fd);
-        if (mini->fd_out < 0)
+        if (std_fd < 0)
             return (0);
     }
     else
     {    
-        mini->og_in = dup(STDIN_FILENO);
-        mini->fd_in = dup2(fd, STDIN_FILENO);
+        std_fd = dup2(fd, STDIN_FILENO);
         close(fd);
-        if (mini->fd_in < 0)
+        if (std_fd < 0)
             return (0);
     }
     return (1);
@@ -234,7 +229,7 @@ int handle_redirection(char *input, int *start, t_minishell *mini)
     i = get_starting_pos(input);
     redir_type = get_redir_type(input);
     file_name = get_file_name(&(input[i]), &i);
-    printf("FILE NAME [%s]\n", file_name);
+    ft_printf("FILE NAME [%s]\n", file_name);
     if (!file_name)
         return(0);
     //fd = open_file(file_name, redir_type);
@@ -340,19 +335,13 @@ char **get_cmd_value(char *input, int start, int end)
 
 int close_redirections(t_minishell *mini)
 {
-    if (mini->fd_in == STDIN_FILENO)
-    {
-        dup2(mini->og_in, STDIN_FILENO);
-        if (close(mini->fd_in) == -1)
-            return (0);
-        mini->fd_in = 1;
-    }
-    //if (mini->fd_out == mini->og_out)
-    //{
-        dup2(mini->og_out, STDOUT_FILENO);
-        close(mini->og_out);
-        //if (mini->fd_out)
-            mini->fd_out = close(mini->fd_out);
+    dup2(mini->og_in, STDIN_FILENO);
+    ft_printf("I AM INSIDE CLOSE\n");
+    dup2(mini->og_out, STDOUT_FILENO);
+    ft_printf("I JUST DUP2 CLOSE\n");
+
+    //if (mini->fd_out)
+    //mini->fd_out = close(mini->fd_out);
       //  if (mini->fd_out == -1)
         //    return (0);
     //}
@@ -374,7 +363,7 @@ int execute_input(t_minishell *mini)
     {
         if (input[i] == '|' || !input[i + 1])
         {
-            printf("\tI am starting a new comand \n\n");
+            ft_printf("\tI am starting a new comand \n\n");
             cmd = get_cmd_value(input, j, i);
             if (!cmd)
             {
@@ -389,25 +378,25 @@ int execute_input(t_minishell *mini)
             
             char buffer[1024];
             ssize_t bytesRead;
-            if (mini->fd_in == 0)
+            if (cmd[0][0] == 'c')
             {
-                printf("I AM PRINT\n");
+                ft_printf("I AM PRINT\n");
                 while ((bytesRead = read(STDIN_FILENO, buffer, sizeof(buffer))) > 0) {
                 // Process the data read from the file
                     write(STDOUT_FILENO, buffer, bytesRead); // Output the data to standard output
                 }
             }
-            printf("GOT CMDS: \n");
+            ft_printf("GOT CMDS: \n");
             for (int k = 0; cmd[k]; k++)
             {
-                printf("[%s]\n", cmd[k]);
+                ft_printf("[%s]\n", cmd[k]);
             }
-            printf("Before close [%i]\n", mini->og_out);
+            ft_printf("Before close [%i]\n", mini->og_out);
             if (!close_redirections(mini))
             {
                 return (errno);
             }
-            printf("After Close %i\n", mini->og_out);
+            ft_printf("After Close %i\n", mini->og_out);
         }
         i++;
     }
@@ -423,9 +412,12 @@ int main(int argc, char **argv, char **env)
     mini.input = argv[1];
     mini.fd_out = 0;
     mini.fd_in = 1;
+    mini.og_out = dup(STDOUT_FILENO);
     mini.env_list = init_env(env);
     mini.err = execute_input(&mini);
-    printf("%s\n", argv[1]);
+    ft_printf("%s\n", argv[1]);
+    close(mini.og_in);
+    close(mini.og_out);
     //execute return 0 if no error and errno if error, it should be enough for minishell.er to get that value
     // built ins might want to return a different error
 }
