@@ -24,12 +24,16 @@ char *get_env_str(char *input, t_list *env_list)
     env_node = get_env_node(env_list, env_name);
     free(env_name);
     if (!env_node)
-        return ("\0");
-    env_name_len  = ft_strlen(((t_env *)env_node->content)->value);
+        env_name_len = 0;
+    else
+        env_name_len  = ft_strlen(((t_env *)env_node->content)->value);
     env_name = (char *)malloc(sizeof(char) * env_name_len + 1);
      if (!env_name)
         exit(1);
-    ft_strlcpy(env_name, ((t_env *)env_node->content)->value, \
+    if (!env_node)
+        env_name[0] = '\0';
+    else
+        ft_strlcpy(env_name, ((t_env *)env_node->content)->value, \
     env_name_len + 1);
     return(env_name);
 }
