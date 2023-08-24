@@ -13,7 +13,7 @@ int execute_input(t_minishell *mini)
         if (mini->input[i] == '|' || !mini->input[i + 1])
         {
             printf("\t I am working on a new command\t\n");
-            cmd = get_cmd_value(mini->input, j, i);
+            cmd = get_cmd_value(mini, j, i);
             if (!cmd)
                 return (errno);
             if (!check_and_handle_redirections(mini, j, i))
@@ -26,9 +26,9 @@ int execute_input(t_minishell *mini)
 
             char buffer[1024];
             ssize_t bytesRead;
-            if (cmd[0][0] == 'c')
+            if (cmd[0]  && cmd[0][0] == 'k')
             {
-                execve("/usr/bin/cat", cmd, NULL);
+                execve("/usr/bin/ls", cmd, NULL);
             }
             ft_printf("GOT CMDS: \n");
             for (int k = 0; cmd[k]; k++)
@@ -45,7 +45,6 @@ int execute_input(t_minishell *mini)
 
     return (0); // should return 0 if no fail, so mini shell can save the last error,
 }
-/*
 
 int main(int argc, char **argv, char **env)
 {
@@ -62,4 +61,4 @@ int main(int argc, char **argv, char **env)
     close(mini.og_out);
     //execute return 0 if no error and errno if error, it should be enough for minishell.er to get that value
     // built ins might want to return a different error
-}*/
+}

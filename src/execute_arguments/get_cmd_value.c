@@ -22,45 +22,48 @@ char *get_quoted_arg(char *input, int *start)
     return (new);
 }
 
-char *get_new_str(int i, int j, char *input, int *start)
+char *get_new_str(int i, int j, t_minishell *mini, int *start)
 {
     char *new;
 
-    i += get_ascii_size(&input[i]);
+    i += get_ascii_size(&mini->input[i]);
+    *start = i;
+    if (mini->input[j] == '$')
+        return (get_env_str(&mini->input[j + 1], mini->env_list));
     new = (char *)malloc(sizeof(char) * i - j + 1);
     if (!new)
         return(NULL);
-    ft_strlcpy(new, &input[j], i - j +1);
-    *start = i;
+    ft_strlcpy(new, &mini->input[j], i - j + 1);
+    printf("[%s] cmd \n", new);
     return (new);
 }
 
-char *get_cmd_argument(char *input, int *start, int end)
+char *get_cmd_argument(t_minishell *mini, int *start, int end)
 {
     int     i;
     int     j;
 
     i = *start;
-    add_size_of_pipe(&input[i], &i);
-    while (input[i] && i <= end)
+    add_size_of_pipe(&mini->input[i], &i);
+    while (mini->input[i] && i <= end)
     {
-        i+= get_white_space_size(&input[i]);
-        if (input[i] == '>' || input[i] == '<')
+        i+= get_white_space_size(&mini->input[i]);
+        if (mini->input[i] == '>' || mini->input[i] == '<')
         {
-            i += get_file_redirection_size(&input[i]);
+            i += get_file_redirection_size(&mini->input[i]);
             continue;
         }
-        if (input[i] == '|')
+        if (mini->input[i] == '|')
         {
             i++;
             continue; 
         }
         break;
     }
-    if (input[i] == '"' || input[i] == '\'')
-        return(get_quoted_arg(&input[i], start));
+    if (mini->input[i] == '"' || mini->input[i] == '\'')
+        return(get_quoted_arg(&mini->input[i], start));
     j = i;
-    return (get_new_str(i, j, input, start));
+    return (get_new_str(i, j, mini, start));
 }
 
 int get_cmd_count(char *input, int start, int end)
@@ -91,24 +94,30 @@ int get_cmd_count(char *input, int start, int end)
     return(cmd_count);
 }
 
-char **get_cmd_value(char *input, int start, int end)
+char **get_cmd_value(t_minishell *mini, int start, int end)
 {
     char    **new_cmd;
     int     cmd_count;
     int     i;
+    int     j;
 
-    cmd_count = get_cmd_count(input, start, end);
+    cmd_count = get_cmd_count(mini->input, start, end);
     new_cmd = (char **)malloc(sizeof(char *) * cmd_count + 1);
     if (!new_cmd)
         return(NULL);
     i = 0;
+    j = 0;
     while(i < cmd_count)
     {
-        new_cmd[i] = get_cmd_argument(input, &start, end);
-        if (!new_cmd[i])
+        new_cmd[j] = get_cmd_argument(mini, &start, end);
+        if (!new_cmd[j])
             return (NULL);
         i++;
+        if (!new_cmd[j][0])
+            continue;
+        j++;
     }
-    new_cmd[i] = NULL;
+    while (j <= cmd_count)
+        new_cmd[j++] = NULL;
     return (new_cmd);
 }

@@ -13,7 +13,7 @@ typedef enum s_redir_type
 } t_redir_type;
 
 
-char    **get_cmd_value(char *input, int start, int end);
+char    **get_cmd_value(t_minishell *mini, int start, int end);
 int     get_quotes_size(char *input);
 int     get_white_space_size(char *input);
 int     get_ascii_size(char *input);

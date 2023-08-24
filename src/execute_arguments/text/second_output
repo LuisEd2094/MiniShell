@@ -31,3 +31,102 @@ GOT CMDS:
 GOT CMDS: 
 [grep]
 [quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep "quotes testss" >> text/second_output]
+[estss" >> text/second_output | cat < text/inputfile]
+GOT CMDS: 
+[grep "quotes testss" >> text/second_output]
+[estss" >> text/second_output | cat < text/inputfile]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[la]
+GOT CMDS: 
+[grep]
+[la]
+GOT CMDS: 
+[grep]
+[la]
+GOT CMDS: 
+[grep]
+[rep]
+GOT CMDS: 
+[grep]
+[rep]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
+GOT CMDS: 
+[grep]
+[quotes testss]
