@@ -56,7 +56,7 @@ int main(int argc, char **argv, char **env)
     mini.og_out = dup(STDOUT_FILENO);
     mini.env_list = init_env(env);
     mini.err = execute_input(&mini);
-    ft_printf("%s\n", argv[1]);
+    ft_printf("og input %s\n", argv[1]);
     close(mini.og_in);
     close(mini.og_out);
     //execute return 0 if no error and errno if error, it should be enough for minishell.er to get that value

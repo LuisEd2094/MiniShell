@@ -9,6 +9,8 @@ char *get_quoted_arg(char *input, int *start)
 
     i = 0;
     quote = input[i];
+    if (quote == '\"')
+        printf("I have to handle double quote\n");
     i++;
     j = i;
     while(input[i] != quote)
@@ -28,13 +30,12 @@ char *get_new_str(int i, int j, t_minishell *mini, int *start)
 
     i += get_ascii_size(&mini->input[i]);
     *start = i;
-    if (mini->input[j] == '$')
+    if (mini->input[j] == '$' && ft_isalnum(mini->input[j + 1]))
         return (get_env_str(&mini->input[j + 1], mini->env_list));
     new = (char *)malloc(sizeof(char) * i - j + 1);
     if (!new)
         return(NULL);
     ft_strlcpy(new, &mini->input[j], i - j + 1);
-    printf("[%s] cmd \n", new);
     return (new);
 }
 

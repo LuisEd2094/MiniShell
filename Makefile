@@ -58,7 +58,7 @@ ENV			= 	env.c
 
 UNSET		=	unset.c
 
-SHARED		=	builtins_shared.c ft_single_split.c
+SHARED		=	builtins_shared.c ft_single_split.c get_env_value_str.c
 
 EXECUTE		=	execute_arguments.c get_cmd_value.c skips.c \
 				handle_redirections.c aux_handle_redirections.c
