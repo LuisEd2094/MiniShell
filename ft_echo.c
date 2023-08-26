@@ -16,10 +16,9 @@ int	ft_echo(char **arguments)
 	}
 	while (arguments[i] != NULL ) 
 	{
-		ft_printf("%s", arguments[i]);
-		if (arguments[i + 1] != NULL) 
+		ft_printf("%s", arguments[i++]);
+		if (arguments[i] != NULL) 
 			ft_printf(" ");
-		i++;
 	}
 	if (!flag_n)
 		ft_printf("\n");
