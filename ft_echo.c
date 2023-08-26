@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include "ruta"
 
 int	ft_echo(char **arguments)
 {
