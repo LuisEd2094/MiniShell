@@ -1,4 +1,4 @@
-# so_long - lsoto-do && gmacias-
+# MiniShell - lsoto-do && gmacias-
 El objetivo de este proyecto es que crees un shell sencillo. Sí, tu propio pequeño bash. Aprenderás un montón sobre procesos y file descriptors.
 
 ### Indice
