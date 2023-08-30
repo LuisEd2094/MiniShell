@@ -1,4 +1,4 @@
-#include "ruta"
+#include "./MS_functions.h"
 
 int	ft_echo(char **arguments)
 {
