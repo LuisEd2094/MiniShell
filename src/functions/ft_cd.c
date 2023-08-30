@@ -1,4 +1,4 @@
-#include "algo"
+#include "./MS_functions.h"
 
 int	check_home(char *home_directory)
 {	
