@@ -1,4 +1,4 @@
-#include "direccion"
+#include "./MS_functions.h"
 
 int	ft_pwd(char **arguments)
 {
