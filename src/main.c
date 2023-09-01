@@ -20,14 +20,7 @@ int main(int argc, char **argv, char **env)
     char        *input;
     t_minishell mini;
     
-    int         i = 0;
-
-    char ** ls = (char **)malloc(sizeof(char *) * 2);
-    ls[0] = "ls";
-    ls[1] = NULL;
     mini.env_list = init_env(env);
-    execve("/usr/bin/ls", ls, env);
-
     // Read previous history from a file
     work_history(INIT, NULL);
     while (1) {
