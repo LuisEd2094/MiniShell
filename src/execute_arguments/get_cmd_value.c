@@ -1,29 +1,5 @@
 #include "execute_internal.h"
 
-char *get_quoted_arg(char *input, int *start)
-{
-    char quote;
-    char *new;
-    int i;
-    int j;
-
-    i = 0;
-    quote = input[i];
-    if (quote == '\"')
-        printf("I have to handle double quote\n");
-    i++;
-    j = i;
-    while(input[i] != quote)
-        i++;
-    new = (char *)malloc(sizeof(char) * i - j + 1);
-    if (!new)
-        return(NULL);
-    ft_strlcpy(new, &input[j], i - j + 1);
-    i++;
-    *start = i;
-    return (new);
-}
-
 char *get_new_str(int i, int j, t_minishell *mini, int *start)
 {
     char *new;
@@ -62,7 +38,7 @@ char *get_cmd_argument(t_minishell *mini, int *start, int end)
         break;
     }
     if (mini->input[i] == '"' || mini->input[i] == '\'')
-        return(get_quoted_arg(&mini->input[i], start));
+        return(get_quoted_arg(&mini->input[i], start, mini));
     j = i;
     return (get_new_str(i, j, mini, start));
 }

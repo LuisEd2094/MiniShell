@@ -12,6 +12,17 @@ typedef enum s_redir_type
 
 } t_redir_type;
 
+typedef struct s_quote
+{
+    char    *new;
+    char    *env;
+    char    quote;
+    int     size_new;
+    int     size_temp;
+    int     i;
+    int     j;
+}t_quote;
+
 
 char    **get_cmd_value(t_minishell *mini, int start, int end);
 int     get_quotes_size(char *input);
@@ -24,6 +35,7 @@ int     check_and_handle_redirections(t_minishell *mini, int start, int end);
 int     get_starting_pos(char *input);
 int     get_redir_type(char *input);
 char    *get_file_name(char *input, int *i);
+char    *get_quoted_arg(char *input, int *start, t_minishell *mini);
 
 
 
