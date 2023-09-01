@@ -3,6 +3,7 @@
 # include <builtins.h>
 # include <history.h>
 # include <libft.h>
+# include <execve.h>
 
 typedef struct s_minishell
 {
