@@ -32,7 +32,6 @@ int main(int argc, char **argv, char **env)
             char *second_input = readline(">> ");
             printf ("first,<%s> second <%s>\n", mini.input, second_input);
         }
-
         if (!mini.input) {
             printf("\n");
         }
@@ -41,9 +40,9 @@ int main(int argc, char **argv, char **env)
             free(mini.input);
             break;
         }
-        if (input[0] != '\0') 
+        if (mini.input[0] != '\0') 
         {
-            work_history(UPDATE, input);
+            work_history(UPDATE, mini.input);
             // Using tab here to split input using spaces
             // here we should filter the input, we should make sure that each value inside tab corresponds to a part of the command to be executed
             // so if we run something like ls -la | grep Make
@@ -52,7 +51,7 @@ int main(int argc, char **argv, char **env)
             // should give us ls, >>, text.txt, so we can later work on each part 
             // like wise, if one of the params is calling to check an env, such as $PATH, we we filter it we should store the expanded value intabs, 
             // so echo $PATH should become echo, (what ever value path has)
-            char **tab = ft_split(input, ' '); 
+            char **tab = ft_split(mini.input, ' '); 
             if (ft_strcmp(tab[0], "env") == 0)
                 print_all_env(mini.env_list);
             else if (ft_strcmp(tab[0], "export") == 0)

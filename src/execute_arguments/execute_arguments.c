@@ -46,6 +46,7 @@ int execute_input(t_minishell *mini)
     return (0); // should return 0 if no fail, so mini shell can save the last error,
 }
 
+/*
 int main(int argc, char **argv, char **env)
 {
     t_minishell mini;
@@ -61,4 +62,4 @@ int main(int argc, char **argv, char **env)
     close(mini.og_out);
     //execute return 0 if no error and errno if error, it should be enough for minishell.er to get that value
     // built ins might want to return a different error
-}
+}*/

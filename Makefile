@@ -3,14 +3,10 @@ CFLAGS      = -g ##-Wall -Wextra  -Werror -g
 RM          = rm -f
 SRCS_PATH           = src/
 OBJS_PATH           = obj/
-<<<<<<< HEAD
-HISTORY_PATH		= history/
-=======
 HISTORY_PATH			= history/
 EXECVE_PATH			= execve/
 
 #BUILT INS variables
->>>>>>> lsoto-do
 BUILTINTS			= builtins/
 EXECUTE_PATH		= execute_arguments/
 ERROR_PATH			= print_error/
@@ -21,17 +17,14 @@ UNSET_PATH			= $(BUILTINTS)unset/
 BUILTINTS_PATH		= $(EXPORT_PATH) $(ENV_PATH) $(SHARED_PATH) $(UNSET_PATH)
 
 ## Add new path, just need name/
-<<<<<<< HEAD
 MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), \
 											$(HISTORY_PATH) \
 											$(BUILTINTS_PATH) \
 											$(EXECUTE_PATH) \
 											$(ERROR_PATH) \
+											$(EXECVE_PATH)\
 											) 
 										
-=======
-MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), $(HISTORY_PATH) $(BUILTINTS_PATH) $(EXECVE_PATH)) ##
->>>>>>> lsoto-do
 #Add new path to objects
 
 DEPS_PATH	= deps/
@@ -69,13 +62,16 @@ ENV			= 	env.c
 
 UNSET		=	unset.c
 
-<<<<<<< HEAD
 SHARED		=	builtins_shared.c ft_single_split.c get_env_value_str.c
 
 EXECUTE		=	execute_arguments.c get_cmd_value.c skips.c \
-				handle_redirections.c aux_handle_redirections.c
+				handle_redirections.c aux_handle_redirections.c \
+				get_quoted_arg.c
 
 ERROR		=	print_error.c
+
+EXECVE		=	execve.c
+
 
 ## Add names of your files
 
@@ -85,15 +81,6 @@ EXECUTE_FILES			=$(addprefix $(EXECUTE_PATH), $(EXECUTE))
 
 ERROR_FILES			=$(addprefix $(ERROR_PATH), $(ERROR))
 
-=======
-EXECVE		=	execve.c
-
-SHARED		=	builtins_shared.c ft_single_split.c
-## Add names of your files
-
-HISTORY_FILES		=$(addprefix $(HISTORY_PATH), $(HISTORY))
-#BUILT INS FILES
->>>>>>> lsoto-do
 EXPORT_FILES		=$(addprefix $(EXPORT_PATH), $(EXPORT))
 ENV_FILES			=$(addprefix $(ENV_PATH), $(ENV))
 SHARED_BINS_FILES	=$(addprefix $(SHARED_PATH), $(SHARED))
@@ -104,24 +91,17 @@ BUILTINTS_FILES		=$(EXPORT_FILES) $(ENV_FILES) $(SHARED_BINS_FILES) $(UNSET_FILE
 EXECVE_FILES		=$(addprefix $(EXECVE_PATH), $(EXECVE))
 ## append the path to your files
 
-<<<<<<< HEAD
 DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
 										$(HISTORY:.c=.d) \
 										$(BUILTINTS_FILES:.c=.d) \
 										$(EXECUTE_FILES:.c=.d)) \
-										$(ERROR_FILES:.c=.d)
+										$(ERROR_FILES:.c=.d) \
+										$(EXECVE_FILES:.c=.d)
 
 #add .d files to deps
 
-SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES) $(EXECUTE_FILES) $(ERROR_FILES)
-=======
-DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) $(HISTORY:.c=.d) \
-				$(BUILTINTS_FILES:.c=.d) $(EXECVE_FILES:.c=.d))
-
-#add .d files to deps
-
-SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES) $(EXECVE_FILES)
->>>>>>> lsoto-do
+SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES) $(EXECUTE_FILES) $(ERROR_FILES) \
+				$(EXECVE_FILES)
 
 ## add to sercs
 
