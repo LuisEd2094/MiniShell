@@ -78,6 +78,7 @@ char **get_cmd_value(t_minishell *mini, int start, int end)
     int     i;
     int     j;
 
+    return (NULL);
     cmd_count = get_cmd_count(mini->input, start, end);
     new_cmd = (char **)malloc(sizeof(char *) * cmd_count + 1);
     if (!new_cmd)
@@ -97,4 +98,10 @@ char **get_cmd_value(t_minishell *mini, int start, int end)
     while (j <= cmd_count)
         new_cmd[j++] = NULL;
     return (new_cmd);
+}
+
+
+char **i_just_want_to_see(t_minishell *mini)
+{
+    return (NULL);
 }

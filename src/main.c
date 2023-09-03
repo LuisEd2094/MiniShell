@@ -14,7 +14,7 @@ void free_tab(char **tab)
     }
     free(tab);
 }
-
+/*
 int main(int argc, char **argv, char **env)
 {
     char        **tab;
@@ -75,4 +75,4 @@ int main(int argc, char **argv, char **env)
 
 
     return (0);
-}
+}*/

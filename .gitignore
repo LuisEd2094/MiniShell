@@ -2,7 +2,6 @@
 *.o
 minishell
 *.txt
-test*
 *.exe
 libft.a
 a.out

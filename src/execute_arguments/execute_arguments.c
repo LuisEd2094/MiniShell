@@ -35,10 +35,6 @@ int execute_input(t_minishell *mini)
             {
                 ft_printf("[%s]\n", cmd[k]);
             }
-            if (!close_redirections(mini))
-            {
-                return (errno);
-            }
         }
         i++;
     }
