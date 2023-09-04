@@ -99,9 +99,3 @@ char **get_cmd_value(t_minishell *mini, int start, int end)
         new_cmd[j++] = NULL;
     return (new_cmd);
 }
-
-
-char **i_just_want_to_see(t_minishell *mini)
-{
-    return (NULL);
-}

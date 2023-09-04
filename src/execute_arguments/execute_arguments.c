@@ -2,12 +2,14 @@
 
 int execute_input(t_minishell *mini)
 {
-    char    **cmd;
+    char    ***cmd;
     int     i;
     int     j;
 
     i = 0;
     j = 0;
+    cmd = (char ***)malloc(sizeof(char **) * get_cmds_number(mini->input));
+    return (0);
     while (mini->input[i])
     {
         if (mini->input[i] == '|' || !mini->input[i + 1])

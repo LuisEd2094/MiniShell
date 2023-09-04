@@ -1,6 +1,8 @@
 #include <unity.h>
 #include <unity_internals.h>
 
+int get_cmds_number(char *input);
+
 void setUp(void) {
     // set stuff up here
 }
@@ -9,29 +11,20 @@ void tearDown(void) {
     // clean stuff up here
 }
 
-char *i_just_want_to_see(void)
+void get_cmds_number_test(void)
 {
-    return (NULL);
+    TEST_ASSERT(2 == get_cmds_number("ls -la | cat"));
+    TEST_ASSERT(2 == get_cmds_number("cat | grep       "));
+    TEST_ASSERT(3 == get_cmds_number("ls |    cat    | adasd"));
+    TEST_ASSERT(4 == get_cmds_number("ls |    grep    | crissssss |  asdada"));
+    TEST_ASSERT(1 == get_cmds_number("ls"));
+    TEST_ASSERT(1 == get_cmds_number("  l   s       "));
+
 }
 
-void my_test(void)
-{
-    TEST_ASSERT(NULL == i_just_want_to_see());
-    TEST_ASSERT("HELLO" == i_just_want_to_see());
-
-
-}
-
-void another_test(void)
-{
-    TEST_ASSERT("ADIOS" == i_just_want_to_see());
-
-}
 int main(void)
 {
     UNITY_BEGIN();
-    RUN_TEST(my_test);
-    RUN_TEST(another_test);
-
+    RUN_TEST(get_cmds_number_test);
     return UNITY_END();
 }

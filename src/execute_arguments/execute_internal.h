@@ -41,5 +41,10 @@ char    *get_quoted_arg(char *input, int *start, t_minishell *mini);
 
 char **i_just_want_to_see(t_minishell *mini);
 
+/// new functions ///
+
+
+int get_cmds_number(char *input);
+
 
 #endif
