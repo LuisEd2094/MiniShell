@@ -42,7 +42,8 @@ char **i_just_want_to_see(t_minishell *mini);
 
 /// new functions ///
 
-char ***get_cmds_value(char * input);
+char ***get_cmds_value(char * input, t_list *env);
+char **get_cmd_argument(char * cmd, t_list *env);
 int get_cmds_number(char *input);
 int get_argument_count(char *cmd);
 

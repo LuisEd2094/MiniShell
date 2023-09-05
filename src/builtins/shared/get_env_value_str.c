@@ -1,39 +1,27 @@
 #include <minishell.h>
 
-static int get_ascii_size(char *input)
-{
-    int i;
-
-    i = 0;
-    while (input[i] && ft_isascii(input[i]) && !ft_isspace(input[i]))
-        i++;
-    return (i);
-}
-
 char *get_env_str(char *input, t_list *env_list)
 {
-    t_list   *env_node;
-    char    *env_name;
-    int     env_name_len;
+    t_list  *env_node;
+    char    *env_value;
+    char    *temp;
 
-    env_name_len = get_ascii_size(input);
-    env_name = (char *)malloc(sizeof(char) * env_name_len + 1);
-    if (!env_name)
-        exit(1);
-    ft_strlcpy(env_name, input, env_name_len + 1);
-    env_node = get_env_node(env_list, env_name);
-    free(env_name);
+    env_node = get_env_node(env_list, input);
     if (!env_node)
-        env_name_len = 0;
+        env_value = (char *)malloc(sizeof(char) * 1);
     else
-        env_name_len  = ft_strlen(((t_env *)env_node->content)->value);
-    env_name = (char *)malloc(sizeof(char) * env_name_len + 1);
-     if (!env_name)
-        exit(1);
+    {
+        temp = ((t_env *)env_node->content)->value;
+        env_value = (char *)malloc(sizeof(char) * ft_strlen(temp) + 1);
+    }
+    if (!env_value)
+        return (NULL);
     if (!env_node)
-        env_name[0] = '\0';
+        env_value[0] = '\0';
     else
-        ft_strlcpy(env_name, ((t_env *)env_node->content)->value, \
-    env_name_len + 1);
-    return(env_name);
+        ft_strlcpy(env_value, \
+                temp, \
+                ft_strlen(temp) + 1);
+    return (env_value);
+
 }

@@ -1,20 +1,4 @@
 #include "execute_internal.h"
-/*
-char *get_new_str(int i, int j, t_minishell *mini, int *start)
-{
-    char *new;
-
-    i += get_arg_size_skip_redirections(&mini->input[i]);
-    *start = i;
-    if (mini->input[j] == '$' && ft_isalnum(mini->input[j + 1]))
-        return (get_env_str(&mini->input[j + 1], mini->env_list));
-    new = (char *)malloc(sizeof(char) * i - j + 1);
-    if (!new)
-        return(NULL);
-    ft_strlcpy(new, &mini->input[j], i - j + 1);
-    return (new);
-}
-*/
 
 int get_argument_count(char *cmd)
 {
@@ -102,15 +86,46 @@ char **ft_argument_split(char *cmd)
     
 }
 
+/*
+char *check_env_variables(char *cmd_argument, t_list *env)
+{
+    if (cmd_argument[0] == '$')
+    {
+        cmd_argument = get_env_str;
+    }
+}
+*/
 
+char *replace_env(char *cmd, t_list *env)
+{
+    char *temp;
 
-char **get_cmd_argument(char *cmd)
+    temp = get_env_str(&cmd[1], env);
+    if (!temp)
+        return (NULL);
+    free(cmd);
+    return (temp);
+}
+
+char **get_cmd_argument(char *cmd, t_list *env)
 {
     char    **cmd_arguments;
+    int     i;
 
     cmd_arguments = ft_argument_split(cmd);
     if (!cmd_arguments)
         return (NULL);
+    i = 0;
+    while (cmd_arguments[i])
+    {
+        if (cmd_arguments[i][0] == '$')
+        {
+            cmd_arguments[i] = replace_env(cmd_arguments[i], env);
+            if (!cmd_arguments[i])
+                exit(1);
+        }
+        i++;
+    }
     return (cmd_arguments);
 }
 
@@ -124,7 +139,7 @@ int get_cmd_count(char **cmds)
     return (cmd_count);
 }
 
-char ***get_cmds_value(char * input)
+char ***get_cmds_value(char * input, t_list *env)
 {
     char    ***triple_cmds;
     char    **double_cmds;
@@ -141,7 +156,7 @@ char ***get_cmds_value(char * input)
     i = 0;
     while (i < cmd_count)
     {
-        triple_cmds[i] = get_cmd_argument(double_cmds[i]);
+        triple_cmds[i] = get_cmd_argument(double_cmds[i], env);
         if (!triple_cmds[i])
             exit (1); //need to handle frees;
         i++;
