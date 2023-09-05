@@ -1,5 +1,5 @@
 #include "execute_internal.h"
-
+/*
 char *get_new_str(int i, int j, t_minishell *mini, int *start)
 {
     char *new;
@@ -14,88 +14,129 @@ char *get_new_str(int i, int j, t_minishell *mini, int *start)
     ft_strlcpy(new, &mini->input[j], i - j + 1);
     return (new);
 }
+*/
 
-char *get_cmd_argument(t_minishell *mini, int *start, int end)
+int get_argument_count(char *cmd)
 {
-    int     i;
-    int     j;
+    int i;
+    int arg_count;
 
-    i = *start;
-    add_size_of_pipe(&mini->input[i], &i);
-    while (mini->input[i] && i <= end)
+    i = 0;
+    arg_count = 0;
+    while (cmd[i])
     {
-        i+= get_white_space_size(&mini->input[i]);
-        if (mini->input[i] == '>' || mini->input[i] == '<')
+        if(cmd [i] == '\"' || cmd[i] == '\'')
         {
-            i += get_file_redirection_size(&mini->input[i]);
+            i +=  get_quotes_size(&cmd[i]);
+            arg_count++;
             continue;
         }
-        if (mini->input[i] == '|')
+        else if(ft_isascii(cmd[i]) && !ft_isspace(cmd[i]))
         {
-            i++;
-            continue; 
+            i += get_ascii_size(&cmd[i]);
+            arg_count++;
+            continue;
         }
-        break;
+        i++;            
     }
-    if (mini->input[i] == '"' || mini->input[i] == '\'')
-        return(get_quoted_arg(&mini->input[i], start, mini));
-    j = i;
-    return (get_new_str(i, j, mini, start));
+    return (arg_count);
 }
 
-int get_cmd_count(char *input, int start, int end)
+int get_argument_len(char *cmd)
+{
+    int i; 
+
+    i = 0;
+    if (cmd[i] == '\"' || cmd[i] == '\'')
+    {
+        i = get_quotes_size(cmd);
+        i -= 2;
+    } 
+    else
+        i = get_ascii_size(cmd);
+    return (i);
+
+}
+
+int skip_quote(char c)
+{
+    if (c == '\'' || c == '\"')
+        return (1);
+    return (0);
+}
+
+char **ft_argument_split(char *cmd)
+{
+    char    **args;
+    int     arg_count;
+    int     i;
+    int     arg_start;
+    int     arg_len;
+
+    arg_count = get_argument_count(cmd);
+    args = (char **)malloc(sizeof(char *) * arg_count + 1);
+    if (!args)
+        exit (1);
+    i = 0;
+    arg_start = 0;
+    while (i < arg_count)
+    {
+        arg_start += get_white_space_size(&cmd[arg_start]);
+        arg_len = get_argument_len(&cmd[arg_start]);
+        arg_start += skip_quote(cmd[arg_start]);
+        args[i] = ft_substr(cmd, arg_start, arg_len);
+        arg_len += skip_quote(cmd[arg_len]);
+        arg_start += arg_len;
+        i++;
+    }
+    return (args);
+    
+}
+
+
+
+char **get_cmd_argument(char *cmd)
+{
+    char    **cmd_arguments;
+
+    cmd_arguments = ft_argument_split(cmd);
+    if (!cmd_arguments)
+        return (NULL);
+    return (cmd_arguments);
+}
+
+int get_cmd_count(char **cmds)
 {
     int cmd_count;
-    
+
     cmd_count = 0;
-    add_size_of_pipe(&input[start], &start);
-    while (input[start] && start <= end)
-    {
-        start += get_white_space_size(&input[start]);
-        if (input[start] == '>' || input[start] == '<')
-        {
-            start += get_file_redirection_size(&input[start]);
-            continue;
-        }
-        if (add_size_of_pipe(&input[start], &start))
-            continue;
-        if (input[start] == '"' || input[start] == '\'')
-        {
-            start += get_quotes_size(&input[start]);
-            cmd_count++;
-            continue;
-        }
-        start += get_ascii_size(&input[start]);
+    while(cmds[cmd_count])
         cmd_count++;
-    }
-    return(cmd_count);
+    return (cmd_count);
 }
 
-char **get_cmd_value(t_minishell *mini, int start, int end)
+char ***get_cmds_value(char * input)
 {
-    char    **new_cmd;
+    char    ***triple_cmds;
+    char    **double_cmds;
     int     cmd_count;
     int     i;
-    int     j;
 
-    return (NULL);
-    cmd_count = get_cmd_count(mini->input, start, end);
-    new_cmd = (char **)malloc(sizeof(char *) * cmd_count + 1);
-    if (!new_cmd)
-        return(NULL);
+    double_cmds = ft_split(input, '|');
+    if (!double_cmds)
+        exit (1);
+    cmd_count = get_cmd_count(double_cmds);
+    triple_cmds = (char ***)malloc(sizeof(char **) * cmd_count + 1);
+    if (!triple_cmds)
+        exit (1);
     i = 0;
-    j = 0;
-    while(i < cmd_count)
+    while (i < cmd_count)
     {
-        new_cmd[j] = get_cmd_argument(mini, &start, end);
-        if (!new_cmd[j])
-            return (NULL);
+        triple_cmds[i] = get_cmd_argument(double_cmds[i]);
+        if (!triple_cmds[i])
+            exit (1); //need to handle frees;
         i++;
-        if (!new_cmd[j][0])
-            continue;
-        j++;
     }
-    while (j <= cmd_count)
-        new_cmd[j++] = NULL;
-    return (new_cmd);
+    triple_cmds[i] = NULL;
+    return  (triple_cmds);
 }

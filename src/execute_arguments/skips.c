@@ -19,7 +19,7 @@ int    get_quotes_size(char *input)
     i = 0;
     quote = input[i];
     i++;
-    while(input[i] != quote)
+    while(input[i] && input[i] != quote)
         i++;
     i++;
     return(i);

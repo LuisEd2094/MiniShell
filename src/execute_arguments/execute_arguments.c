@@ -15,7 +15,7 @@ int execute_input(t_minishell *mini)
         if (mini->input[i] == '|' || !mini->input[i + 1])
         {
             printf("\t I am working on a new command\t\n");
-            cmd = get_cmd_value(mini, j, i);
+            cmd = get_cmds_value(mini);
             if (!cmd)
                 return (errno);
             if (!check_and_handle_redirections(mini, j, i))

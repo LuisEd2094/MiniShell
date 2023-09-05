@@ -24,7 +24,6 @@ typedef struct s_quote
 }t_quote;
 
 
-char    **get_cmd_value(t_minishell *mini, int start, int end);
 int     get_quotes_size(char *input);
 int     get_white_space_size(char *input);
 int     get_ascii_size(char *input);
@@ -43,8 +42,10 @@ char **i_just_want_to_see(t_minishell *mini);
 
 /// new functions ///
 
-
+char ***get_cmds_value(char * input);
 int get_cmds_number(char *input);
+int get_argument_count(char *cmd);
+
 
 
 #endif
