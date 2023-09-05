@@ -16,7 +16,7 @@ void handle_double_quote(char *input, t_quote *quote_info, t_minishell *mini)
         {
             quote_info->env = get_env_str(&input[i + 1], mini->env_list);
             //ft_printf("before ascci [%s] [%i] \n", &input[i], i);
-            i += get_ascii_size(&input[i]);
+            i += get_arg_size_skip_redirections(&input[i]);
             //ft_printf("env [%s] [%s]\n",quote_info->env, &input[i]);
             free(quote_info->env);
         }  

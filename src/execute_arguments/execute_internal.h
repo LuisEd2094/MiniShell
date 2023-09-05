@@ -26,8 +26,8 @@ typedef struct s_quote
 
 int     get_quotes_size(char *input);
 int     get_white_space_size(char *input);
-int     get_ascii_size(char *input);
-int     get_file_redirection_size(char *input);
+int     get_arg_size_skip_redirections(char *input);
+int     get_redirection_size(char *input);
 int     add_size_of_pipe(char *input, int * i);
 int     close_redirections(t_minishell *mini);
 int     check_and_handle_redirections(t_minishell *mini, int start, int end);

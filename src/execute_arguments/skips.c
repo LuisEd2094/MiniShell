@@ -35,17 +35,18 @@ int get_white_space_size(char *input)
     return (i);
 }
 
-int get_ascii_size(char *input)
+int get_arg_size_skip_redirections(char *input)
 {
     int i;
 
     i = 0;
-    while (input[i] && ft_isascii(input[i]) && !ft_isspace(input[i]))
+    while (input[i] && ft_isascii(input[i]) && !ft_isspace(input[i]) \
+    && (input[i] != '<' && input[i] != '>'))
         i++;
     return (i);
 }
 
-int    get_file_redirection_size(char *input)
+int    get_redirection_size(char *input)
 {
     int     i;
     char    symbol;
@@ -56,8 +57,6 @@ int    get_file_redirection_size(char *input)
         i += 2;
     else
         i++;
-    i += get_white_space_size(&(input[i]));
-    i += get_ascii_size(&input[i]);
     return (i); 
 }
 

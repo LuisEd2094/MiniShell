@@ -6,7 +6,7 @@ char   *get_file_name(char *input, int *i)
     int     j;
     int     k;
 
-    j = get_ascii_size(input);
+    j = get_arg_size_skip_redirections(input);
     new = (char *)malloc(sizeof(char) * j + 1);
     if (!new)
         return(NULL);

@@ -4,7 +4,7 @@ char *get_new_str(int i, int j, t_minishell *mini, int *start)
 {
     char *new;
 
-    i += get_ascii_size(&mini->input[i]);
+    i += get_arg_size_skip_redirections(&mini->input[i]);
     *start = i;
     if (mini->input[j] == '$' && ft_isalnum(mini->input[j + 1]))
         return (get_env_str(&mini->input[j + 1], mini->env_list));
@@ -31,9 +31,15 @@ int get_argument_count(char *cmd)
             arg_count++;
             continue;
         }
+        else if (cmd[i] == '>' || cmd[i] == '<')
+        {
+            i += get_redirection_size(&cmd[i]);
+            arg_count++;
+            continue;
+        }
         else if(ft_isascii(cmd[i]) && !ft_isspace(cmd[i]))
         {
-            i += get_ascii_size(&cmd[i]);
+            i += get_arg_size_skip_redirections(&cmd[i]);
             arg_count++;
             continue;
         }
@@ -53,7 +59,7 @@ int get_argument_len(char *cmd)
         i -= 2;
     } 
     else
-        i = get_ascii_size(cmd);
+        i = get_arg_size_skip_redirections(cmd);
     return (i);
 
 }
@@ -82,7 +88,10 @@ char **ft_argument_split(char *cmd)
     while (i < arg_count)
     {
         arg_start += get_white_space_size(&cmd[arg_start]);
-        arg_len = get_argument_len(&cmd[arg_start]);
+        if (cmd[arg_start] == '<' || cmd[arg_start] == '>')
+            arg_len = get_redirection_size(&cmd[arg_start]);
+        else
+            arg_len = get_argument_len(&cmd[arg_start]);
         arg_start += skip_quote(cmd[arg_start]);
         args[i] = ft_substr(cmd, arg_start, arg_len);
         arg_len += skip_quote(cmd[arg_len]);
