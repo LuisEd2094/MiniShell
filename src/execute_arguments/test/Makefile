@@ -2,9 +2,13 @@ NAME = mytest
 
 LIB_DIR = /home/luised2094/MiniShell/Libft
 
+SRC_DIR = /home/luised2094/MiniShell/src
+
 LIB_FILES := $(wildcard $(LIB_DIR)/**/*.c)
 
-SRC_FILES = ../get_cmd_value.c ../skips.c unity.c mytest.c
+
+SRC_FILES = ../get_cmd_value.c ../skips.c ../../builtins/env/env.c unity.c mytest.c \
+			../../builtins/shared/*.c
 
 LIB_FLAGS = -I./ -I../ -I$(LIB_DIR)/includes -I/home/luised2094/MiniShell/includes
 

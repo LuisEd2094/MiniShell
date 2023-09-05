@@ -2,6 +2,12 @@
 #include <unity_internals.h>
 #include "../execute_internal.h"
 #include <stdio.h>
+#include <minishell.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+t_list *env_list;
+char **g_env;
 
 
 void setUp(void) {
@@ -14,8 +20,10 @@ void tearDown(void) {
 
 void get_cmds_value_test(void)
 {
-    char * str = "ls -la | cat | grep";
-    char *** result= get_cmds_value(str);
+    t_list *env_list = init_env(g_env);
+
+    char * str = "ls -la | cat |                 grep";
+    char *** result= get_cmds_value(str, env_list);
 
 
     TEST_ASSERT_EQUAL_STRING("ls", result[0][0]);
@@ -24,25 +32,25 @@ void get_cmds_value_test(void)
     TEST_ASSERT_EQUAL_STRING("grep", result[2][0]);
 
     str = "ls >> test";
-    result = get_cmds_value (str);
+    result = get_cmds_value (str, env_list);
     TEST_ASSERT_EQUAL_STRING("ls", result[0][0]);
     TEST_ASSERT_EQUAL_STRING(">>", result[0][1]);
     TEST_ASSERT_EQUAL_STRING("test", result[0][2]);
 
     str = "ls>>test";
-    result = get_cmds_value (str);
+    result = get_cmds_value (str, env_list);
     TEST_ASSERT_EQUAL_STRING("ls", result[0][0]);
     TEST_ASSERT_EQUAL_STRING(">>", result[0][1]);
     TEST_ASSERT_EQUAL_STRING("test", result[0][2]);
 
-    str = "ls>>test | cat $ARG \"I AM INSIDE QUOTES\" | grep 'I AM SINGLE QUOTES >>' \
+    str = "ls>>test | cat $PWD \"I AM INSIDE QUOTES\" | grep 'I AM SINGLE QUOTES >>' \
             | ls<<test |ls>test |ls>>test|ls<test";
-    result = get_cmds_value (str);
+    result = get_cmds_value (str, env_list);
     TEST_ASSERT_EQUAL_STRING("ls", result[0][0]);
     TEST_ASSERT_EQUAL_STRING(">>", result[0][1]);
     TEST_ASSERT_EQUAL_STRING("test", result[0][2]);
     TEST_ASSERT_EQUAL_STRING("cat", result[1][0]);
-    TEST_ASSERT_EQUAL_STRING("$ARG", result[1][1]);
+    TEST_ASSERT_EQUAL_STRING(getenv("PWD"), result[1][1]);
     TEST_ASSERT_EQUAL_STRING("I AM INSIDE QUOTES", result[1][2]);
     TEST_ASSERT_EQUAL_STRING("grep", result[2][0]);
     TEST_ASSERT_EQUAL_STRING("I AM SINGLE QUOTES >>", result[2][1]);
@@ -67,7 +75,7 @@ void get_cmds_value_test(void)
 
 void get_cmds_quotes_test(void)
 {
-    char ***result = get_cmds_value("ls -la | cat \"Hello World \"");
+    char ***result = get_cmds_value("ls -la | cat \"Hello World \"", NULL);
 
     TEST_ASSERT_EQUAL_STRING("ls", result[0][0]);
     TEST_ASSERT_EQUAL_STRING("-la", result[0][1]);
@@ -113,13 +121,44 @@ void ft_argument_split_test(void)
 
 }
 
-int main(void)
-{    
 
+void    get_cmds_argumets_with_env_test(void)
+{
+    t_list *env_list = init_env(g_env);
+
+    char * str = "ls $PWD";
+    char **result = get_cmd_argument(str, env_list);
+
+    TEST_ASSERT_EQUAL_STRING("ls", result[0]);
+    TEST_ASSERT_EQUAL_STRING(getenv("PWD"), result[1]);
+
+   
+}
+
+
+void    get_env_str_test(void)
+{
+    t_list *env_list = init_env(g_env);
+    char *result = get_env_str("PWD", env_list);
+    
+    TEST_ASSERT_EQUAL_STRING(getenv("PWD"), result);
+
+    result = get_env_str("NOEXISTE", env_list);
+    TEST_ASSERT_EQUAL_STRING("\0", result);
+
+
+}
+
+
+int main(int argc, char **argv, char **env)
+{  
+    g_env = env; 
     UNITY_BEGIN();
     RUN_TEST(get_argument_count_test);
     RUN_TEST(ft_argument_split_test);
     RUN_TEST(get_cmds_value_test);
+    RUN_TEST(get_env_str_test);
+    RUN_TEST(get_cmds_argumets_with_env_test);
 
     return UNITY_END();
 }
