@@ -37,7 +37,7 @@ int get_argument_len(char *cmd)
     int i; 
 
     i = 0;
-    if (cmd[i] == '\"' || cmd[i] == '\'')
+    if (cmd[i] == '\'' || cmd[i] == '"')
     {
         i = get_quotes_size(cmd);
         i -= 2;
@@ -55,7 +55,55 @@ int skip_quote(char c)
     return (0);
 }
 
-char **ft_argument_split(char *cmd)
+char *get_env_str_from_quote(char *cmd, t_list *env_list)
+{
+    char    *env_name;
+    char    *to_return;
+    int len;
+
+    len = 0;
+    while (cmd[len] && cmd[len] != '"' && !ft_isspace(cmd[len]) \
+        && cmd[len] != '<' && cmd[len] != '>')
+        len++;
+    env_name = ft_substr(cmd, 0, len);
+    if (!env_name)
+        return (NULL);
+    to_return = get_env_str(env_name, env_list);
+    free(env_name);
+    return (to_return);
+}
+
+char *get_double_quote(char *cmd, t_list *env_list)
+{
+    char    *new;
+    char    *temp;
+    char    *env;
+    int     i;
+    int     j; 
+    
+    i = 0;
+    j = 0;
+    // $ARG HOLA"
+    while (cmd[i] && cmd[i] != '"')
+    {
+        if (cmd[i] == '$')
+            env = get_env_str_from_quote(&cmd[i], env_list);
+        i++;
+    }
+    return (NULL);
+}
+
+int move_start(char *cmd)
+{
+    int i;
+
+    i = 0;
+    if (cmd[i] == '<' || cmd[i] == '>')
+        return (get_redirection_size(&cmd[i]));
+    else
+        return (get_argument_len(&cmd[i]));
+}
+char **ft_argument_split(char *cmd, t_list *env_list)
 {
     char    **args;
     int     arg_count;
@@ -72,29 +120,28 @@ char **ft_argument_split(char *cmd)
     while (i < arg_count)
     {
         arg_start += get_white_space_size(&cmd[arg_start]);
-        if (cmd[arg_start] == '<' || cmd[arg_start] == '>')
-            arg_len = get_redirection_size(&cmd[arg_start]);
+
+        //arg_start += skip_quote(cmd[arg_start]);
+        if (cmd[arg_start] == '"')
+            args[i] = get_double_quote(&cmd[arg_start + 1], env_list);
         else
-            arg_len = get_argument_len(&cmd[arg_start]);
-        arg_start += skip_quote(cmd[arg_start]);
-        args[i] = ft_substr(cmd, arg_start, arg_len);
-        arg_len += skip_quote(cmd[arg_len]);
-        arg_start += arg_len;
+        {
+            if (cmd[arg_start] == '<' || cmd[arg_start] == '>')
+                arg_len = get_redirection_size(&cmd[arg_start]);
+            else
+                arg_len = get_argument_len(&cmd[arg_start]);
+            if (cmd[arg_start] == '\'')
+                args[i] = ft_substr(cmd, arg_start + 1, arg_len);
+            else
+                args[i] = ft_substr(cmd, arg_start, arg_len);
+        }
+        arg_start += move_start(&cmd[arg_start]);
         i++;
     }
     return (args);
-    
 }
 
-/*
-char *check_env_variables(char *cmd_argument, t_list *env)
-{
-    if (cmd_argument[0] == '$')
-    {
-        cmd_argument = get_env_str;
-    }
-}
-*/
+
 
 char *replace_env(char *cmd, t_list *env)
 {
@@ -112,7 +159,7 @@ char **get_cmd_argument(char *cmd, t_list *env)
     char    **cmd_arguments;
     int     i;
 
-    cmd_arguments = ft_argument_split(cmd);
+    cmd_arguments = ft_argument_split(cmd, env);
     if (!cmd_arguments)
         return (NULL);
     i = 0;

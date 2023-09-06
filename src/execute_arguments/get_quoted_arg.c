@@ -24,7 +24,6 @@ void handle_double_quote(char *input, t_quote *quote_info, t_minishell *mini)
     }
     if (input[i] == quote_info->quote)
         i++;
-    ft_printf("[%i] quote [%c] after loop [%s]\n",i, quote_info->quote, &input[i]);
     quote_info->new = malloc(sizeof(char) * 2);
     quote_info->new[0] = 'A';
     quote_info->new[1] = '\0';

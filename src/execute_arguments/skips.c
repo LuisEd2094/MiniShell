@@ -54,9 +54,8 @@ int    get_redirection_size(char *input)
     i = 0;
     symbol = input[i];
     if (input[i + 1] && input[i + 1] == symbol)
-        i += 2;
+        return (2);
     else
-        i++;
-    return (i); 
+        return (1);
 }
 

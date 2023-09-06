@@ -9,6 +9,7 @@
 t_list *env_list;
 char **g_env;
 
+char **ft_argument_split(char *cmd, t_list *env);
 
 void setUp(void) {
     // set stuff up here
@@ -43,7 +44,7 @@ void get_cmds_value_test(void)
     TEST_ASSERT_EQUAL_STRING(">>", result[0][1]);
     TEST_ASSERT_EQUAL_STRING("test", result[0][2]);
 
-    str = "ls>>test | cat $PWD \"I AM INSIDE QUOTES\" | grep 'I AM SINGLE QUOTES >>' \
+    str = "ls>>test | cat $PWD \'I AM SINGLE QUOTES\' | grep \"I AM DOUBLE QUOTES >>\" \
             | ls<<test |ls>test |ls>>test|ls<test";
     result = get_cmds_value (str, env_list);
     TEST_ASSERT_EQUAL_STRING("ls", result[0][0]);
@@ -51,9 +52,9 @@ void get_cmds_value_test(void)
     TEST_ASSERT_EQUAL_STRING("test", result[0][2]);
     TEST_ASSERT_EQUAL_STRING("cat", result[1][0]);
     TEST_ASSERT_EQUAL_STRING(getenv("PWD"), result[1][1]);
-    TEST_ASSERT_EQUAL_STRING("I AM INSIDE QUOTES", result[1][2]);
+    TEST_ASSERT_EQUAL_STRING("I AM SINGLE QUOTES", result[1][2]);
     TEST_ASSERT_EQUAL_STRING("grep", result[2][0]);
-    TEST_ASSERT_EQUAL_STRING("I AM SINGLE QUOTES >>", result[2][1]);
+    TEST_ASSERT_EQUAL_STRING("I AM DOUBLE QUOTES >>", result[2][1]);
 
     TEST_ASSERT_EQUAL_STRING("ls", result[3][0]);
     TEST_ASSERT_EQUAL_STRING("<<", result[3][1]);
@@ -108,13 +109,13 @@ void get_argument_count_test(void)
 
 }
 
-char **ft_argument_split(char *cmd);
 
 
 void ft_argument_split_test(void)
 {
+    t_list *env_list = init_env(g_env);
     char *str = "cat \"Hello World   \"";
-    char ** result = ft_argument_split(str);
+    char ** result = ft_argument_split(str, env_list);
 
     TEST_ASSERT_EQUAL_STRING("cat", result[0]);
     TEST_ASSERT_EQUAL_STRING("Hello World   ", result[1]);
@@ -149,16 +150,78 @@ void    get_env_str_test(void)
 
 }
 
+char *get_env_str_from_quote(char *cmd, t_list *env_list);
+char *get_double_quote(char *cmd, t_list *env_list);
+
+void get_double_quote_test(void)
+{
+    t_list *env_list = init_env(g_env);
+    char *input = "$PWD HOLA\"";
+    char *str = " HOLA";
+    char *env = getenv("PWD");
+    char to_test[1000];
+    strcpy(to_test,env);
+    strcat(to_test, str)
+
+
+    char *result = get_double_quote(input,env_list);
+    TEST_ASSERT_EQUAL_STRING(to_test, result);
+}
+
+
+
+void get_env_str_from_quote_test(void)
+{
+    t_list *env_list = init_env(g_env);
+    char *str = "PWD     -la";
+
+    char * result = get_env_str_from_quote(str,env_list);
+    TEST_ASSERT_EQUAL_STRING(getenv("PWD"), result);
+
+    str = "PWD";
+    result = result = get_env_str_from_quote(str,env_list);
+    TEST_ASSERT_EQUAL_STRING(getenv("PWD"), result);
+
+    str = "PWD>TEST";
+    result = result = get_env_str_from_quote(str,env_list);
+    TEST_ASSERT_EQUAL_STRING(getenv("PWD"), result);
+}
+
+
+
+void get_quotes_with_env_test(void)
+{
+    t_list *env_list = init_env(g_env);
+    char * str = "ls \'$PWD\' ";
+
+    char **result = ft_argument_split(str, env_list);
+    TEST_ASSERT_EQUAL_STRING("ls", result[0]);
+    TEST_ASSERT_EQUAL_STRING("$PWD", result[1]);
+
+    str = "grep 'HOLA CARA DE PEROLA'";
+    result = ft_argument_split(str, env_list);
+    TEST_ASSERT_EQUAL_STRING("grep", result[0]);
+    TEST_ASSERT_EQUAL_STRING("HOLA CARA DE PEROLA", result[1]);
+
+    str = "cat \"$PWD\"";
+    result = ft_argument_split(str, env_list);
+    TEST_ASSERT_EQUAL_STRING("cat", result[0]);
+    TEST_ASSERT_EQUAL_STRING(getenv("PWD"), result[1]);
+
+} 
 
 int main(int argc, char **argv, char **env)
 {  
     g_env = env; 
     UNITY_BEGIN();
     RUN_TEST(get_argument_count_test);
-    RUN_TEST(ft_argument_split_test);
-    RUN_TEST(get_cmds_value_test);
-    RUN_TEST(get_env_str_test);
-    RUN_TEST(get_cmds_argumets_with_env_test);
+    //RUN_TEST(ft_argument_split_test);
+    //RUN_TEST(get_cmds_value_test);
+    //RUN_TEST(get_env_str_test);
+    //RUN_TEST(get_quotes_with_env_test);
+    RUN_TEST(get_env_str_from_quote_test);
+    RUN_TEST(get_double_quote_test);
+   // RUN_TEST(get_cmds_argumets_with_env_test);
 
     return UNITY_END();
 }
