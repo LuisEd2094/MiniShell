@@ -111,7 +111,9 @@ char *ft_replace(char *cmd, char *env, int i)
     new = (char *)malloc(sizeof(char) * (ft_strlen(str_first_half) + ft_strlen(str_second_half) + ft_strlen(env)) + 1);
     ft_strlcpy(new, str_first_half, ft_strlen(str_first_half) + 1);
     ft_strlcat(new, env, ft_strlen(env) + ft_strlen(new) + 1);
-    ft_strlcat(new, str_second_half, ft_strlen(str_second_half) + ft_strlen(new));    
+    ft_strlcat(new, str_second_half, ft_strlen(str_second_half) + ft_strlen(new));
+    free(str_first_half);
+    free(str_second_half);    
     return (new);
 }
 
