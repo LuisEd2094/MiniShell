@@ -156,12 +156,14 @@ char *get_double_quote(char *cmd, t_list *env_list);
 void get_double_quote_test(void)
 {
     t_list *env_list = init_env(g_env);
-    char *input = "$PWD HOLA\"";
-    char *str = " HOLA";
+    char *input = " HOLA $PWD HOLA \"";
+    char *str = " HOLA ";
     char *env = getenv("PWD");
     char to_test[1000];
-    strcpy(to_test,env);
-    strcat(to_test, str)
+    strcpy(to_test,str);
+    strcat(to_test, env);
+    strcat(to_test, str);
+
 
 
     char *result = get_double_quote(input,env_list);
@@ -173,7 +175,7 @@ void get_double_quote_test(void)
 void get_env_str_from_quote_test(void)
 {
     t_list *env_list = init_env(g_env);
-    char *str = "PWD     -la";
+    char *str = "PWD     -la\"";
 
     char * result = get_env_str_from_quote(str,env_list);
     TEST_ASSERT_EQUAL_STRING(getenv("PWD"), result);

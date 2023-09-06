@@ -55,6 +55,27 @@ int skip_quote(char c)
     return (0);
 }
 
+
+int get_env_name_len(char *cmd)
+{
+    int len;
+
+    len = 0;
+    while (cmd[len] && cmd[len] != '"' && !ft_isspace(cmd[len]) \
+        && cmd[len] != '<' && cmd[len] != '>')
+        len++;
+    return (len);
+}
+
+
+char *get_env_name(char *cmd)
+{
+    int len;
+
+    len = get_env_name_len(cmd);
+    return (ft_substr(cmd, 0, len));
+}
+
 char *get_env_str_from_quote(char *cmd, t_list *env_list)
 {
     char    *env_name;
@@ -62,15 +83,36 @@ char *get_env_str_from_quote(char *cmd, t_list *env_list)
     int len;
 
     len = 0;
-    while (cmd[len] && cmd[len] != '"' && !ft_isspace(cmd[len]) \
-        && cmd[len] != '<' && cmd[len] != '>')
-        len++;
-    env_name = ft_substr(cmd, 0, len);
+    env_name = get_env_name(cmd);
     if (!env_name)
         return (NULL);
     to_return = get_env_str(env_name, env_list);
     free(env_name);
     return (to_return);
+}
+
+
+char *ft_replace(char *cmd, char *env, int i)
+{
+    static  bool done_replace = 0; 
+    char    *str_first_half;
+    char    *str_second_half;
+    char    *new;
+    int     j;
+
+    if (i > 0);
+        str_first_half = ft_substr(cmd, 0, i);
+    j = 0;
+    while (cmd[j] && cmd[j] != '$')
+        j++;
+    j++;
+    j += get_env_name_len(&cmd[j]);
+    str_second_half = ft_substr(cmd, j, ft_strlen(cmd));
+    new = (char *)malloc(sizeof(char) * (ft_strlen(str_first_half) + ft_strlen(str_second_half) + ft_strlen(env)) + 1);
+    ft_strlcpy(new, str_first_half, ft_strlen(str_first_half) + 1);
+    ft_strlcat(new, env, ft_strlen(env) + ft_strlen(new) + 1);
+    ft_strlcat(new, str_second_half, ft_strlen(str_second_half) + ft_strlen(new));    
+    return (new);
 }
 
 char *get_double_quote(char *cmd, t_list *env_list)
@@ -83,14 +125,17 @@ char *get_double_quote(char *cmd, t_list *env_list)
     
     i = 0;
     j = 0;
-    // $ARG HOLA"
+    
     while (cmd[i] && cmd[i] != '"')
     {
         if (cmd[i] == '$')
-            env = get_env_str_from_quote(&cmd[i], env_list);
+        {
+            env = get_env_str_from_quote(&cmd[i + 1], env_list);
+            new = ft_replace(cmd, env, i);
+        }
         i++;
     }
-    return (NULL);
+    return (new);
 }
 
 int move_start(char *cmd)
