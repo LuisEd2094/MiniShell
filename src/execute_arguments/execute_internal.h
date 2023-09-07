@@ -46,6 +46,7 @@ char ***get_cmds_value(char * input, t_list *env);
 char **get_cmd_argument(char * cmd, t_list *env);
 int get_cmds_number(char *input);
 int get_argument_count(char *cmd);
+int is_ascii_no_space(char c);
 
 
 
