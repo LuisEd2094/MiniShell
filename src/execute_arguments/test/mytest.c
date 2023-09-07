@@ -60,12 +60,24 @@ void get_cmds_value_test(void)
     TEST_ASSERT_EQUAL_STRING("test", result[0][2]);
     TEST_ASSERT_EQUAL_STRING(">>", result[0][3]);
     TEST_ASSERT_EQUAL_STRING("test1", result[0][4]);
-
     char test[1000];
-
     strcpy(test, "grep");
     strcat(test,getenv("PWD"));
     TEST_ASSERT_EQUAL_STRING(test, result[1][0]);
+
+
+
+    str = "ls \"<<test>>\" test1 | ls \"$PWD\" test | grep HOLA";
+    result = get_cmds_value(str, env_list);
+    TEST_ASSERT_EQUAL_STRING("ls", result[0][0]);
+    TEST_ASSERT_EQUAL_STRING("<<test>>", result[0][1]);
+    TEST_ASSERT_EQUAL_STRING("test1", result[0][2]);
+    TEST_ASSERT_EQUAL_STRING("ls", result[1][0]);
+    TEST_ASSERT_EQUAL_STRING(getenv("PWD"), result[1][1]);
+    TEST_ASSERT_EQUAL_STRING("test", result[1][2]);
+    TEST_ASSERT_EQUAL_STRING("grep", result[2][0]);
+    TEST_ASSERT_EQUAL_STRING("HOLA", result[2][1]);
+
 
 
     str = "ls>>test | cat $PWD \'I AM SINGLE QUOTES\' | grep \"I AM DOUBLE QUOTES >>\" \
@@ -208,6 +220,14 @@ void get_double_quote_test(void)
     ft_bzero(to_test, 1000);
     strcpy(to_test, getenv("PWD"));
     strcat(to_test, getenv("OLDPWD"));
+    TEST_ASSERT_EQUAL_STRING(to_test, get_double_quote(input, env_list));
+
+
+    input = "$PWD$OLDPWD$USER\"";
+    ft_bzero(to_test, 1000);
+    strcpy(to_test, getenv("PWD"));
+    strcat(to_test, getenv("OLDPWD"));
+    strcat(to_test, getenv("USER"));
     TEST_ASSERT_EQUAL_STRING(to_test, get_double_quote(input, env_list));
 
 
