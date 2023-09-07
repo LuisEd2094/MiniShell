@@ -44,6 +44,30 @@ void get_cmds_value_test(void)
     TEST_ASSERT_EQUAL_STRING(">>", result[0][1]);
     TEST_ASSERT_EQUAL_STRING("test", result[0][2]);
 
+
+    str = "ls<<test>>test1";
+    result = get_cmds_value (str, env_list);
+    TEST_ASSERT_EQUAL_STRING("ls", result[0][0]);
+    TEST_ASSERT_EQUAL_STRING("<<", result[0][1]);
+    TEST_ASSERT_EQUAL_STRING("test", result[0][2]);
+    TEST_ASSERT_EQUAL_STRING(">>", result[0][3]);
+    TEST_ASSERT_EQUAL_STRING("test1", result[0][4]);
+
+    str = "ls<<test>>test1 |grep$PWD";
+    result = get_cmds_value (str, env_list);
+    TEST_ASSERT_EQUAL_STRING("ls", result[0][0]);
+    TEST_ASSERT_EQUAL_STRING("<<", result[0][1]);
+    TEST_ASSERT_EQUAL_STRING("test", result[0][2]);
+    TEST_ASSERT_EQUAL_STRING(">>", result[0][3]);
+    TEST_ASSERT_EQUAL_STRING("test1", result[0][4]);
+
+    char test[1000];
+
+    strcpy(test, "grep");
+    strcat(test,getenv("PWD"));
+    TEST_ASSERT_EQUAL_STRING(test, result[1][0]);
+
+
     str = "ls>>test | cat $PWD \'I AM SINGLE QUOTES\' | grep \"I AM DOUBLE QUOTES >>\" \
             | ls<<test |ls>test |ls>>test|ls<test";
     result = get_cmds_value (str, env_list);
@@ -163,12 +187,32 @@ void get_double_quote_test(void)
     strcpy(to_test,str);
     strcat(to_test, env);
     strcat(to_test, str);
-
-
-
     char *result = get_double_quote(input,env_list);
     TEST_ASSERT_EQUAL_STRING(to_test, result);
+
+    input = "$PWD\"";
+    TEST_ASSERT_EQUAL_STRING(getenv("PWD"), get_double_quote(input, env_list));
+
+    input = "$\"";
+    TEST_ASSERT_EQUAL_STRING("$", get_double_quote(input, env_list));
+    
+    input = "$    \"";
+    TEST_ASSERT_EQUAL_STRING("$    ", get_double_quote(input, env_list));
+
+
+
+    input = "$ASDASD\"";
+    TEST_ASSERT_EQUAL_STRING("", get_double_quote(input, env_list));
+
+    input = "$PWD$OLDPWD\"";
+    ft_bzero(to_test, 1000);
+    strcpy(to_test, getenv("PWD"));
+    strcat(to_test, getenv("OLDPWD"));
+    TEST_ASSERT_EQUAL_STRING(to_test, get_double_quote(input, env_list));
+
+
 }
+
 
 
 
@@ -217,13 +261,13 @@ int main(int argc, char **argv, char **env)
     g_env = env; 
     UNITY_BEGIN();
     RUN_TEST(get_argument_count_test);
-    //RUN_TEST(ft_argument_split_test);
-    //RUN_TEST(get_cmds_value_test);
-    //RUN_TEST(get_env_str_test);
-    //RUN_TEST(get_quotes_with_env_test);
+    RUN_TEST(ft_argument_split_test);
+    RUN_TEST(get_cmds_value_test);
+    RUN_TEST(get_env_str_test);
+    RUN_TEST(get_quotes_with_env_test);
     RUN_TEST(get_env_str_from_quote_test);
     RUN_TEST(get_double_quote_test);
-   // RUN_TEST(get_cmds_argumets_with_env_test);
+    RUN_TEST(get_cmds_argumets_with_env_test);
 
     return UNITY_END();
 }
