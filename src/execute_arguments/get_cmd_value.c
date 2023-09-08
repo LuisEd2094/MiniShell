@@ -38,9 +38,11 @@ char ***get_cmds_value(char * input, t_list *env)
     {
         triple_cmds[i] = get_cmd_argument(double_cmds[i], env);
         if (!triple_cmds[i])
-            exit (1); 
+            exit (1);
+        free(double_cmds[i]);
         i++;
     }
+    free(double_cmds);
     triple_cmds[i] = NULL;
     return  (triple_cmds);
 }

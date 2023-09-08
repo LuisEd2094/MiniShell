@@ -64,9 +64,9 @@ UNSET		=	unset.c
 
 SHARED		=	builtins_shared.c ft_single_split.c get_env_value_str.c
 
-EXECUTE		=	execute_arguments.c get_cmd_value.c skips.c \
-				handle_redirections.c aux_handle_redirections.c \
-				get_quoted_arg.c
+EXECUTE		=	get_cmd_value.c  get_double_quote.c move_start_and_argument_len.c \
+				is_ascii_no_space.c get_cmd_argument.c replace_env.c \
+				get_next_word_and_len.c skips.c
 
 ERROR		=	print_error.c
 

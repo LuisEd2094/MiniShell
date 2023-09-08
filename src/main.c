@@ -2,19 +2,27 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void free_tab(char **tab)
+void free_cmds(char ***cmds)
 {
     int i;
+    int j;
 
     i = 0;
-    while (tab[i])
+    while (cmds[i])
     {
-        free(tab[i]);
+        j = 0;
+        while (cmds[i][j])
+        {
+            if (cmds[i][j])
+                free(cmds[i][j]);
+            j++;
+        }
+        free(cmds[i]);
         i++;
     }
-    free(tab);
+    free(cmds);
 }
-/*
+
 int main(int argc, char **argv, char **env)
 {
     char        **tab;
@@ -51,7 +59,12 @@ int main(int argc, char **argv, char **env)
             // should give us ls, >>, text.txt, so we can later work on each part 
             // like wise, if one of the params is calling to check an env, such as $PATH, we we filter it we should store the expanded value intabs, 
             // so echo $PATH should become echo, (what ever value path has)
-            char **tab = ft_split(mini.input, ' '); 
+            char ***cmds = get_cmds_value(mini.input, mini.env_list);
+
+            printf("First argument of first cmd [%s]\n", cmds[0][0] );
+            if (cmds[1] && cmds[1][0] )
+                printf("First argument of scd cmd [%s]\n", cmds[1][0] );
+            /* 
             if (ft_strcmp(tab[0], "env") == 0)
                 print_all_env(mini.env_list);
             else if (ft_strcmp(tab[0], "export") == 0)
@@ -63,10 +76,11 @@ int main(int argc, char **argv, char **env)
                 mini.env_list = work_on_unset(mini.env_list, tab[1]);
             }
             else
-                try_execve(tab, mini.env_list);
-            free_tab(tab);
+                try_execve(tab, mini.env_list);*/
+            free_cmds(cmds);
         }
         free(mini.input);
+        
     }
     free_env_list(mini.env_list);
 
@@ -75,4 +89,4 @@ int main(int argc, char **argv, char **env)
 
 
     return (0);
-}*/
+}

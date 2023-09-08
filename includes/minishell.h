@@ -18,8 +18,8 @@ typedef struct s_minishell
 
 }   t_minishell;
 
-int print_error(char *err_description);
-int execute_input(t_minishell *mini);
+int     print_error(char *err_description);
+char    ***get_cmds_value(char * input, t_list *env);
 
 
 
