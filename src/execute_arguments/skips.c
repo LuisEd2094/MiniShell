@@ -1,16 +1,5 @@
 #include "execute_internal.h"
 
-int add_size_of_pipe(char *input, int * i)
-{
-    if (input[0] == '|')
-    {
-        *i += 1;
-        return (1);
-    }
-    return (0);
-}
-
-
 int    get_quotes_size(char *input)
 {
     char    quote;

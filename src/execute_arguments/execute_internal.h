@@ -33,7 +33,6 @@ int     check_and_handle_redirections(t_minishell *mini, int start, int end);
 int     get_starting_pos(char *input);
 int     get_redir_type(char *input);
 char    *get_file_name(char *input, int *i);
-char    *get_quoted_arg(char *input, int *start, t_minishell *mini);
 
 
 
@@ -53,7 +52,22 @@ char *get_double_quote(char *cmd, t_list *env_list);
 int    get_redirection_size(char *input);
 int get_argument_len(char *cmd);
 int move_start(char *cmd);
+
+
 char *replace_env(char *cmd, t_list *env_list, int j);
+char *ft_replace(char *cmd, char *env, int i);
+
+char *get_env_str_from_quote(char *cmd, t_list *env_list);
+
+
+char *get_next_word(char *cmd);
+int get_next_word_len(char *cmd);
+
+
+
+
+
+
 
 
 
