@@ -25,7 +25,6 @@ typedef struct s_quote
 
 
 int     get_quotes_size(char *input);
-int     get_white_space_size(char *input);
 int     get_arg_size_skip_redirections(char *input);
 int     get_redirection_size(char *input);
 int     add_size_of_pipe(char *input, int * i);
@@ -47,6 +46,14 @@ char **get_cmd_argument(char * cmd, t_list *env);
 int get_cmds_number(char *input);
 int get_argument_count(char *cmd);
 int is_ascii_no_space(char c);
+
+
+int get_white_space_size(char *input);
+char *get_double_quote(char *cmd, t_list *env_list);
+int    get_redirection_size(char *input);
+int get_argument_len(char *cmd);
+int move_start(char *cmd);
+char *replace_env(char *cmd, t_list *env_list, int j);
 
 
 
