@@ -1,11 +1,6 @@
 #include <execve.h>
 #include <builtins.h>
 
-/*char ** ls = (char **)malloc(sizeof(char *) * 2);
-ls[0] = "ls";
-ls[1] = NULL;
-
-execve("/usr/bin/ls", ls, env);*/
 
 char * reconstruct_env(char * variable, char *  value)
 {
@@ -16,7 +11,7 @@ char * reconstruct_env(char * variable, char *  value)
     temp = ft_strjoin(variable, "=");
     if (!temp)
         exit(1);
-    new     =ft_strjoin(temp, value);
+    new =ft_strjoin(temp, value);
     free(temp);
     if (!new)
         exit (1);
@@ -28,6 +23,7 @@ char    **conver_env_list(t_list *env_list)
     //need to keep track of how many elemets on list since we need to create a malloc here for it
     int i;
     t_list * temp;
+    char **new;
 
     temp = env_list;
     i = 0;
@@ -36,8 +32,6 @@ char    **conver_env_list(t_list *env_list)
         i++;
         temp = temp->next;
     }
-    char **new;
-
     new = (char **)malloc(sizeof(char *) * (i + 1));
     if (!new)
         exit (1);
@@ -50,6 +44,7 @@ char    **conver_env_list(t_list *env_list)
         temp = temp->next;
         i++;
     }
+    new[i] = NULL;
     return (new);
 }
 
@@ -100,6 +95,7 @@ void    try_execve(char **cmd, t_list *env_list)
     if (found_path)
     {
         converted_env_list = conver_env_list(env_list);
+        printf("[%s]\n", converted_env_list[6]);
         execve(pathname, cmd, converted_env_list);
         for (int i = 0; converted_env_list[i]; i++)
             free(converted_env_list[i]);
