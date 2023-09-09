@@ -55,7 +55,7 @@ int move_start(char *cmd);
 
 
 char *replace_env(char *cmd, t_list *env_list, int j);
-char *ft_replace(char *cmd, char *env, int i);
+char *ft_replace(char *cmd, char *env, int i, bool found);
 
 char *get_env_str_from_quote(char *cmd, t_list *env_list);
 

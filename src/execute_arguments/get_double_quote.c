@@ -15,7 +15,8 @@ char *get_double_quote(char *cmd, t_list *env_list)
         if (new[i] == '$' && is_ascii_no_space(new[i + 1]) && new[i + 1] != '"') //Leaving comment, need to check what are valid $ENV names
         {
             env = get_env_str_from_quote(&new[i + 1], env_list);
-            new = ft_replace(new, env, i);
+            new = ft_replace(new, env, i, found_env);
+            free(env);
             found_env = 1;
         }
         i++;

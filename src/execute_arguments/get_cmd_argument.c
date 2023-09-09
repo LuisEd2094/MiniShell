@@ -50,7 +50,7 @@ char **ft_argument_split(char *cmd, t_list *env_list)
     int     arg_start;
 
     arg_count = get_argument_count(cmd);
-    args = (char **)malloc(sizeof(char *) * arg_count + 1);
+    args = (char **)malloc(sizeof(char *) * (arg_count + 1));
     if (!args)
         exit (1);
     i = 0;

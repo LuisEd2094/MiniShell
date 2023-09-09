@@ -30,7 +30,7 @@ char ***get_cmds_value(char * input, t_list *env)
     if (!double_cmds)
         exit (1);
     cmd_count = get_cmd_count(double_cmds);
-    triple_cmds = (char ***)malloc(sizeof(char **) * cmd_count + 1);
+    triple_cmds = (char ***)malloc(sizeof(char **) * (cmd_count + 1));
     if (!triple_cmds)
         exit (1);
     i = 0;

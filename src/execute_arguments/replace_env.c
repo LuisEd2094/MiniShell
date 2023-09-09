@@ -29,7 +29,7 @@ char *get_first_half(char *cmd, int i)
         return(ft_calloc(1, sizeof(char)));
 }
 
-char *ft_replace(char *cmd, char *env, int i)
+char *ft_replace(char *cmd, char *env, int i, bool found)
 {
     static  bool done_replace = 0; 
     char    *str_first_half;
@@ -45,7 +45,9 @@ char *ft_replace(char *cmd, char *env, int i)
     if (new[ft_strlen(new) - 1] == '"')
         new[ft_strlen(new) - 1] = '\0';
     free(str_first_half);
-    free(str_second_half);    
+    free(str_second_half);
+    if (found)
+        free(cmd);    
     return (new);
 }
 
@@ -72,7 +74,8 @@ char *replace_env(char *cmd, t_list *env_list, int j)
     char    *env;
 
     env = get_env_str_from_quote(&cmd[j + 1], env_list);
-    temp = ft_replace(cmd, env, j);
+    temp = ft_replace(cmd, env, j, 0);
+    free(env);
     if (!temp)
         return (NULL);
     free(cmd);
