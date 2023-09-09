@@ -20,6 +20,8 @@ typedef struct s_minishell
 
 int     print_error(char *err_description);
 char    ***get_cmds_value(char * input, t_list *env);
+void execute_cmds(char ***cmds, t_list *env_list);
+
 
 
 

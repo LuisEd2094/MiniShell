@@ -57,10 +57,11 @@ int main(int argc, char **argv, char **env)
             // like wise, if one of the params is calling to check an env, such as $PATH, we we filter it we should store the expanded value intabs, 
             // so echo $PATH should become echo, (what ever value path has)
             mini.cmds = get_cmds_value(mini.input, mini.env_list);
-
+            execute_cmds(mini.cmds, mini.env_list);
+            /*
             printf("First argument of first cmd [%s]\n", mini.cmds[0][0] );
             if (mini.cmds[1] && mini.cmds[1][0] )
-                printf("First argument of scd cmd [%s]\n", mini.cmds[1][0] );
+                printf("First argument of scd cmd [%s]\n", mini.cmds[1][0] );*/
             free_cmds(mini.cmds);
         }
         free(mini.input);

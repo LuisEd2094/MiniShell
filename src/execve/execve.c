@@ -99,8 +99,6 @@ void    try_execve(char **cmd, t_list *env_list)
     }
     if (found_path)
     {
-        printf("[%s]found path\n", pathname);
-        //conver_env_list(env_list);
         converted_env_list = conver_env_list(env_list);
         execve(pathname, cmd, converted_env_list);
         for (int i = 0; converted_env_list[i]; i++)
