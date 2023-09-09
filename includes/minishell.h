@@ -8,7 +8,7 @@
 typedef struct s_minishell
 {
     t_list      *env_list;
-    char        ***commands_array;
+    char        ***cmds;
     char        *input;
     int         fd_out;
     int         og_out;
