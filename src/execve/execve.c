@@ -59,53 +59,72 @@ char  **get_paths(t_list *path_node)
     return (tab);
 }
 
-void    try_execve(char **cmd, t_list *env_list)
+void    free_path_list(char **path_list)
 {
-    char    **path_list;
-    char    **converted_env_list;
-    char    *pathname;
-    char    *temp_path;
-    bool    found_path;
-    int     i;
+    int i;
 
-    path_list = get_paths(get_env_node(env_list, "PATH"));
     i = 0;
-    found_path = 0;
+    while (path_list[i])
+        free(path_list[i++]);
+    free(path_list[i]);
+}
+
+
+char *join_path(char *path_list, char *cmd)
+{
+    char *temp_path;
+    char *path_name;
+
+    temp_path = ft_strjoin(path_list, "/");
+    path_name = ft_strjoin(temp_path, cmd);
+    free(temp_path);
+    return(path_name);
+}
+
+char *get_path_name(char **cmd, char **path_list)
+{
+    char    *path_name;
+    int     i;
+    int     found_path;
+
+    path_name = NULL;
+    i = 0;
     while (path_list[i])
     {
         if (path_list[i][ft_strlen(path_list[i])] != '/')
-        {
-            temp_path = ft_strjoin(path_list[i], "/");
-            pathname = ft_strjoin(temp_path, cmd[0]);
-            free(temp_path);
-        }
+            path_name = join_path(path_list[i], cmd[0]);
         else
-            pathname = ft_strjoin(path_list[i], cmd[0]);
-        if (!pathname)
+            path_name = ft_strjoin(path_list[i], cmd[0]);
+        if (!path_name)
             exit (1);
-        if (access(pathname, F_OK) !=  -1 && access(pathname, X_OK) != -1)
+        if (access(path_name, F_OK) !=  -1 && access(path_name, X_OK) != -1)
         {
             found_path = 1;
             break;
         }
         if (path_list[i + 1])
-            free(pathname);
+            free(path_name);
         i++;
     }
-    if (found_path)
+    free_path_list(path_list);
+    return (path_name);
+}
+
+void    try_execve(char **cmd, t_list *env_list)
+{
+    char    **converted_env_list;
+    char    *path_name;
+
+    path_name = get_path_name(cmd, get_paths(get_env_node(env_list, "PATH")));
+    if (path_name)
     {
         converted_env_list = conver_env_list(env_list);
-        printf("[%s]\n", converted_env_list[6]);
-        execve(pathname, cmd, converted_env_list);
+        execve(path_name, cmd, converted_env_list);
         for (int i = 0; converted_env_list[i]; i++)
             free(converted_env_list[i]);
     }
     else
         printf("minishell: %s: command not found\n", cmd[0]);
-    free (pathname);
-    i = 0;
-    while (path_list[i])
-        free(path_list[i++]);
-    free(path_list[i]);
+    free (path_name);
     return ;
 }
