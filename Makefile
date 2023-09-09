@@ -8,7 +8,7 @@ EXECVE_PATH			= execve/
 
 #BUILT INS variables
 BUILTINTS			= builtins/
-EXECUTE_PATH		= execute_arguments/
+ARGUMENTS_PATH		= get_arguments/
 ERROR_PATH			= print_error/
 EXPORT_PATH			= $(BUILTINTS)export/
 ENV_PATH			= $(BUILTINTS)env/
@@ -20,7 +20,7 @@ BUILTINTS_PATH		= $(EXPORT_PATH) $(ENV_PATH) $(SHARED_PATH) $(UNSET_PATH)
 MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), \
 											$(HISTORY_PATH) \
 											$(BUILTINTS_PATH) \
-											$(EXECUTE_PATH) \
+											$(ARGUMENTS_PATH) \
 											$(ERROR_PATH) \
 											$(EXECVE_PATH)\
 											) 
@@ -64,7 +64,7 @@ UNSET		=	unset.c
 
 SHARED		=	builtins_shared.c ft_single_split.c get_env_value_str.c
 
-EXECUTE		=	get_cmd_value.c  get_double_quote.c move_start_and_argument_len.c \
+ARGUMENTS		=	get_cmd_value.c  get_double_quote.c move_start_and_argument_len.c \
 				is_ascii_no_space.c get_cmd_argument.c replace_env.c \
 				get_next_word_and_len.c skips.c
 
@@ -77,7 +77,7 @@ EXECVE		=	execve.c
 
 HISTORY_FILES		=$(addprefix $(HISTORY_PATH), $(HISTORY))
 
-EXECUTE_FILES			=$(addprefix $(EXECUTE_PATH), $(EXECUTE))
+ARGUMENTS_FILES			=$(addprefix $(ARGUMENTS_PATH), $(ARGUMENTS))
 
 ERROR_FILES			=$(addprefix $(ERROR_PATH), $(ERROR))
 
@@ -94,13 +94,14 @@ EXECVE_FILES		=$(addprefix $(EXECVE_PATH), $(EXECVE))
 DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
 										$(HISTORY:.c=.d) \
 										$(BUILTINTS_FILES:.c=.d) \
-										$(EXECUTE_FILES:.c=.d)) \
+										$(ARGUMENTS_FILES:.c=.d) \
 										$(ERROR_FILES:.c=.d) \
-										$(EXECVE_FILES:.c=.d)
+										$(EXECVE_FILES:.c=.d)) \
+										
 
 #add .d files to deps
 
-SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES) $(EXECUTE_FILES) $(ERROR_FILES) \
+SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES) $(ARGUMENTS_FILES) $(ERROR_FILES) \
 				$(EXECVE_FILES)
 
 ## add to sercs
