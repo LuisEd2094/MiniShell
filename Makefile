@@ -19,6 +19,8 @@ UNSET_PATH			= $(BUILTINTS)unset/
 BUILTINTS_PATH		= $(EXPORT_PATH) $(ENV_PATH) $(UNSET_PATH)
 PARSE_PATH			= parse_input/
 MINI_SHARED_PATH	= mini_shared/
+SIGNALS_PATH		= signals/
+
 
 ## Add new path, just need name/
 MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), \
@@ -31,6 +33,7 @@ MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), \
 											$(PARSE_PATH) \
 											$(MINI_SHARED_PATH) \
 											$(REDIR_PATH) \
+											$(SIGNALS_PATH) \
 											) 
 										
 #Add new path to objects
@@ -89,6 +92,9 @@ MINI_SHARED	=	get_next_word_and_len.c is_ascii_no_space.c skips.c \
 
 REDIRECTIONS	= aux_handle_redirections.c  handle_redirections.c  here_doc.c
 
+SIGNALS		=	signals.c
+
+
 
 ## Add names of your files
 
@@ -113,6 +119,9 @@ PARSE_FILES			= $(addprefix $(PARSE_PATH), $(PARSE))
 MINI_SHARED_FILES	= $(addprefix $(MINI_SHARED_PATH), $(MINI_SHARED))
 
 REDIR_FILES			= $(addprefix $(REDIR_PATH), $(REDIRECTIONS))
+
+SIGNALS_FILES		= $(addprefix $(SIGNALS_PATH), $(SIGNALS))
+
 ## append the path to your files
 
 DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
@@ -125,6 +134,7 @@ DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
 										$(PARSE_FILES:.c=.d) \
 										$(MINI_SHARED_FILES:.c=.d) \
 										$(REDIR_FILES:.c=.d) \
+										$(SIGNALS_FILES:.c=.d) \
 										) 
 										
 										
@@ -133,7 +143,7 @@ DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
 
 SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES) $(ARGUMENTS_FILES) $(ERROR_FILES) \
 				$(EXECVE_FILES) $(EXEC_CMDS_FILE) $(PARSE_FILES) $(MINI_SHARED_FILES) \
-				$(REDIR_FILES)
+				$(REDIR_FILES) $(SIGNALS_FILES)
 
 ## add to sercs
 
