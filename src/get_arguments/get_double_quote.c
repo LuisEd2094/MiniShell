@@ -16,6 +16,8 @@ char *get_double_quote(char *cmd, t_list *env_list)
         {
             env = get_env_str_from_quote(&new[i + 1], env_list);
             new = ft_replace(new, env, i, found_env);
+            if (new[ft_strlen(new) - 1] == '"')
+                new[ft_strlen(new) - 1] = '\0';
             free(env);
             found_env = 1;
         }
