@@ -11,4 +11,7 @@ typedef enum s_redir_type
 
 } t_redir_type;
 
+int     get_redir_type(char *input);
+
+
 #endif

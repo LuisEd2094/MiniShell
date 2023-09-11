@@ -1,5 +1,8 @@
 #include "redirections_internal.h"
-/*
+
+#include <fcntl.h>
+#include <libft.h>
+
 int close_redirections(t_minishell *mini)
 {
     dup2(mini->og_in, STDIN_FILENO);
@@ -29,7 +32,7 @@ int open_file(char *file_name, int redir_type)
     return (fd);
 }
 
-int execute_dup2(int fd, int redir_type, t_minishell *mini)
+int execute_dup2(int fd, int redir_type)
 {
     int std_fd;
 
@@ -37,7 +40,6 @@ int execute_dup2(int fd, int redir_type, t_minishell *mini)
     {
         std_fd = dup2(fd, STDOUT_FILENO);
         close(fd);
-
     }
     else
     {    
@@ -49,28 +51,62 @@ int execute_dup2(int fd, int redir_type, t_minishell *mini)
     return (1);
 }
 
-int handle_redirection(char *input, int *start, t_minishell *mini)
+int handle_redirection(char *redirection, char *file_name)
 {
     int i;
-    char *file_name;
     int redir_type;
     int fd; 
     
-    i = get_starting_pos(input);
-    redir_type = get_redir_type(input);
+    redir_type = get_redir_type(redirection);
+    /*
     file_name = get_file_name(&(input[i]), &i);
     if (!file_name)
-        return(0);
-    if (!execute_dup2(open_file(file_name, redir_type), redir_type, mini))
+        return(0);*/
+    if (!execute_dup2(open_file(file_name, redir_type), redir_type))
         return (0);
-    *start += i;
     return (1); 
 }
 
-
-int    check_and_handle_redirections(t_minishell *mini, int start, int end)
+void remove_redir_from_cmds(char **cmds, int i)
 {
-    char *input;
+    int j;
+    char    *temp;
+
+    j = i + 2;
+    while (cmds[j])
+    {
+        temp = cmds[i];
+        cmds[i] = cmds[j];
+        cmds[j] = temp;
+        i++;
+        j++;
+    }
+
+    while (i < j)
+    {
+        free(cmds[i]);
+        cmds[i] = NULL;
+        i++;
+    }
+}
+
+int    check_and_handle_redirections(char **cmds)
+{
+    int i;
+
+    i = 0;
+    while(cmds[i])
+    {
+        if (cmds[i][0] == '<' || cmds[i][0] == '>')
+        {
+            handle_redirection(cmds[i], cmds[i + 1]);
+            remove_redir_from_cmds(cmds, i);
+            i--;
+        }
+        i++;
+    }
+
+    /*
 
     input = mini->input;
     if (input [start] == '|')
@@ -85,5 +121,5 @@ int    check_and_handle_redirections(t_minishell *mini, int start, int end)
                 return (0);
         }
     }
-    return(1);
-}*/
+    return(1);*/
+}

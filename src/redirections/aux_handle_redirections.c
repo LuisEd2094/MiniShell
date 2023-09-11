@@ -16,6 +16,21 @@ char   *get_file_name(char *input, int *i)
 
 }
 
+int get_starting_pos(char *input)
+{
+    int i;
+
+    if (input[1] && input[1] == input[0])
+        i = 2;
+    else
+        i = 1;
+    i += get_white_space_size(&input[i]);
+    return (i);
+}
+*/
+
+
+
 int get_redir_type(char *input)
 {
     if (input[1] && input[0] == '>' && input[1] == '>')
@@ -27,15 +42,3 @@ int get_redir_type(char *input)
     else
         return (INPUT_REDIRECT);
 }
-
-int get_starting_pos(char *input)
-{
-    int i;
-
-    if (input[1] && input[1] == input[0])
-        i = 2;
-    else
-        i = 1;
-    i += get_white_space_size(&input[i]);
-    return (i);
-}*/
