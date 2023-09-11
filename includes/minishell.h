@@ -29,6 +29,7 @@ char    ***get_cmds_value(char * input, t_list *env);
 void    execute_cmds(char ***cmds, t_list *env_list);
 void    parse_input(t_minishell *mini);
 void    delete_temp_files(t_minishell *mini);
+void    handle_here_document(t_minishell *mini, int i);
 
 
 

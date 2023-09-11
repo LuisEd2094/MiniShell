@@ -11,6 +11,7 @@ BUILTINTS			= builtins/
 ARGUMENTS_PATH		= get_arguments/
 ERROR_PATH			= print_error/
 EXEC_CMDS_PATH		= execute_cmds/
+REDIR_PATH			= redirections/
 EXPORT_PATH			= $(BUILTINTS)export/
 ENV_PATH			= $(BUILTINTS)env/
 SHARED_PATH			= $(BUILTINTS)shared/
@@ -29,6 +30,7 @@ MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), \
 											$(EXEC_CMDS_PATH) \
 											$(PARSE_PATH) \
 											$(MINI_SHARED_PATH) \
+											$(REDIR_PATH) \
 											) 
 										
 #Add new path to objects
@@ -83,6 +85,8 @@ PARSE		=	parse_input.c
 
 MINI_SHARED	=	get_next_word_and_len.c is_ascii_no_space.c skips.c
 
+REDIRECTIONS	= aux_handle_redirections.c  handle_redirections.c  here_doc.c
+
 
 ## Add names of your files
 
@@ -106,6 +110,8 @@ EXEC_CMDS_FILE		= $(addprefix $(EXEC_CMDS_PATH), $(EXEC_CMDS))
 PARSE_FILES			= $(addprefix $(PARSE_PATH), $(PARSE))
 
 MINI_SHARED_FILES	= $(addprefix $(MINI_SHARED_PATH), $(MINI_SHARED))
+
+REDIR_FILES			= $(addprefix $(REDIR_PATH), $(REDIRECTIONS))
 ## append the path to your files
 
 DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
@@ -117,6 +123,7 @@ DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
 										$(EXEC_CMDS_FILE:.c=.d) \
 										$(PARSE_FILES:.c=.d) \
 										$(MINI_SHARED_FILES:.c=.d) \
+										$(REDIR_FILES:.c=.d) \
 										) 
 										
 										
@@ -124,7 +131,8 @@ DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
 #add .d files to deps
 
 SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES) $(ARGUMENTS_FILES) $(ERROR_FILES) \
-				$(EXECVE_FILES) $(EXEC_CMDS_FILE) $(PARSE_FILES) $(MINI_SHARED_FILES)
+				$(EXECVE_FILES) $(EXEC_CMDS_FILE) $(PARSE_FILES) $(MINI_SHARED_FILES) \
+				$(REDIR_FILES)
 
 ## add to sercs
 

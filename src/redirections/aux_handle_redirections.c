@@ -1,5 +1,5 @@
-#include "execute_internal.h"
-
+#include "redirections_internal.h"
+/*
 char   *get_file_name(char *input, int *i)
 {
     char    *new;
@@ -38,4 +38,4 @@ int get_starting_pos(char *input)
         i = 1;
     i += get_white_space_size(&input[i]);
     return (i);
-}
+}*/

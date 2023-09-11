@@ -1,5 +1,5 @@
-#include "execute_internal.h"
-
+#include "redirections_internal.h"
+/*
 int close_redirections(t_minishell *mini)
 {
     dup2(mini->og_in, STDIN_FILENO);
@@ -86,4 +86,4 @@ int    check_and_handle_redirections(t_minishell *mini, int start, int end)
         }
     }
     return(1);
-}
+}*/
