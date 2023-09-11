@@ -16,6 +16,8 @@ ENV_PATH			= $(BUILTINTS)env/
 SHARED_PATH			= $(BUILTINTS)shared/
 UNSET_PATH			= $(BUILTINTS)unset/
 BUILTINTS_PATH		= $(EXPORT_PATH) $(ENV_PATH) $(SHARED_PATH) $(UNSET_PATH)
+PARSE_PATH			= parse_input/
+MINI_SHARED_PATH	= mini_shared/
 
 ## Add new path, just need name/
 MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), \
@@ -25,6 +27,8 @@ MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), \
 											$(ERROR_PATH) \
 											$(EXECVE_PATH)\
 											$(EXEC_CMDS_PATH) \
+											$(PARSE_PATH) \
+											$(MINI_SHARED_PATH) \
 											) 
 										
 #Add new path to objects
@@ -67,14 +71,17 @@ UNSET		=	unset.c
 SHARED		=	builtins_shared.c ft_single_split.c get_env_value_str.c
 
 ARGUMENTS	=	get_cmd_value.c  get_double_quote.c move_start_and_argument_len.c \
-			is_ascii_no_space.c get_cmd_argument.c replace_env.c \
-			get_next_word_and_len.c skips.c
+				 get_cmd_argument.c replace_env.c
 
-EXEC_CMDS	= execute_cmds.c
+EXEC_CMDS	=	execute_cmds.c
 
 ERROR		=	print_error.c
 
 EXECVE		=	execve.c
+
+PARSE		=	parse_input.c
+
+MINI_SHARED	=	get_next_word_and_len.c is_ascii_no_space.c skips.c
 
 
 ## Add names of your files
@@ -95,6 +102,10 @@ BUILTINTS_FILES		=$(EXPORT_FILES) $(ENV_FILES) $(SHARED_BINS_FILES) $(UNSET_FILE
 EXECVE_FILES		=$(addprefix $(EXECVE_PATH), $(EXECVE))
 
 EXEC_CMDS_FILE		= $(addprefix $(EXEC_CMDS_PATH), $(EXEC_CMDS))
+
+PARSE_FILES			= $(addprefix $(PARSE_PATH), $(PARSE))
+
+MINI_SHARED_FILES	= $(addprefix $(MINI_SHARED_PATH), $(MINI_SHARED))
 ## append the path to your files
 
 DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
@@ -103,14 +114,17 @@ DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
 										$(ARGUMENTS_FILES:.c=.d) \
 										$(ERROR_FILES:.c=.d) \
 										$(EXECVE_FILES:.c=.d) \
-										$(EXEC_CMDS_FILE:.c=.d)) \
+										$(EXEC_CMDS_FILE:.c=.d) \
+										$(PARSE_FILES:.c=.d) \
+										$(MINI_SHARED_FILES:.c=.d) \
+										) 
 										
 										
 
 #add .d files to deps
 
 SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES) $(ARGUMENTS_FILES) $(ERROR_FILES) \
-				$(EXECVE_FILES) $(EXEC_CMDS_FILE)
+				$(EXECVE_FILES) $(EXEC_CMDS_FILE) $(PARSE_FILES) $(MINI_SHARED_FILES)
 
 ## add to sercs
 

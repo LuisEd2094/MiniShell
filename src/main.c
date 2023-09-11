@@ -29,6 +29,7 @@ int main(int argc, char **argv, char **env)
     t_minishell mini;
     
     mini.env_list = init_env(env);
+    mini.here_doc_number = 0;
     work_history(INIT, NULL);
     while (1) {
         mini.input = readline(">> "); // Prompt the user and read mini.input testing open quotes
@@ -48,6 +49,7 @@ int main(int argc, char **argv, char **env)
         if (mini.input[0] != '\0') 
         {
             work_history(UPDATE, mini.input);
+            parse_input(&mini);
             // Using tab here to split input using spaces
             // here we should filter the input, we should make sure that each value inside tab corresponds to a part of the command to be executed
             // so if we run something like ls -la | grep Make
@@ -57,6 +59,11 @@ int main(int argc, char **argv, char **env)
             // like wise, if one of the params is calling to check an env, such as $PATH, we we filter it we should store the expanded value intabs, 
             // so echo $PATH should become echo, (what ever value path has)
             mini.cmds = get_cmds_value(mini.input, mini.env_list);
+            for (int i = 0; mini.cmds[i]; i++)
+            {
+                for (int j = 0; mini.cmds[i][j]; j++)
+                    printf("cmd[%s]\n", mini.cmds[i][j]);
+            }
             execute_cmds(mini.cmds, mini.env_list);
             /*
             printf("First argument of first cmd [%s]\n", mini.cmds[0][0] );
