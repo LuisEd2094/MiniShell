@@ -11,6 +11,7 @@ BUILTINTS			= builtins/
 ARGUMENTS_PATH		= get_arguments/
 ERROR_PATH			= print_error/
 EXEC_CMDS_PATH		= execute_cmds/
+SIGNALS_PATH		= signals/
 REDIR_PATH			= redirections/
 EXPORT_PATH			= $(BUILTINTS)export/
 ENV_PATH			= $(BUILTINTS)env/
