@@ -1,5 +1,7 @@
 #include <minishell.h>
 
+void    get_doc_name(t_minishell *mini);
+
 void example_of_heredoc(t_minishell *mini)
 {
 
@@ -25,6 +27,4 @@ void    parse_input(t_minishell *mini)
         i++;
     }
     mini->here_doc_number = 0;
-    example_of_heredoc(mini);
-    return; 
 }
