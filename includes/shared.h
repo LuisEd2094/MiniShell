@@ -9,6 +9,8 @@ int get_arg_size_skip_redirections(char *input);
 
 int    get_redirection_size(char *input);
 int is_ascii_no_space(char c);
+char *ft_replace(char *cmd, char *env, int i, bool found);
+
 
 
 #endif

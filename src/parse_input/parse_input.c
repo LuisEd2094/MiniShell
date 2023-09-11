@@ -1,6 +1,17 @@
 #include <minishell.h>
 
+void example_of_heredoc(t_minishell *mini)
+{
 
+    get_doc_name(mini);
+    int fd = open(mini->here_doc_name, O_RDONLY);
+    dup2(fd, STDIN_FILENO);
+
+    char *cat[2];
+    cat[0] = "cat";
+    cat[1] = NULL;
+    execve("/usr/bin/cat", cat, NULL);
+}
 
 void    parse_input(t_minishell *mini)
 {
@@ -14,5 +25,6 @@ void    parse_input(t_minishell *mini)
         i++;
     }
     mini->here_doc_number = 0;
+    example_of_heredoc(mini);
     return; 
 }

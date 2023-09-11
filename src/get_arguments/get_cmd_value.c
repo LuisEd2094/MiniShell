@@ -1,14 +1,5 @@
 #include "execute_internal.h"
 
-
-
-
-
-
-
-
-
-
 int get_cmd_count(char **cmds)
 {
     int cmd_count;

@@ -1,6 +1,4 @@
-#include "execute_internal.h"
-
-
+#include <minishell.h>
 
 char *get_second_half(char *cmd)
 {
@@ -31,7 +29,6 @@ char *get_first_half(char *cmd, int i)
 
 char *ft_replace(char *cmd, char *env, int i, bool found)
 {
-    static  bool done_replace = 0; 
     char    *str_first_half;
     char    *str_second_half;
     char    *new;

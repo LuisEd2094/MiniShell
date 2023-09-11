@@ -31,6 +31,25 @@ void    delete_temp_files(t_minishell *mini)
     }
 }
 
+static char *check_input(char *input, t_minishell *mini)
+{
+    int i;
+    char *env;
+
+    i = 0;
+    while(input[i])
+    {
+        if(input[i] == '$' && is_ascii_no_space(input[i + 1]))
+        {
+            env = get_env_str(get_next_word(&input[i + 1]), mini->env_list);
+            input = ft_replace(input, env, i, 1);
+        }
+        i++;
+    }
+    return (input);
+}
+
+
 void    handle_here_document(t_minishell *mini, int i)
 {
     int len;
@@ -45,23 +64,11 @@ void    handle_here_document(t_minishell *mini, int i)
         input = readline(">");
         if (ft_strcmp(input, mini->here_doc_end) == 0)
             break;
+        input = check_input(input, mini);
         write (fd, input, ft_strlen(input));
         write (fd, "\n", 1);
+        free(input);
     }
     close(fd);
     free(mini->here_doc_end);    
-}
-
-
-void example_of_heredoc(t_minishell *mini)
-{
-
-    get_doc_name(mini);
-    int fd = open(mini->here_doc_name, O_RDONLY);
-    dup2(fd, STDIN_FILENO);
-
-    char *cat[2];
-    cat[0] = "cat";
-    cat[1] = NULL;
-    execve("/usr/bin/cat", cat, NULL);
 }

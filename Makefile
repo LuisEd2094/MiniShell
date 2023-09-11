@@ -14,9 +14,8 @@ EXEC_CMDS_PATH		= execute_cmds/
 REDIR_PATH			= redirections/
 EXPORT_PATH			= $(BUILTINTS)export/
 ENV_PATH			= $(BUILTINTS)env/
-SHARED_PATH			= $(BUILTINTS)shared/
 UNSET_PATH			= $(BUILTINTS)unset/
-BUILTINTS_PATH		= $(EXPORT_PATH) $(ENV_PATH) $(SHARED_PATH) $(UNSET_PATH)
+BUILTINTS_PATH		= $(EXPORT_PATH) $(ENV_PATH) $(UNSET_PATH)
 PARSE_PATH			= parse_input/
 MINI_SHARED_PATH	= mini_shared/
 
@@ -70,10 +69,9 @@ ENV			= 	env.c
 
 UNSET		=	unset.c
 
-SHARED		=	builtins_shared.c ft_single_split.c get_env_value_str.c
 
 ARGUMENTS	=	get_cmd_value.c  get_double_quote.c move_start_and_argument_len.c \
-				 get_cmd_argument.c replace_env.c
+				 get_cmd_argument.c 
 
 EXEC_CMDS	=	execute_cmds.c
 
@@ -83,7 +81,10 @@ EXECVE		=	execve.c
 
 PARSE		=	parse_input.c
 
-MINI_SHARED	=	get_next_word_and_len.c is_ascii_no_space.c skips.c
+MINI_SHARED	=	get_next_word_and_len.c is_ascii_no_space.c skips.c \
+				builtins_shared.c ft_single_split.c get_env_value_str.c \
+				replace_env.c
+
 
 REDIRECTIONS	= aux_handle_redirections.c  handle_redirections.c  here_doc.c
 
@@ -98,10 +99,9 @@ ERROR_FILES			=$(addprefix $(ERROR_PATH), $(ERROR))
 
 EXPORT_FILES		=$(addprefix $(EXPORT_PATH), $(EXPORT))
 ENV_FILES			=$(addprefix $(ENV_PATH), $(ENV))
-SHARED_BINS_FILES	=$(addprefix $(SHARED_PATH), $(SHARED))
 UNSET_FILES			=$(addprefix $(UNSET_PATH), $(UNSET))
 
-BUILTINTS_FILES		=$(EXPORT_FILES) $(ENV_FILES) $(SHARED_BINS_FILES) $(UNSET_FILES)
+BUILTINTS_FILES		=$(EXPORT_FILES) $(ENV_FILES) $(UNSET_FILES)
 
 EXECVE_FILES		=$(addprefix $(EXECVE_PATH), $(EXECVE))
 
