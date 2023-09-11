@@ -11,6 +11,7 @@ BUILTINTS			= builtins/
 ARGUMENTS_PATH		= get_arguments/
 ERROR_PATH			= print_error/
 EXEC_CMDS_PATH		= execute_cmds/
+SIGNALS_PATH		= signals/
 EXPORT_PATH			= $(BUILTINTS)export/
 ENV_PATH			= $(BUILTINTS)env/
 SHARED_PATH			= $(BUILTINTS)shared/
@@ -25,6 +26,7 @@ MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), \
 											$(ERROR_PATH) \
 											$(EXECVE_PATH)\
 											$(EXEC_CMDS_PATH) \
+											$(SIGNALS_PATH) \
 											) 
 										
 #Add new path to objects
@@ -67,8 +69,10 @@ UNSET		=	unset.c
 SHARED		=	builtins_shared.c ft_single_split.c get_env_value_str.c
 
 ARGUMENTS	=	get_cmd_value.c  get_double_quote.c move_start_and_argument_len.c \
-			is_ascii_no_space.c get_cmd_argument.c replace_env.c \
-			get_next_word_and_len.c skips.c
+				is_ascii_no_space.c get_cmd_argument.c replace_env.c \
+				get_next_word_and_len.c skips.c
+
+SIGNALS		=	signals.c
 
 EXEC_CMDS	= execute_cmds.c
 
@@ -94,7 +98,9 @@ BUILTINTS_FILES		=$(EXPORT_FILES) $(ENV_FILES) $(SHARED_BINS_FILES) $(UNSET_FILE
 
 EXECVE_FILES		=$(addprefix $(EXECVE_PATH), $(EXECVE))
 
-EXEC_CMDS_FILE		= $(addprefix $(EXEC_CMDS_PATH), $(EXEC_CMDS))
+EXEC_CMDS_FILES		= $(addprefix $(EXEC_CMDS_PATH), $(EXEC_CMDS))
+
+SIGNALS_FILES		= $(addprefix $(SIGNALS_PATH), $(SIGNALS))
 ## append the path to your files
 
 DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
@@ -103,14 +109,16 @@ DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
 										$(ARGUMENTS_FILES:.c=.d) \
 										$(ERROR_FILES:.c=.d) \
 										$(EXECVE_FILES:.c=.d) \
-										$(EXEC_CMDS_FILE:.c=.d)) \
+										$(EXEC_CMDS_FILES:.c=.d) \
+										$(SIGNALS_FILES:.c=.d) \
+										) 
 										
 										
 
 #add .d files to deps
 
 SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES) $(ARGUMENTS_FILES) $(ERROR_FILES) \
-				$(EXECVE_FILES) $(EXEC_CMDS_FILE)
+				$(EXECVE_FILES) $(EXEC_CMDS_FILES) $(SIGNALS_FILES)
 
 ## add to sercs
 

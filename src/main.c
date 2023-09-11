@@ -23,6 +23,15 @@ void free_cmds(char ***cmds)
     free(cmds);
 }
 
+void exit_mini(t_minishell *mini)
+{
+    write(0, "exit\n", 5);
+    work_history(CLOSE, NULL);
+    free_env_list(mini->env_list);
+    exit(0);
+
+}
+
 int main(int argc, char **argv, char **env)
 {
     char        **tab;
@@ -30,15 +39,16 @@ int main(int argc, char **argv, char **env)
     
     mini.env_list = init_env(env);
     work_history(INIT, NULL);
+    signal_action();
     while (1) {
         mini.input = readline(">> "); // Prompt the user and read mini.input testing open quotes
-        if (mini.input[0] == '"' && mini.input[1] != '"')//test to check how to handle unclosed quotes
+        /*if (mini.input[0] == '"' && mini.input[1] != '"')//test to check how to handle unclosed quotes
         {
             char *second_input = readline(">> ");
             printf ("first,<%s> second <%s>\n", mini.input, second_input);
-        }
-        if (!mini.input) {
-            printf("\n");
+        }*/
+        if (!mini.input) { //if CTRL + D it goes through here when input is empty 
+            exit_mini(&mini);
         }
         if (ft_strcmp(mini.input, "exit") == 0)
         {
