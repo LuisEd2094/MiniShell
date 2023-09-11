@@ -37,16 +37,15 @@ int execute_dup2(int fd, int redir_type, t_minishell *mini)
     {
         std_fd = dup2(fd, STDOUT_FILENO);
         close(fd);
-        if (std_fd < 0)
-            return (0);
+
     }
     else
     {    
         std_fd = dup2(fd, STDIN_FILENO);
         close(fd);
-        if (std_fd < 0)
-            return (0);
     }
+    if (std_fd < 0)
+        return (0);
     return (1);
 }
 

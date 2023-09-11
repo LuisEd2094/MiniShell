@@ -70,6 +70,7 @@ int main(int argc, char **argv, char **env)
             if (mini.cmds[1] && mini.cmds[1][0] )
                 printf("First argument of scd cmd [%s]\n", mini.cmds[1][0] );*/
             free_cmds(mini.cmds);
+            delete_temp_files(&mini);
         }
         free(mini.input);
         

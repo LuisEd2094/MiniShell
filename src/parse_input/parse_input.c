@@ -5,12 +5,30 @@ char *get_doc_name(t_minishell *mini)
     char *temp_name;
 
     temp_name = ft_itoa(mini->here_doc_number);
-    ft_strlcpy(mini->here_doc_name, "/tmp/tmp_", ft_strlen("/tmp/tmp_") + 1);
+    ft_strlcpy(mini->here_doc_name, TEMP_FILE_NAME, ft_strlen(TEMP_FILE_NAME) + 1);
 
     ft_strlcat(mini->here_doc_name, temp_name, ft_strlen(mini->here_doc_name) \
         + ft_strlen(temp_name) + 1);
     mini->here_doc_number++;
     free(temp_name);
+}
+
+void    delete_temp_files(t_minishell *mini)
+{
+    while(1)
+    {
+        get_doc_name(mini);
+        if (access(mini->here_doc_name, F_OK) !=  -1)
+        {
+            unlink(mini->here_doc_name);
+            mini->here_doc_number++;
+        }
+        else
+        {
+            mini->here_doc_number = 0;
+            break;
+        }    
+    }
 }
 
 void    handle_here_document(t_minishell *mini, int i)
