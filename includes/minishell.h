@@ -35,7 +35,9 @@ void    handle_here_document(t_minishell *mini, int i);
 
 
 
-int    check_and_handle_redirections(char **cmds);
+int    check_and_handle_redirections(char **cmds, t_minishell *mini);
+int close_redirections(t_minishell *mini);
+
 
 
 #endif

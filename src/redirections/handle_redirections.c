@@ -25,8 +25,6 @@ int open_file(char *file_name, int redir_type)
         fd = open(file_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
     else if (redir_type == APPEND_OUTPUT)
         fd = open(file_name, O_RDWR | O_CREAT | O_APPEND, 0644);
-    else
-        ft_printf("Should handle logic for Here document \n");
     if (fd < 0)
         return (print_error(file_name));
     return (fd);
@@ -58,10 +56,6 @@ int handle_redirection(char *redirection, char *file_name)
     int fd; 
     
     redir_type = get_redir_type(redirection);
-    /*
-    file_name = get_file_name(&(input[i]), &i);
-    if (!file_name)
-        return(0);*/
     if (!execute_dup2(open_file(file_name, redir_type), redir_type))
         return (0);
     return (1); 
@@ -90,7 +84,22 @@ void remove_redir_from_cmds(char **cmds, int i)
     }
 }
 
-int    check_and_handle_redirections(char **cmds)
+int     read_here_document(t_minishell *mini)
+{
+    int fd;
+    int std_fd;
+
+    get_doc_name(mini);
+    fd = open(mini->here_doc_name, O_RDONLY);
+    std_fd = dup2(fd, STDIN_FILENO);
+    close(fd);
+
+    if (std_fd < 0)
+        return (0);
+    return (1);
+}
+
+int    check_and_handle_redirections(char **cmds, t_minishell *mini)
 {
     int i;
 
@@ -99,27 +108,13 @@ int    check_and_handle_redirections(char **cmds)
     {
         if (cmds[i][0] == '<' || cmds[i][0] == '>')
         {
-            handle_redirection(cmds[i], cmds[i + 1]);
+            if (cmds[i][0] == '<' && cmds[i][1] == '<')
+                read_here_document(mini);
+            else
+                handle_redirection(cmds[i], cmds[i + 1]);
             remove_redir_from_cmds(cmds, i);
             i--;
         }
         i++;
     }
-
-    /*
-
-    input = mini->input;
-    if (input [start] == '|')
-        start++;
-    while (input[start] && start <= end)
-    {
-        while(input[start] && start <= end && (input[start] != '>' && input[start] != '<'))
-            start++;
-        if (input[start] == '>' || input[start] == '<')
-        {
-            if (!handle_redirection(&input[start], &start, mini))
-                return (0);
-        }
-    }
-    return(1);*/
 }

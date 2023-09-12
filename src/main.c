@@ -39,6 +39,8 @@ int main(int argc, char **argv, char **env)
     
     mini.env_list = init_env(env);
     mini.here_doc_number = 0;
+    mini.og_in = dup(STDIN_FILENO);
+    mini.og_out = dup(STDOUT_FILENO);
     work_history(INIT, NULL);
     signal_action();
     while (1) {
@@ -70,19 +72,23 @@ int main(int argc, char **argv, char **env)
             // so echo $PATH should become echo, (what ever value path has)
             mini.cmds = get_cmds_value(mini.input, mini.env_list);
 
-            check_and_handle_redirections(mini.cmds[0]);
+            check_and_handle_redirections(mini.cmds[0], &mini);
+            //check_and_handle_redirections(mini.cmds[1], &mini);
+
             execute_cmds(mini.cmds, mini.env_list);
             for (int i = 0; mini.cmds[i]; i++)
             {
                 for (int j = 0; mini.cmds[i][j]; j++)
                     printf("cmd[%s]\n", mini.cmds[i][j]);
             }
+            mini.here_doc_number = 0;
             /*
             printf("First argument of first cmd [%s]\n", mini.cmds[0][0] );
             if (mini.cmds[1] && mini.cmds[1][0] )
                 printf("First argument of scd cmd [%s]\n", mini.cmds[1][0] );*/
             free_cmds(mini.cmds);
             delete_temp_files(&mini);
+            close_redirections(&mini);
         }
         free(mini.input);
         

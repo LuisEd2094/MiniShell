@@ -12,6 +12,8 @@ typedef enum s_redir_type
 } t_redir_type;
 
 int     get_redir_type(char *input);
+char    *get_doc_name(t_minishell *mini);
+
 
 
 #endif

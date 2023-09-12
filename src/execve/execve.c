@@ -89,6 +89,7 @@ char *get_path_name(char **cmd, char **path_list)
 
     path_name = NULL;
     i = 0;
+    found_path = 0;
     while (path_list[i])
     {
         if (path_list[i][ft_strlen(path_list[i])] != '/')
@@ -102,8 +103,8 @@ char *get_path_name(char **cmd, char **path_list)
             found_path = 1;
             break;
         }
-        if (path_list[i + 1])
-            free(path_name);
+        free(path_name);
+        path_name = NULL;
         i++;
     }
     free_path_list(path_list);
@@ -125,6 +126,7 @@ void    try_execve(char **cmd, t_list *env_list)
     }
     else
         printf("minishell: %s: command not found\n", cmd[0]);
-    free (path_name);
+    if (path_name)
+        free (path_name);
     return ;
 }
