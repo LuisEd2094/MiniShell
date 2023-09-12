@@ -1,10 +1,8 @@
 Libft
 Makefile
-Second Infile
 a.out
 deps
 includes
-infile
 lstest
 macro.sh
 minishell
@@ -12,7 +10,6 @@ my_history.txt
 obj
 outfile
 readline.supp
-second_infile
 src
 test
 test.c
