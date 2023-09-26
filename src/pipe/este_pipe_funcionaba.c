@@ -4,20 +4,30 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-int     make_pipe(int **pipes, int num_pipes)
-{
-        int     i;
+/*
+** por ahora para ejecutar
 
-        i = -1;
-        while (++i < num_pipes)
-        {
-                if (pipe(pipes[i]) == -1)
-                {
-                        perror("Error en pipe");
-                        return (1);
-                }
-        }
-        return (0);
+int ft_execute(char **command)
+{
+    execvp(command[0], command);
+    return (0);
+}
+*/
+
+int	make_pipe(int pipes[][2], int num_pipes)
+{
+	int	i;
+
+	i = -1;
+	while (++i < num_pipes)
+	{
+		if (pipe(pipes[i]) == -1)
+		{
+			perror("Error en pipe");
+			return (1);
+		}
+	}
+	return (0);
 }
 
 /*
@@ -26,29 +36,29 @@ int     make_pipe(int **pipes, int num_pipes)
 ** Cierra todas las otras tuberías en este proceso hijo
 */
 
-void    duplicate_and_close(int **pipes, int num_pipes, int i)
+void	duplicate_and_close(int pipes[][2], int num_pipes, int i)
 {
-        int     j;
+	int	j;
 
-        if (i > 0)
-        {
-                dup2(pipes[i - 1][0], STDIN_FILENO);
-                close(pipes[i - 1][0]);
-        }
-        if (i < num_pipes - 1)
-        {
-                dup2(pipes[i][1], STDOUT_FILENO);
-                close(pipes[i][1]);
-        }
-        j = -1;
-        while (++j < num_pipes - 1)
-        {
-                if (j != i)
-                {
-                        close(pipes[j][0]);
-                        close(pipes[j][1]);
-                }
-        }
+	if (i > 0)
+	{
+		dup2(pipes[i - 1][0], STDIN_FILENO);
+		close(pipes[i - 1][0]);
+	}
+	if (i < num_pipes - 1)
+	{
+		dup2(pipes[i][1], STDOUT_FILENO);
+		close(pipes[i][1]);
+	}
+	j = -1;
+	while (++j < num_pipes - 1)
+	{
+		if (j != i)
+		{
+			close(pipes[j][0]);
+			close(pipes[j][1]);
+		}
+	}
 }
 
 /*
@@ -56,57 +66,58 @@ void    duplicate_and_close(int **pipes, int num_pipes, int i)
 ** Espera a que todos los procesos hijos terminen
 */
 
-void    refinement(int **pipes, int num_pipes)
+void	refinement(int pipes[][2], int num_pipes)
 {
-        int     i;
+	int	i;
 
-        i = -1;
-        while (++i < num_pipes - 1)
-        {
-                close(pipes[i][0]);
-                close(pipes[i][1]);
-        }
-        i = -1;
-        while (++i < num_pipes)
-                wait(NULL);
+	i = -1;
+	while (++i < num_pipes - 1)
+	{
+		close(pipes[i][0]);
+		close(pipes[i][1]);
+	}
+	i = -1;
+	while (++i < num_pipes)
+		wait(NULL);
 }
 
-int     excecute_pipe(char ***commands, int **pipes, int num_pipes)
+int	execute_pipe(char ***commands, int pipes[][2], int num_pipes, int i)
 {
-        pid_t   pid;
+	pid_t	pid;
 
-        pid = fork();
-        if (pid == -1)
-        {
-                perror("Error en fork");
-                return (1);
-        }
-        if (pid == 0)
-        {
-                duplicate_and_close(pipes, num_pipes, i);
-                if (ft_execute(commands[i]))
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("Error en fork");
+		return (1);
+	}
+	if (pid == 0)
+	{
+		duplicate_and_close(pipes, num_pipes, i);
+		if (ft_execute(commands[i]))
 		{
 			perror("Error en execvp");
 			return (1);
 		}
-        }
+	}
+	return (0);
 }
 
-int     ft_pipe(char ***commands, int num_pipes)
+int	ft_pipe(char ***commands, int num_pipes)
 {
-        int     pipes[num_pipes - 1][2];
-        int     i;
+	int	pipes[num_pipes - 1][2];
+	int	i;
 
-        i = -1;
-        if (make_pipe(pipes, num_pipes))
-                return (1);
-        while (++i < num_pipes)
-        {
-                if (excecute_pipe(commands, pipes, num_pipes))
-                        return (1);
-        }
-        refinement(pipes, num_pipes);
-        return (0);
+	i = -1;
+	if (make_pipe(pipes, num_pipes))
+		return (1);
+	while (++i < num_pipes)
+	{
+		if (execute_pipe(commands, pipes, num_pipes, i))
+			return (1);
+	}
+	refinement(pipes, num_pipes);
+	return (0);
 }
 
 /*
@@ -124,7 +135,7 @@ int main() {
     while (commands[num_pipes])
         num_pipes++;
     printf("%d", num_pipes);
-    execute_pipe(commands, num_pipes);
+    ft_pipe(commands, num_pipes);
 
     return 0;
 }
