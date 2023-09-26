@@ -30,10 +30,10 @@ int	**malloc_pipe(int num_pipes)
 
 void	free_pipe(int **pipes, int num_pipes)
 {
-	int i;
+	int	i;
 
 	i = -1;
-	while ( ++i < num_pipes)
+	while (++i < num_pipes)
 		free(pipes[i]);
 	free(pipes);
 }
