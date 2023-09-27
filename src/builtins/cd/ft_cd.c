@@ -1,4 +1,4 @@
-#include "./MS_functions.h"
+#include <builtins.h>
 
 int	check_home(char *home_directory)
 {	
