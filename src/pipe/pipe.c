@@ -85,6 +85,7 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 			perror("Error en execute");
 			return (1);
 		}
+		execute_cmds(commands[i], mini->env_list);
 	}
 	return (0);
 }
@@ -92,7 +93,11 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 {
 	int	i;
+	int	num_pipes;
 
+	num_pipes = 1;
+	while (commands[num_pipes])
+		num_pipes++;
 	mini->pipes = malloc_pipe(num_pipes);
 	if (mini->pipes == NULL)
 		return(1);
