@@ -4,9 +4,38 @@ RM          = rm -f
 SRCS_PATH           = src/
 OBJS_PATH           = obj/
 HISTORY_PATH			= history/
+EXECVE_PATH			= execve/
+
+#BUILT INS variables
+BUILTINTS			= builtins/
+ARGUMENTS_PATH		= get_arguments/
+ERROR_PATH			= print_error/
+EXEC_CMDS_PATH		= execute_cmds/
+SIGNALS_PATH		= signals/
+REDIR_PATH			= redirections/
+EXPORT_PATH			= $(BUILTINTS)export/
+ENV_PATH			= $(BUILTINTS)env/
+UNSET_PATH			= $(BUILTINTS)unset/
+BUILTINTS_PATH		= $(EXPORT_PATH) $(ENV_PATH) $(UNSET_PATH)
+PARSE_PATH			= parse_input/
+MINI_SHARED_PATH	= mini_shared/
+SIGNALS_PATH		= signals/
+
 
 ## Add new path, just need name/
-MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), $(HISTORY_PATH)) ##
+MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), \
+											$(HISTORY_PATH) \
+											$(BUILTINTS_PATH) \
+											$(ARGUMENTS_PATH) \
+											$(ERROR_PATH) \
+											$(EXECVE_PATH)\
+											$(EXEC_CMDS_PATH) \
+											$(PARSE_PATH) \
+											$(MINI_SHARED_PATH) \
+											$(REDIR_PATH) \
+											$(SIGNALS_PATH) \
+											) 
+										
 #Add new path to objects
 
 DEPS_PATH	= deps/
@@ -37,18 +66,84 @@ SRC         =	main.c
 
 HISTORY		= 	add_to_history.c  close_history.c  history_init.c  \
 				remove_new_line.c  update_history.c work_history.c
-				
+
+EXPORT		=	export.c bts_for_export.c
+
+ENV			= 	env.c
+
+UNSET		=	unset.c
+
+
+ARGUMENTS	=	get_cmd_value.c  get_double_quote.c move_start_and_argument_len.c \
+				 get_cmd_argument.c 
+
+EXEC_CMDS	=	execute_cmds.c
+
+ERROR		=	print_error.c
+
+EXECVE		=	execve.c
+
+PARSE		=	parse_input.c
+
+MINI_SHARED	=	get_next_word_and_len.c is_ascii_no_space.c skips.c \
+				builtins_shared.c ft_single_split.c get_env_value_str.c \
+				replace_env.c
+
+
+REDIRECTIONS	= aux_handle_redirections.c  handle_redirections.c  here_doc.c
+
+SIGNALS		=	signals.c
+
+
+
 ## Add names of your files
 
-HISTORY_FILES	=	$(addprefix $(HISTORY_PATH), $(HISTORY))
+HISTORY_FILES		=$(addprefix $(HISTORY_PATH), $(HISTORY))
+
+ARGUMENTS_FILES			=$(addprefix $(ARGUMENTS_PATH), $(ARGUMENTS))
+
+ERROR_FILES			=$(addprefix $(ERROR_PATH), $(ERROR))
+
+EXPORT_FILES		=$(addprefix $(EXPORT_PATH), $(EXPORT))
+ENV_FILES			=$(addprefix $(ENV_PATH), $(ENV))
+UNSET_FILES			=$(addprefix $(UNSET_PATH), $(UNSET))
+
+BUILTINTS_FILES		=$(EXPORT_FILES) $(ENV_FILES) $(UNSET_FILES)
+
+EXECVE_FILES		=$(addprefix $(EXECVE_PATH), $(EXECVE))
+
+EXEC_CMDS_FILE		= $(addprefix $(EXEC_CMDS_PATH), $(EXEC_CMDS))
+
+PARSE_FILES			= $(addprefix $(PARSE_PATH), $(PARSE))
+
+MINI_SHARED_FILES	= $(addprefix $(MINI_SHARED_PATH), $(MINI_SHARED))
+
+REDIR_FILES			= $(addprefix $(REDIR_PATH), $(REDIRECTIONS))
+
+SIGNALS_FILES		= $(addprefix $(SIGNALS_PATH), $(SIGNALS))
 
 ## append the path to your files
 
-DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) $(HISTORY:.c=.d))
+DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
+										$(HISTORY:.c=.d) \
+										$(BUILTINTS_FILES:.c=.d) \
+										$(ARGUMENTS_FILES:.c=.d) \
+										$(ERROR_FILES:.c=.d) \
+										$(EXECVE_FILES:.c=.d) \
+										$(EXEC_CMDS_FILE:.c=.d) \
+										$(PARSE_FILES:.c=.d) \
+										$(MINI_SHARED_FILES:.c=.d) \
+										$(REDIR_FILES:.c=.d) \
+										$(SIGNALS_FILES:.c=.d) \
+										) 
+										
+										
 
 #add .d files to deps
 
-SRC			+=	$(HISTORY_FILES)
+SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES) $(ARGUMENTS_FILES) $(ERROR_FILES) \
+				$(EXECVE_FILES) $(EXEC_CMDS_FILE) $(PARSE_FILES) $(MINI_SHARED_FILES) \
+				$(REDIR_FILES) $(SIGNALS_FILES)
 
 ## add to sercs
 

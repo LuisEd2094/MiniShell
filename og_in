@@ -1,0 +1,4 @@
+i am trying to execute
+cmd[mini-]
+cmd[=]
+cmd[dup(STDIN_FILENO);]

@@ -1,7 +1,8 @@
 *.d
 *.o
 minishell
-my_history.txt
+*.txt
+*.exe
 libft.a
 a.out
 create_lines

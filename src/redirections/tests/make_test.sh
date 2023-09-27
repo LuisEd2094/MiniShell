@@ -1,0 +1,1 @@
+gcc -I./ -i../redirections_internal.h -I/home/luised2094/MiniShell/Libft/includes -I/home/luised2094/MiniShell/includes  mytest.c  unity.c ../handle_redirections.c -o test && ./test
