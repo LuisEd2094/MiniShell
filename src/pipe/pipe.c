@@ -94,6 +94,8 @@ int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 	int	i;
 
 	mini->pipes = malloc_pipe(num_pipes);
+	if (mini->pipes == NULL)
+		return(1);
 	i = -1;
 	if (make_pipe(mini->pipes, num_pipes))
 		return (1);
