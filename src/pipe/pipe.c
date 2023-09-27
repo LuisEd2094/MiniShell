@@ -67,7 +67,7 @@ void	refinement(int **pipes, int num_pipes)
 		wait(NULL);
 }
 
-int	execute_pipe(char ***commands, int **pipes, int num_pipes, int i)
+int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 {
 	pid_t	pid;
 
@@ -79,30 +79,31 @@ int	execute_pipe(char ***commands, int **pipes, int num_pipes, int i)
 	}
 	if (pid == 0)
 	{
-		duplicate_and_close(pipes, num_pipes, i);
-		execvp(commands[i][0], commands[i]);
-		perror("Error en execvp");
-		return (1);
+		duplicate_and_close(mini->pipes, num_pipes, i);
+		if (check_and_handle_redirections(commands[i], mini))
+		{	
+			perror("Error en execute");
+			return (1);
+		}
 	}
 	return (0);
 }
 
-int	ft_pipe(char ***commands, int num_pipes)
+int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 {
-	int	**pipes;
 	int	i;
 
-	pipes = malloc_pipe(num_pipes);
+	mini->pipes = malloc_pipe(num_pipes);
 	i = -1;
-	if (make_pipe(pipes, num_pipes))
+	if (make_pipe(mini->pipes, num_pipes))
 		return (1);
 	while (++i < num_pipes)
 	{
-		if (execute_pipe(commands, pipes, num_pipes, i))
+		if (execute_pipe(commands, mini, num_pipes, i))
 			return (1);
 	}
-	refinement(pipes, num_pipes);
-	free_pipe(pipes, num_pipes);
+	refinement(mini->pipes, num_pipes);
+	free_pipe(mini->pipes, num_pipes);
 	return (0);
 }
 
@@ -120,7 +121,7 @@ int main() {
 
     while (commands[num_pipes])
         num_pipes++;
-    printf("%d",ft_pipe(commands, num_pipes));
+    printf("%d",ft_pipe(commands, num_pipes, mini));
 
     return 0;
 }
