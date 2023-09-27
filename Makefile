@@ -7,6 +7,7 @@ HISTORY_PATH			= history/
 EXECVE_PATH			= execve/
 
 #BUILT INS variables
+PIPE_PATH				= pipe/
 BUILTINTS			= builtins/
 ARGUMENTS_PATH		= get_arguments/
 ERROR_PATH			= print_error/
@@ -34,6 +35,7 @@ MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), \
 											$(MINI_SHARED_PATH) \
 											$(REDIR_PATH) \
 											$(SIGNALS_PATH) \
+											$(PIPE_PATH) \
 											) 
 										
 #Add new path to objects
@@ -94,6 +96,8 @@ REDIRECTIONS	= aux_handle_redirections.c  handle_redirections.c  here_doc.c
 
 SIGNALS		=	signals.c
 
+PIPE 		=	memory_pipe.c  pipe.c
+
 
 
 ## Add names of your files
@@ -122,6 +126,8 @@ REDIR_FILES			= $(addprefix $(REDIR_PATH), $(REDIRECTIONS))
 
 SIGNALS_FILES		= $(addprefix $(SIGNALS_PATH), $(SIGNALS))
 
+PIPE_FILES			= $(addprefix $(PIPE_PATH), $(PIPE))
+
 ## append the path to your files
 
 DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
@@ -135,6 +141,7 @@ DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
 										$(MINI_SHARED_FILES:.c=.d) \
 										$(REDIR_FILES:.c=.d) \
 										$(SIGNALS_FILES:.c=.d) \
+										$(PIPE_FILES:.c=.d)\
 										) 
 										
 										
@@ -143,7 +150,7 @@ DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
 
 SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES) $(ARGUMENTS_FILES) $(ERROR_FILES) \
 				$(EXECVE_FILES) $(EXEC_CMDS_FILE) $(PARSE_FILES) $(MINI_SHARED_FILES) \
-				$(REDIR_FILES) $(SIGNALS_FILES)
+				$(REDIR_FILES) $(SIGNALS_FILES) $(PIPE_FILES)
 
 ## add to sercs
 
