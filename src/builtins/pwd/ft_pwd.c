@@ -1,4 +1,4 @@
-#include "./MS_functions.h"
+#include <builtins.h>
 
 int	ft_pwd(char **arguments)
 {
