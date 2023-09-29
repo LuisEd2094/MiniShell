@@ -88,8 +88,8 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 			return (1);
 		}
 		execute_cmds(commands[i], mini->env_list);
+		exit(0);    
 	}
-	return (0);
 }
 
 int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)

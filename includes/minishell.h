@@ -43,5 +43,6 @@ int		ft_pipe(char ***commands, int num_pipes, t_minishell *mini);
 
 
 void	signal_action(void);
+void start_execute_cmds(t_minishell *mini);
 
 #endif

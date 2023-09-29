@@ -32,6 +32,8 @@ void exit_mini(t_minishell *mini)
 
 }
 
+
+
 int main(int argc, char **argv, char **env)
 {
     char        **tab;
@@ -45,11 +47,6 @@ int main(int argc, char **argv, char **env)
     signal_action();
     while (1) {
         mini.input = readline(">> "); // Prompt the user and read mini.input testing open quotes
-        /*if (mini.input[0] == '"' && mini.input[1] != '"')//test to check how to handle unclosed quotes
-        {
-            char *second_input = readline(">> ");
-            printf ("first,<%s> second <%s>\n", mini.input, second_input);
-        }*/
         if (!mini.input) { //if CTRL + D it goes through here when input is empty 
             exit_mini(&mini);
         }
@@ -71,24 +68,8 @@ int main(int argc, char **argv, char **env)
             // like wise, if one of the params is calling to check an env, such as $PATH, we we filter it we should store the expanded value intabs, 
             // so echo $PATH should become echo, (what ever value path has)
             mini.cmds = get_cmds_value(mini.input, mini.env_list);
-            if (strcmp("export", mini.cmds[0][0]) == 0)
-                work_on_export(mini.env_list, mini.cmds[0][1]);
-            else
-                print_all_env(mini.env_list);
-            continue;
-            int num_pipes = 1;
-            while (mini.cmds[num_pipes])
-                num_pipes++;
-            ft_pipe(mini.cmds, num_pipes, &mini);
-
-            //check_and_handle_redirections(mini.cmds[1], &mini);
-
-
+            start_execute_cmds(&mini);
             mini.here_doc_number = 0;
-            /*
-            printf("First argument of first cmd [%s]\n", mini.cmds[0][0] );
-            if (mini.cmds[1] && mini.cmds[1][0] )
-                printf("First argument of scd cmd [%s]\n", mini.cmds[1][0] );*/
             free_cmds(mini.cmds);
             delete_temp_files(&mini);
             close_redirections(&mini);
