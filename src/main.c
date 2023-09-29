@@ -71,6 +71,11 @@ int main(int argc, char **argv, char **env)
             // like wise, if one of the params is calling to check an env, such as $PATH, we we filter it we should store the expanded value intabs, 
             // so echo $PATH should become echo, (what ever value path has)
             mini.cmds = get_cmds_value(mini.input, mini.env_list);
+            if (strcmp("export", mini.cmds[0][0]) == 0)
+                work_on_export(mini.env_list, mini.cmds[0][1]);
+            else
+                print_all_env(mini.env_list);
+            continue;
             int num_pipes = 1;
             while (mini.cmds[num_pipes])
                 num_pipes++;

@@ -18,6 +18,12 @@ void execute_cmds(char **cmds, t_list *env_list)
         work_on_export(env_list, cmds[1]);
     else if (compare_cmds(cmds[0], "unset"))
         work_on_unset(env_list, cmds[1]);
+    else if (compare_cmds(cmds[0], "pwd"))
+        ft_pwd(cmds);
+    else if (compare_cmds(cmds[0], "echo"))
+        ft_echo(cmds);
+    else if (compare_cmds(cmds[0], "cd"))
+        ft_cd(cmds);
     else
         try_execve(cmds, env_list);
     exit(1);    
