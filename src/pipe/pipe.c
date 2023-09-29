@@ -72,11 +72,13 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 	pid_t	pid;
 
 	pid = fork();
+	signal_action();
 	if (pid == -1)
 	{
 		perror("Error en fork");
 		return (1);
 	}
+	//grep README.md 
 	if (pid == 0)
 	{
 		duplicate_and_close(mini->pipes, num_pipes, i);

@@ -8,21 +8,17 @@ bool compare_cmds(char *cmd, char *to_compare)
     return (0);
 }
 
-void execute_cmds(char ***cmds, t_list *env_list)
-{
-    int i;
 
-    i = 0;
-    while (cmds[i])
-    {
-        if (compare_cmds(cmds[i][0], "env"))
-            print_all_env(env_list);
-        else if (compare_cmds(cmds[i][0], "export"))
-            work_on_export(env_list, cmds[i][1]);
-        else if (compare_cmds(cmds[i][0], "unset"))
-            work_on_unset(env_list, cmds[i][1]);
-        else
-            try_execve(cmds[i], env_list);
-        i++;
-    }
+void execute_cmds(char **cmds, t_list *env_list)
+{
+
+    if (compare_cmds(cmds[0], "env"))
+        print_all_env(env_list);
+    else if (compare_cmds(cmds[0], "export"))
+        work_on_export(env_list, cmds[1]);
+    else if (compare_cmds(cmds[0], "unset"))
+        work_on_unset(env_list, cmds[1]);
+    else
+        try_execve(cmds, env_list);
+    exit(1);    
 }

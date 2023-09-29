@@ -7,7 +7,7 @@ HISTORY_PATH			= history/
 EXECVE_PATH			= execve/
 
 #BUILT INS variables
-PIPE_PATH				= pipe/
+PIPE_PATH			= pipe/
 BUILTINTS			= builtins/
 ARGUMENTS_PATH		= get_arguments/
 ERROR_PATH			= print_error/

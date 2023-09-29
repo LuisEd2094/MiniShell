@@ -99,6 +99,7 @@ int     read_here_document(t_minishell *mini)
     return (1);
 }
 
+
 int    check_and_handle_redirections(char **cmds, t_minishell *mini)
 {
     int i;
