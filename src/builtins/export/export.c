@@ -33,17 +33,20 @@ static void work_on_print(t_list *env_list)
 
 
 
-int work_on_export(t_list *env_list, char *str)
+int work_on_export(t_list *env_list, char **cmds)
 {
-    char **tab;
-    t_list  *temp;
-    t_list  *new;
-    t_env   *env_node;
+    int i;
 
-    tab = NULL;
-    if (!str)
+    i = 1;
+    if (!cmds[i])
         work_on_print(env_list);
     else
-        create_or_update_env_node(env_list, str);
+    {
+        while (cmds[i])
+        {
+            create_or_update_env_node(env_list, cmds[i]);
+            i++;
+        }
+    }
     
 }

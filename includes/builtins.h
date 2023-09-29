@@ -33,7 +33,7 @@ void		free_env_list(t_list *env_list);
 bool		has_equal(char *str);
 void		free_tab(char **tab);
 
-int			work_on_export(t_list *env_list, char *str);
+int			work_on_export(t_list *env_list, char **cmds);
 void		print_all_env(t_list *env_list);
 t_list		*work_on_unset(t_list *env_list, char *str);
 
