@@ -72,8 +72,7 @@ char **ft_argument_split(char *cmd, t_list *env_list)
 }
 
 
-
-char **get_cmd_argument(char *cmd, t_list *env)
+char **get_cmd_argument(char *cmd, t_list *env, t_minishell *mini)
 {
     char    **cmd_arguments;
     int     i;
@@ -88,7 +87,9 @@ char **get_cmd_argument(char *cmd, t_list *env)
         j = 0;
         while (cmd_arguments[i][j] )
         {
-            if (cmd_arguments[i][j] == '$' && \
+            if (cmd_arguments[i][j] == '$' && cmd_arguments[i][j + 1] == '?')
+                cmd_arguments[i] = ft_itoa(mini->exit_code);
+            else if (cmd_arguments[i][j] == '$' && \
             is_ascii_no_space(cmd_arguments[i][j + 1]) && \
             cmd_arguments[i][j + 1])
                 cmd_arguments[i] = replace_env(cmd_arguments[i], env , j);

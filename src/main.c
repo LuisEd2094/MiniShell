@@ -67,7 +67,7 @@ int main(int argc, char **argv, char **env)
             // should give us ls, >>, text.txt, so we can later work on each part 
             // like wise, if one of the params is calling to check an env, such as $PATH, we we filter it we should store the expanded value intabs, 
             // so echo $PATH should become echo, (what ever value path has)
-            mini.cmds = get_cmds_value(mini.input, mini.env_list);
+            mini.cmds = get_cmds_value(mini.input, mini.env_list, &mini);
             start_execute_cmds(&mini);
             mini.here_doc_number = 0;
             free_cmds(mini.cmds);

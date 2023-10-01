@@ -86,27 +86,31 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 			perror("Error en execute");
 			return (1);
 		}
-		execute_cmds(commands[i], mini->env_list);
-		exit(0);    
+		int status = execute_cmds(commands[i], mini->env_list);
+		printf("childe %i\n", status);
+		exit(status);    
 	}
-
 	else
 	{
 		int status;
 
 		wait(&status);
+		printf("Status =  %i\n", status);
 		if (WIFEXITED(status))
-			ft_printf("Child Had error. Exit Code %i\n", WEXITSTATUS(status));
-		else
-		{
-			ft_printf("No error on child, exit code = %i\n", status);
+			return (WEXITSTATUS(status));
+		else if (WIFSIGNALED(status)){
+			printf("I was stopped by a signal\n");
+			return (WTERMSIG(status) + 128);		
 		}
 	}
+	return (0);
 }
 
 int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 {
 	int	i;
+
+	printf("Sig %i\n", SIGINT);
 	
 	mini->pipes = malloc_pipe(num_pipes);
 	if (mini->pipes == NULL)
@@ -116,8 +120,10 @@ int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 		return (1);
 	while (++i < num_pipes)
 	{
-		if (execute_pipe(commands, mini, num_pipes, i))
+		mini->exit_code = execute_pipe(commands, mini, num_pipes, i);
+		if (mini->exit_code)
 			return (1);
+		printf("i have left exectre pipe\n");
 	}
 	refinement(mini->pipes, num_pipes);
 	free_pipe(mini->pipes, num_pipes);

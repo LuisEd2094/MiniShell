@@ -15,7 +15,6 @@ static void	action(int signal, siginfo_t *info, void *context)
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	return ;
 }
 
 void signal_action(void)

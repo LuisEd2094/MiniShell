@@ -10,7 +10,7 @@ int get_cmd_count(char **cmds)
     return (cmd_count);
 }
 
-char ***get_cmds_value(char * input, t_list *env)
+char ***get_cmds_value(char * input, t_list *env, t_minishell* mini)
 {
     char    ***triple_cmds;
     char    **double_cmds;
@@ -27,7 +27,7 @@ char ***get_cmds_value(char * input, t_list *env)
     i = 0;
     while (i < cmd_count)
     {
-        triple_cmds[i] = get_cmd_argument(double_cmds[i], env);
+        triple_cmds[i] = get_cmd_argument(double_cmds[i], env, mini);
         if (!triple_cmds[i])
             exit (1);
         free(double_cmds[i]);

@@ -27,7 +27,7 @@ bool    is_built_in(char **cmds)
 }
 
 
-void execute_cmds(char **cmds, t_list *env_list)
+int execute_cmds(char **cmds, t_list *env_list)
 {
 
     if (compare_cmds(cmds[0], "env"))
@@ -44,6 +44,7 @@ void execute_cmds(char **cmds, t_list *env_list)
         ft_cd(cmds);
     else
         try_execve(cmds, env_list);
+    return (127);
 }
 
 void start_execute_cmds(t_minishell *mini)
