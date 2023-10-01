@@ -78,7 +78,6 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 		perror("Error en fork");
 		return (1);
 	}
-	//grep README.md 
 	if (pid == 0)
 	{
 		duplicate_and_close(mini->pipes, num_pipes, i);
@@ -89,6 +88,19 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 		}
 		execute_cmds(commands[i], mini->env_list);
 		exit(0);    
+	}
+
+	else
+	{
+		int status;
+
+		wait(&status);
+		if (WIFEXITED(status))
+			ft_printf("Child Had error. Exit Code %i\n", WEXITSTATUS(status));
+		else
+		{
+			ft_printf("No error on child, exit code = %i\n", status);
+		}
 	}
 }
 

@@ -125,7 +125,11 @@ void    try_execve(char **cmd, t_list *env_list)
             free(converted_env_list[i]);
     }
     else
-        printf("minishell: %s: command not found\n", cmd[0]);
+    {
+        ft_printf("minishell: %s: command not found\n", cmd[0]);
+        exit(127);
+
+    }
     if (path_name)
         free (path_name);
     return ;
