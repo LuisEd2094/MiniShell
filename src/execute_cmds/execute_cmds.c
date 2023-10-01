@@ -44,7 +44,13 @@ int execute_cmds(char **cmds, t_list *env_list)
         ft_cd(cmds);
     else
         try_execve(cmds, env_list);
-    return (127);
+    return (0);
+}
+
+int handle_single_built_int(t_minishell *mini)
+{
+    check_and_handle_redirections(mini->cmds[0],mini);
+    return (execute_cmds(mini->cmds[0], mini->env_list));
 }
 
 void start_execute_cmds(t_minishell *mini)
@@ -55,12 +61,12 @@ void start_execute_cmds(t_minishell *mini)
     while (mini->cmds[num_pipes])
         num_pipes++;
     if (num_pipes > 1)
-        ft_pipe(mini->cmds, num_pipes, mini);
+        mini->exit_code = ft_pipe(mini->cmds, num_pipes, mini);
     else if (num_pipes == 1)
     {
         if (is_built_in(mini->cmds[0]))
-            execute_cmds(mini->cmds[0], mini->env_list);
+            mini->exit_code = handle_single_built_int(mini);
         else
-            ft_pipe(mini->cmds, num_pipes, mini);
+            mini->exit_code = ft_pipe(mini->cmds, num_pipes, mini);
     }
 }

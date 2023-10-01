@@ -32,7 +32,13 @@ void exit_mini(t_minishell *mini)
 
 }
 
-
+void prep_mini(t_minishell *mini)
+{
+    mini->here_doc_number = 0;
+    free_cmds(mini->cmds);
+    delete_temp_files(mini);
+    close_redirections(mini);
+}
 
 int main(int argc, char **argv, char **env)
 {
@@ -59,20 +65,9 @@ int main(int argc, char **argv, char **env)
         {
             work_history(UPDATE, mini.input);
             parse_input(&mini);
-            // Using tab here to split input using spaces
-            // here we should filter the input, we should make sure that each value inside tab corresponds to a part of the command to be executed
-            // so if we run something like ls -la | grep Make
-            // we should have ls, -la, |, grep, Make 
-            // and something like ls>>text.txt
-            // should give us ls, >>, text.txt, so we can later work on each part 
-            // like wise, if one of the params is calling to check an env, such as $PATH, we we filter it we should store the expanded value intabs, 
-            // so echo $PATH should become echo, (what ever value path has)
-            mini.cmds = get_cmds_value(mini.input, mini.env_list, &mini);
+            get_cmds_value(mini.input, mini.env_list, &mini);
             start_execute_cmds(&mini);
-            mini.here_doc_number = 0;
-            free_cmds(mini.cmds);
-            delete_temp_files(&mini);
-            close_redirections(&mini);
+            prep_mini(&mini);
         }
         free(mini.input);
         

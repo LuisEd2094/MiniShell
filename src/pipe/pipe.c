@@ -86,9 +86,7 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 			perror("Error en execute");
 			return (1);
 		}
-		int status = execute_cmds(commands[i], mini->env_list);
-		printf("childe %i\n", status);
-		exit(status);    
+		exit(execute_cmds(commands[i], mini->env_list));
 	}
 	else
 	{
@@ -103,27 +101,27 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 			return (WTERMSIG(status) + 128);		
 		}
 	}
-	return (0);
 }
 
 int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 {
 	int	i;
+	int error; 
 
-	printf("Sig %i\n", SIGINT);
-	
 	mini->pipes = malloc_pipe(num_pipes);
 	if (mini->pipes == NULL)
-		return(1);
+	{
+		return (1);
+	}
 	i = -1;
 	if (make_pipe(mini->pipes, num_pipes))
 		return (1);
 	while (++i < num_pipes)
 	{
-		mini->exit_code = execute_pipe(commands, mini, num_pipes, i);
-		if (mini->exit_code)
-			return (1);
-		printf("i have left exectre pipe\n");
+		error = execute_pipe(commands, mini, num_pipes, i);
+		printf("Exit code %i\n", error);
+		if (error)
+			return (error);
 	}
 	refinement(mini->pipes, num_pipes);
 	free_pipe(mini->pipes, num_pipes);

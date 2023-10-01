@@ -10,7 +10,7 @@ int get_cmd_count(char **cmds)
     return (cmd_count);
 }
 
-char ***get_cmds_value(char * input, t_list *env, t_minishell* mini)
+void    get_cmds_value(char *input, t_list *env, t_minishell* mini)
 {
     char    ***triple_cmds;
     char    **double_cmds;
@@ -35,5 +35,5 @@ char ***get_cmds_value(char * input, t_list *env, t_minishell* mini)
     }
     free(double_cmds);
     triple_cmds[i] = NULL;
-    return  (triple_cmds);
+    mini->cmds = triple_cmds;
 }
