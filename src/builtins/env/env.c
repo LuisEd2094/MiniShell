@@ -12,7 +12,7 @@
 
 #include <builtins.h>
 
-void	ft_env(t_list *env_list)
+void	ft_print_env(t_list *env_list)
 {
 	t_list	*temp;
 

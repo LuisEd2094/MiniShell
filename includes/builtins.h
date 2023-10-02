@@ -40,7 +40,7 @@ char        **ft_single_split(char const *s, char c);
 
 int	ft_cd(char **arguments);
 int	ft_echo(char **arguments);
-void		ft_env(t_list *env_list);
+void		ft_print_env(t_list *env_list);
 int			ft_export(t_list *env_list, char **cmds);
 int	ft_pwd(char **arguments);
 t_list		*ft_unset(t_list *env_list, char *str);

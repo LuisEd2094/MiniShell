@@ -17,6 +17,7 @@ t_list	*get_env_node(t_list *env_list, char *str)
 	t_list	*temp;
 
 	temp = env_list;
+	
 	while (temp)
 	{
 		if (ft_strcmp(((t_env *)(temp->content))->variable, str) == 0)
