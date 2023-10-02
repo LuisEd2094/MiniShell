@@ -1,5 +1,5 @@
 NAME        = minishell
-CFLAGS      = -g ##-Wall -Wextra  -Werror -g
+CFLAGS      = -g -Wall -Wextra  -Werror
 RM          = rm -f
 SRCS_PATH           = src/
 OBJS_PATH           = obj/
@@ -21,7 +21,6 @@ CD_PATH				= $(BUILTINTS)cd/
 ECHO_PATH			= $(BUILTINTS)echo/
 PWD_PATH			= $(BUILTINTS)pwd/
 BUILTINTS_PATH		= $(EXPORT_PATH) $(ENV_PATH) $(UNSET_PATH) $(CD_PATH) $(ECHO_PATH) $(PWD_PATH)
-PARSE_PATH			= parse_input/
 MINI_SHARED_PATH	= mini_shared/
 SIGNALS_PATH		= signals/
 
@@ -34,7 +33,6 @@ MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), \
 											$(ERROR_PATH) \
 											$(EXECVE_PATH)\
 											$(EXEC_CMDS_PATH) \
-											$(PARSE_PATH) \
 											$(MINI_SHARED_PATH) \
 											$(REDIR_PATH) \
 											$(SIGNALS_PATH) \
@@ -67,7 +65,7 @@ LIGHT_GREEN = \033[1;92m
 
 ###
 
-SRC         =	main.c 
+SRC         =	main.c main_aux.c
 
 HISTORY		= 	add_to_history.c  close_history.c  history_init.c  \
 				remove_new_line.c  update_history.c work_history.c
@@ -93,7 +91,6 @@ ERROR		=	print_error.c
 
 EXECVE		=	execve.c
 
-PARSE		=	parse_input.c
 
 MINI_SHARED	=	get_next_word_and_len.c is_ascii_no_space.c skips.c \
 				builtins_shared.c ft_single_split.c get_env_value_str.c \
@@ -129,8 +126,6 @@ EXECVE_FILES		=$(addprefix $(EXECVE_PATH), $(EXECVE))
 
 EXEC_CMDS_FILE		= $(addprefix $(EXEC_CMDS_PATH), $(EXEC_CMDS))
 
-PARSE_FILES			= $(addprefix $(PARSE_PATH), $(PARSE))
-
 MINI_SHARED_FILES	= $(addprefix $(MINI_SHARED_PATH), $(MINI_SHARED))
 
 REDIR_FILES			= $(addprefix $(REDIR_PATH), $(REDIRECTIONS))
@@ -148,7 +143,6 @@ DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
 										$(ERROR_FILES:.c=.d) \
 										$(EXECVE_FILES:.c=.d) \
 										$(EXEC_CMDS_FILE:.c=.d) \
-										$(PARSE_FILES:.c=.d) \
 										$(MINI_SHARED_FILES:.c=.d) \
 										$(REDIR_FILES:.c=.d) \
 										$(SIGNALS_FILES:.c=.d) \
@@ -177,7 +171,7 @@ $(OBJS_PATH)%.o: $(SRCS_PATH)%.c | $(MAKE_OBJ_DIR) $(DEPS_PATH)
 
 
 $(NAME): $(OBJS) $(LIB)
-	@$(CC) $(CFLAGS) $(INCS) $(OBJS) $(LINEFLAGS) -o $(NAME) $(LDFLAGS)
+	@$(CC) $(CFLAGS) $(INCS) $(OBJS) -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include -o $(NAME) $(LDFLAGS)
 	@echo "$(LIGHT_GREEN)Created $(NAME) executable$(DEF_COLOR)"
 
 make_lib:

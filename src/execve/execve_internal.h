@@ -1,18 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shared_internal.h                                  :+:      :+:    :+:   */
+/*   execve_internal.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/02 12:57:54 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 12:58:14 by lsoto-do         ###   ########.fr       */
+/*   Created: 2023/10/02 11:55:51 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/02 11:55:52 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SHARED_INTERNAL_H
-# define SHARED_INTERNAL_H
-# include <libft.h>
+#ifndef EXECVE_INTERNAL_H
+# define EXECVE_INTERNAL_H
 
-int	is_ascii_no_space(char c);
-#endif 
+void	free_path_list(char **path_list);
+char	*join_path(char *path_list, char *cmd);
+void	free_path_list(char **path_list);
+char	*reconstruct_env(char	*variable, char	*value);
+
+#endif

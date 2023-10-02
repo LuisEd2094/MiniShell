@@ -1,136 +1,101 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execve.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/02 11:48:24 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/02 11:53:40 by lsoto-do         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <execve.h>
 #include <builtins.h>
+#include "execve_internal.h"
 
-
-char * reconstruct_env(char * variable, char *  value)
+char	**conver_env_list(t_list *env_list)
 {
-    char    *new;
-    char    *temp;
+	int		i;
+	t_list	*temp;
+	char	**new;
 
-
-    temp = ft_strjoin(variable, "=");
-    if (!temp)
-        exit(1);
-    new =ft_strjoin(temp, value);
-    free(temp);
-    if (!new)
-        exit (1);
-    return (new);
+	temp = env_list;
+	i = 0;
+	while (temp)
+	{
+		i++;
+		temp = temp->next;
+	}
+	new = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!new)
+		exit (1);
+	i = 0;
+	temp = env_list;
+	while (temp)
+	{
+		new[i] = reconstruct_env(((t_env *)(temp->content))->variable, \
+				((t_env *)(temp->content))->value);
+		temp = temp->next;
+		i++;
+	}
+	new[i] = NULL;
+	return (new);
 }
 
-char    **conver_env_list(t_list *env_list)
+char	**get_paths(t_list *path_node)
 {
-    //need to keep track of how many elemets on list since we need to create a malloc here for it
-    int i;
-    t_list * temp;
-    char **new;
+	char	**tab;
 
-    temp = env_list;
-    i = 0;
-    while (temp)
-    {
-        i++;
-        temp = temp->next;
-    }
-    new = (char **)malloc(sizeof(char *) * (i + 1));
-    if (!new)
-        exit (1);
-    i = 0;
-    temp = env_list;
-    while (temp)
-    {
-        new[i] = reconstruct_env(((t_env *)(temp->content))->variable, \
-                                 ((t_env *)(temp->content))->value);
-        temp = temp->next;
-        i++;
-    }
-    new[i] = NULL;
-    return (new);
+	tab = ft_split(((t_env *)(path_node->content))->value, ':');
+	if (!tab)
+		exit (1);
+	return (tab);
 }
 
-
-char  **get_paths(t_list *path_node)
+char	*get_path_name(char **cmd, char **path_list)
 {
-    char **tab;
+	char	*path_name;
+	int		i;
 
-    tab = ft_split(((t_env *)(path_node->content))->value, ':');
-    if (!tab)
-        exit (1);
-    return (tab);
+	path_name = NULL;
+	i = 0;
+	while (path_list[i])
+	{
+		if (path_list[i][ft_strlen(path_list[i])] != '/')
+			path_name = join_path(path_list[i], cmd[0]);
+		else
+			path_name = ft_strjoin(path_list[i], cmd[0]);
+		if (!path_name)
+			exit (1);
+		if (access(path_name, F_OK) != -1 && access(path_name, X_OK) != -1)
+			break ;
+		free(path_name);
+		path_name = NULL;
+		i++;
+	}
+	free_path_list(path_list);
+	return (path_name);
 }
 
-void    free_path_list(char **path_list)
+void	try_execve(char **cmd, t_list *env_list)
 {
-    int i;
+	char	**converted_env_list;
+	char	*path_name;
 
-    i = 0;
-    while (path_list[i])
-        free(path_list[i++]);
-    free(path_list[i]);
-}
-
-
-char *join_path(char *path_list, char *cmd)
-{
-    char *temp_path;
-    char *path_name;
-
-    temp_path = ft_strjoin(path_list, "/");
-    path_name = ft_strjoin(temp_path, cmd);
-    free(temp_path);
-    return(path_name);
-}
-
-char *get_path_name(char **cmd, char **path_list)
-{
-    char    *path_name;
-    int     i;
-    int     found_path;
-
-    path_name = NULL;
-    i = 0;
-    found_path = 0;
-    while (path_list[i])
-    {
-        if (path_list[i][ft_strlen(path_list[i])] != '/')
-            path_name = join_path(path_list[i], cmd[0]);
-        else
-            path_name = ft_strjoin(path_list[i], cmd[0]);
-        if (!path_name)
-            exit (1);
-        if (access(path_name, F_OK) !=  -1 && access(path_name, X_OK) != -1)
-        {
-            found_path = 1;
-            break;
-        }
-        free(path_name);
-        path_name = NULL;
-        i++;
-    }
-    free_path_list(path_list);
-    return (path_name);
-}
-
-void    try_execve(char **cmd, t_list *env_list)
-{
-    char    **converted_env_list;
-    char    *path_name;
-
-    path_name = get_path_name(cmd, get_paths(get_env_node(env_list, "PATH")));
-    if (path_name)
-    {
-        converted_env_list = conver_env_list(env_list);
-        execve(path_name, cmd, converted_env_list);
-        for (int i = 0; converted_env_list[i]; i++)
-            free(converted_env_list[i]);
-    }
-    else
-    {
-        ft_printf("minishell: %s: command not found\n", cmd[0]);
-        exit(127);
-
-    }
-    if (path_name)
-        free (path_name);
-    return ;
+	path_name = get_path_name(cmd, get_paths(get_env_node(env_list, "PATH")));
+	if (path_name)
+	{
+		converted_env_list = conver_env_list(env_list);
+		execve(path_name, cmd, converted_env_list);
+		ft_printf("I need to chck this error");//Comment as marker
+	}
+	else
+	{
+		ft_printf("minishell: %s: command not found\n", cmd[0]);
+		exit(127);
+	}
+	if (path_name)
+		free (path_name);
+	return ;
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/02 10:49:15 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/02 10:50:39 by lsoto-do         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <builtins.h>
 
 t_list	*get_env_before(t_list *env_list, char *str)
@@ -14,6 +26,14 @@ t_list	*get_env_before(t_list *env_list, char *str)
 		temp = temp->next;
 	}
 	return (NULL);
+}
+
+void	free_temp(t_list *temp)
+{
+	free(((t_env *)(temp->content))->value);
+	free(((t_env *)(temp->content))->variable);
+	free(((t_env *)(temp->content)));
+	free(temp);
 }
 
 t_list	*ft_unset(t_list *env_list, char *str)
@@ -34,10 +54,7 @@ t_list	*ft_unset(t_list *env_list, char *str)
 		next->last = env_list->last;
 		env_list = next;
 	}
-	free(((t_env *)(temp->content))->value);
-	free(((t_env *)(temp->content))->variable);
-	free(((t_env *)(temp->content)));
-	free(temp);
+	free_temp(temp);
 	if (next)
 		before->next = next;
 	else
