@@ -1,6 +1,6 @@
 #include <builtins.h>
 
-void print_all_env(t_list *env_list)
+void ft_env(t_list *env_list)
 {
     t_list *temp;
 
