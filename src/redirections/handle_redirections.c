@@ -62,9 +62,7 @@ int	execute_dup2(int fd, int redir_type)
 
 int	handle_redirection(char *redirection, char *file_name)
 {
-	int	i;
 	int	redir_type;
-	int	fd;
 
 	redir_type = get_redir_type(redirection);
 	if (!execute_dup2(open_file(file_name, redir_type), redir_type))

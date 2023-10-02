@@ -57,4 +57,5 @@ int	ft_export(t_list *env_list, char **cmds)
 			i++;
 		}
 	}
+	return (1);
 }

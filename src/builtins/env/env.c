@@ -43,7 +43,7 @@ void	free_env_list(t_list *env_list)
 	}
 }
 
-void	iter_env(t_list *env_node, char *env, t_list *tmp, t_list *env_list)
+void	iter_env(t_env *env_node, char *env, t_list *tmp, t_list *env_list)
 {
 	t_list	*new;
 

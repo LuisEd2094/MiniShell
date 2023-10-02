@@ -64,9 +64,7 @@ char	*get_env_str_from_quote(char *cmd, t_list *env_list)
 {
 	char	*env_name;
 	char	*to_return;
-	int		len;
 
-	len = 0;
 	env_name = get_next_word(cmd);
 	if (!env_name)
 		return (NULL);

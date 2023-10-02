@@ -104,33 +104,35 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 	else
 	{
 		wait(&status);
-		wait_pipe(status);
+		return (get_exit_code(status));
 	}
 }
 
 int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 {
 	int	i;
-	int	error;
+	int	exit_code;
 
 	mini->pipes = malloc_pipe(num_pipes);
 	if (mini->pipes == NULL)
-	{
 		return (1);
-	}
 	i = -1;
 	if (make_pipe(mini->pipes, num_pipes))
 		return (1);
 	while (++i < num_pipes)
 	{
-		error = execute_pipe(commands, mini, num_pipes, i);
-		printf("Exit code %i\n", error);
-		if (error)
-			return (error);
+		exit_code = execute_pipe(commands, mini, num_pipes, i);
+
+		printf("Exit code %i\n", exit_code);
+		if (exit_code)
+		{
+			free_pipe(mini->pipes, num_pipes);
+			return (exit_code);
+		}
 	}
 	refinement(mini->pipes, num_pipes);
 	free_pipe(mini->pipes, num_pipes);
-	return (0);
+	return (exit_code);
 }
 
 /*

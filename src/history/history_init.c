@@ -46,4 +46,5 @@ t_list	*ft_read_history(int fd, t_list **head, int *size)
 		}
 	}
 	close(fd);
+	return (NULL);
 }

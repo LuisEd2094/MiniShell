@@ -14,6 +14,8 @@
 
 static	void	action(int signal, siginfo_t *info, void *context)
 {
+	if (info || context)
+		info = info;
 	if (signal == SIGINT)
 	{
 		rl_replace_line("", 0);

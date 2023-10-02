@@ -12,12 +12,15 @@
 
 #include <pipe.h>
 
-void	wait_pipe(int status)
+int	get_exit_code(int status)
 {
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
 		return (WTERMSIG(status) + 128);
+	else
+		return(0);
+	
 }
 
 void	free_pipe(int **pipes, int num_pipes)

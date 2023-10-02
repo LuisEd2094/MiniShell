@@ -54,4 +54,5 @@ int	check_and_handle_redirections(char **cmds, t_minishell *mini)
 		}
 		i++;
 	}
+	return (1);
 }

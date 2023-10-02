@@ -24,5 +24,7 @@ typedef enum s_redir_type
 
 int		get_redir_type(char *input);
 char	*get_doc_name(t_minishell *mini);
+int		handle_redirection(char *redirection, char *file_name);
+void	remove_redir_from_cmds(char **cmds, int i);
 
 #endif

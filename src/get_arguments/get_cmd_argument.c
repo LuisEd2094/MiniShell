@@ -39,7 +39,7 @@ int	get_argument_count(char *cmd)
 	return (arg_count);
 }
 
-char	*ft_get_arg(char *cmd, int arg_start, t_list *env_list)
+char	*ft_get_arg(char *cmd, int arg_start)
 {
 	int	arg_len;
 
@@ -72,7 +72,7 @@ char	**ft_argument_split(char *cmd, t_list *env_list)
 		if (cmd[arg_start] == '"')
 			args[i] = get_double_quote(&cmd[arg_start + 1], env_list);
 		else
-			args[i] = ft_get_arg(cmd, arg_start, env_list);
+			args[i] = ft_get_arg(cmd, arg_start);
 		if (!args[i])
 			exit (1);
 		arg_start += move_start(&cmd[arg_start]);
@@ -82,7 +82,7 @@ char	**ft_argument_split(char *cmd, t_list *env_list)
 	return (args);
 }
 
-void	get_cmd_loop(char **cmd_arguments, t_list *env, t_minishel *mini)
+void	get_cmd_loop(char **cmd_arguments, t_list *env, t_minishell *mini)
 {
 	int	i;
 	int	j;
@@ -110,8 +110,6 @@ void	get_cmd_loop(char **cmd_arguments, t_list *env, t_minishel *mini)
 char	**get_cmd_argument(char *cmd, t_list *env, t_minishell *mini)
 {
 	char	**cmd_arguments;
-	int		i;
-	int		j;
 
 	cmd_arguments = ft_argument_split(cmd, env);
 	if (!cmd_arguments)

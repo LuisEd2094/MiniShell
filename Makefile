@@ -89,7 +89,7 @@ EXEC_CMDS	=	execute_cmds.c
 
 ERROR		=	print_error.c
 
-EXECVE		=	execve.c
+EXECVE		=	execve.c execve_aux.c
 
 
 MINI_SHARED	=	get_next_word_and_len.c is_ascii_no_space.c skips.c \
@@ -171,7 +171,7 @@ $(OBJS_PATH)%.o: $(SRCS_PATH)%.c | $(MAKE_OBJ_DIR) $(DEPS_PATH)
 
 
 $(NAME): $(OBJS) $(LIB)
-	@$(CC) $(CFLAGS) $(INCS) $(OBJS) -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include -o $(NAME) $(LDFLAGS)
+	@$(CC) $(CFLAGS) $(INCS) $(OBJS) $(LINEFLAGS) -o $(NAME) $(LDFLAGS)
 	@echo "$(LIGHT_GREEN)Created $(NAME) executable$(DEF_COLOR)"
 
 make_lib:

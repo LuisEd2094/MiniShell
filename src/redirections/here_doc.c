@@ -12,7 +12,7 @@
 
 #include <minishell.h>
 
-char	*get_doc_name(t_minishell *mini)
+void	get_doc_name(t_minishell *mini)
 {
 	char	*temp_name;
 
@@ -63,7 +63,6 @@ static char	*check_input(char *input, t_minishell *mini)
 
 void	handle_here_document(t_minishell *mini, int i)
 {
-	int		len;
 	int		fd;
 	char	*input;
 
