@@ -88,8 +88,8 @@ void	try_execve(char **cmd, t_list *env_list)
 	{
 		printf("i am here\n");
 		converted_env_list = conver_env_list(env_list);
+		ft_printf("I am exectuting [%s]\n", cmd[0]);//Comment as marker
 		execve(path_name, cmd, converted_env_list);
-		ft_printf("I need to chck this error");//Comment as marker
 	}
 	else
 	{

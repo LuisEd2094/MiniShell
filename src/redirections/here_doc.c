@@ -31,10 +31,7 @@ void	delete_temp_files(t_minishell *mini)
 	{
 		get_doc_name(mini);
 		if (access(mini->here_doc_name, F_OK) != -1)
-		{
 			unlink(mini->here_doc_name);
-			mini->here_doc_number++;
-		}
 		else
 		{
 			mini->here_doc_number = 0;

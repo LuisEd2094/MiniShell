@@ -91,6 +91,7 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 		perror("Error en fork");
 		exit(EXIT_FAILURE);
 	}
+	printf("[%i] I value inside execute\n",i);
 	if (pid == 0)
 	{
 		duplicate_and_close(mini->pipes, num_pipes, i);
@@ -117,12 +118,12 @@ int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 	if (mini->pipes == NULL)
 		return (1);
 	i = -1;
+	printf("[%i] Pipe nums\n", num_pipes);
 	if (make_pipe(mini->pipes, num_pipes))
 		return (1);
 	while (++i < num_pipes)
 	{
 		exit_code = execute_pipe(commands, mini, num_pipes, i);
-
 		printf("Exit code %i\n", exit_code);
 		if (exit_code)
 		{

@@ -45,7 +45,7 @@ void	prep_mini(t_minishell *mini)
 	mini->here_doc_number = 0;
 	free_cmds(mini->cmds);
 	delete_temp_files(mini);
-	close_redirections(mini);
+	//close_redirections(mini);
 }
 
 void	init_mini(t_minishell *mini, char **env)
