@@ -34,7 +34,6 @@ bool		has_equal(char *str);
 void		free_tab(char **tab);
 
 int			work_on_export(t_list *env_list, char **cmds);
-void		print_all_env(t_list *env_list);
 t_list		*work_on_unset(t_list *env_list, char *str);
 
 char        **ft_single_split(char const *s, char c);
@@ -44,6 +43,7 @@ char        **ft_single_split(char const *s, char c);
 
 int	ft_cd(char **arguments);
 int	ft_echo(char **arguments);
+void		ft_env(t_list *env_list);
 int	ft_pwd(char **arguments);
 
 #endif
