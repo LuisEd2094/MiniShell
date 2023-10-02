@@ -43,9 +43,10 @@ void	free_env_list(t_list *env_list)
 	}
 }
 
-void	iter_env(t_env *env_node, char *env, t_list *tmp, t_list *env_list)
+t_list	*iter_env(char *env)
 {
 	t_list	*new;
+	t_env	*env_node;
 
 	env_node = create_env_node(env);
 	if (!env_node)
@@ -53,9 +54,7 @@ void	iter_env(t_env *env_node, char *env, t_list *tmp, t_list *env_list)
 	new = ft_lstnew(env_node);
 	if (!new)
 		exit (1);
-	tmp->next = new;
-	env_list->last = new;
-	tmp = new;
+	return (new);
 }
 
 t_list	*init_env(char **env)
@@ -74,7 +73,9 @@ t_list	*init_env(char **env)
 	i = 1;
 	while (env[i])
 	{
-		iter_env(env_node, env[i], tmp, env_list);
+		tmp->next = iter_env(env[i]);
+		tmp = tmp->next;
+		env_list->last = tmp;
 		i++;
 	}
 	return (env_list);
