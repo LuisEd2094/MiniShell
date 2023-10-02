@@ -1,4 +1,16 @@
-#include "MS_pipe.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gmacias- <gmacias-@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/02 08:30:53 by gmacias-          #+#    #+#             */
+/*   Updated: 2023/10/02 08:44:43 by gmacias-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <pipe.h>
 
 int	make_pipe(int **pipes, int num_pipes)
 {
@@ -70,43 +82,36 @@ void	refinement(int **pipes, int num_pipes)
 int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 {
 	pid_t	pid;
+	int		status;
 
 	pid = fork();
 	signal_action();
 	if (pid == -1)
 	{
 		perror("Error en fork");
-		return (1);
+		exit(EXIT_FAILURE);
 	}
 	if (pid == 0)
 	{
 		duplicate_and_close(mini->pipes, num_pipes, i);
 		if (check_and_handle_redirections(commands[i], mini))
-		{	
+		{
 			perror("Error en execute");
-			return (1);
+			exit(EXIT_FAILURE);
 		}
 		exit(execute_cmds(commands[i], mini->env_list));
 	}
 	else
 	{
-		int status;
-
 		wait(&status);
-		printf("Status =  %i\n", status);
-		if (WIFEXITED(status))
-			return (WEXITSTATUS(status));
-		else if (WIFSIGNALED(status)){
-			printf("I was stopped by a signal\n");
-			return (WTERMSIG(status) + 128);		
-		}
+		wait_pipe(status);
 	}
 }
 
 int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 {
 	int	i;
-	int error; 
+	int	error;
 
 	mini->pipes = malloc_pipe(num_pipes);
 	if (mini->pipes == NULL)

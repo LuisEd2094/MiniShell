@@ -1,4 +1,24 @@
-#include "MS_pipe.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   memory_pipe.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gmacias- <gmacias-@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/02 08:31:46 by gmacias-          #+#    #+#             */
+/*   Updated: 2023/10/02 08:44:48 by gmacias-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <pipe.h>
+
+void	wait_pipe(int status)
+{
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	else if (WIFSIGNALED(status))
+		return (WTERMSIG(status) + 128);
+}
 
 void	free_pipe(int **pipes, int num_pipes)
 {
