@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/02 13:15:12 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/02 13:15:58 by lsoto-do         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <signals_mini.h>
 
-
-static void	action(int signal, siginfo_t *info, void *context)
+static	void	action(int signal, siginfo_t *info, void *context)
 {
 	if (signal == SIGINT)
 	{
@@ -12,18 +23,18 @@ static void	action(int signal, siginfo_t *info, void *context)
 	}
 	else if (signal == SIGQUIT)
 	{
+		write(0, "exit\n", 5);
 		rl_on_new_line();
 		rl_redisplay();
 	}
 }
 
-void signal_action(void)
+void	signal_action(void)
 {
 	struct sigaction	act;
 
 	act.sa_sigaction = action;
 	act.sa_flags = SA_RESTART;
-
 	sigaction(SIGINT, &act, NULL);
 	sigaction(SIGQUIT, &act, NULL);
 	sigaction(SIGTERM, &act, NULL);

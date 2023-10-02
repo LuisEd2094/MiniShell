@@ -1,25 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execve.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/02 11:48:24 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/02 11:53:40 by lsoto-do         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <execve.h>
 #include <builtins.h>
-
-char	*reconstruct_env(char *variable, char *value)
-{
-	char	*new;
-	char	*temp;
-
-	temp = ft_strjoin(variable, "=");
-	if (!temp)
-		exit(1);
-	new = ft_strjoin(temp, value);
-	free(temp);
-	if (!new)
-		exit (1);
-	return (new);
-}
-
-/*
-** need to keep track of how many elemets on list since we need to 
-** create a malloc here for it
-*/
+#include "execve_internal.h"
 
 char	**conver_env_list(t_list *env_list)
 {
@@ -42,7 +35,7 @@ char	**conver_env_list(t_list *env_list)
 	while (temp)
 	{
 		new[i] = reconstruct_env(((t_env *)(temp->content))->variable, \
-			((t_env *)(temp->content))->value);
+				((t_env *)(temp->content))->value);
 		temp = temp->next;
 		i++;
 	}
@@ -60,36 +53,13 @@ char	**get_paths(t_list *path_node)
 	return (tab);
 }
 
-void	free_path_list(char **path_list)
-{
-	int	i;
-
-	i = 0;
-	while (path_list[i])
-		free(path_list[i++]);
-	free(path_list[i]);
-}
-
-char	*join_path(char *path_list, char *cmd)
-{
-	char	*temp_path;
-	char	*path_name;
-
-	temp_path = ft_strjoin(path_list, "/");
-	path_name = ft_strjoin(temp_path, cmd);
-	free(temp_path);
-	return (path_name);
-}
-
 char	*get_path_name(char **cmd, char **path_list)
 {
 	char	*path_name;
 	int		i;
-	int		found_path;
 
 	path_name = NULL;
 	i = 0;
-	found_path = 0;
 	while (path_list[i])
 	{
 		if (path_list[i][ft_strlen(path_list[i])] != '/')
@@ -98,11 +68,8 @@ char	*get_path_name(char **cmd, char **path_list)
 			path_name = ft_strjoin(path_list[i], cmd[0]);
 		if (!path_name)
 			exit (1);
-		if ((access(path_name, F_OK) != -1) && (access(path_name, X_OK) != -1))
-		{
-			found_path = 1;
+		if (access(path_name, F_OK) != -1 && access(path_name, X_OK) != -1)
 			break ;
-		}
 		free(path_name);
 		path_name = NULL;
 		i++;
@@ -121,8 +88,7 @@ void	try_execve(char **cmd, t_list *env_list)
 	{
 		converted_env_list = conver_env_list(env_list);
 		execve(path_name, cmd, converted_env_list);
-		for (int i = 0; converted_env_list[i]; i++)
-			free(converted_env_list[i]);
+		ft_printf("I need to chck this error");//Comment as marker
 	}
 	else
 	{

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_cmds.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/02 11:46:01 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/02 11:47:25 by lsoto-do         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <minishell.h>
 
 bool	compare_cmds(char *cmd, char *to_compare)
@@ -30,9 +42,9 @@ int	execute_cmds(char **cmds, t_list *env_list)
 	if (compare_cmds(cmds[0], "env"))
 		ft_env(env_list);
 	else if (compare_cmds(cmds[0], "export"))
-		return (ft_export(env_list, cmds));
+		return (work_on_export(env_list, cmds));
 	else if (compare_cmds(cmds[0], "unset"))
-		ft_unset(env_list, cmds[1]);
+		work_on_unset(env_list, cmds[1]);
 	else if (compare_cmds(cmds[0], "pwd"))
 		return (ft_pwd(cmds));
 	else if (compare_cmds(cmds[0], "echo"))
