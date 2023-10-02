@@ -33,7 +33,7 @@ static void work_on_print(t_list *env_list)
 
 
 
-int work_on_export(t_list *env_list, char **cmds)
+int ft_export(t_list *env_list, char **cmds)
 {
     int i;
 
