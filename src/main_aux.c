@@ -50,6 +50,7 @@ void	prep_mini(t_minishell *mini)
 
 void	init_mini(t_minishell *mini, char **env)
 {
+	mini->exit_code = 0;
 	mini->env_list = init_env(env);
 	mini->here_doc_number = 0;
 	mini->og_in = dup(STDIN_FILENO);

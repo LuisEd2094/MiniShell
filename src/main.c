@@ -32,8 +32,6 @@ void	main_loop(t_minishell *mini)
 			create_here_doc(mini);
 			get_cmds_value(mini->input, mini->env_list, mini);
 			start_execute_cmds(mini);
-			printf("Exit code %i\n", mini->exit_code);
-
 			prep_mini(mini);
 		}
 		free(mini->input);

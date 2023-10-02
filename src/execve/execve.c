@@ -86,13 +86,8 @@ void	try_execve(char **cmd, t_list *env_list)
 	path_name = get_path_name(cmd, get_paths(get_env_node(env_list, "PATH")));
 	if (path_name)
 	{
-		printf("i am here\n");
 		converted_env_list = conver_env_list(env_list);
-		ft_printf("I am exectuting [%s]\n", cmd[0]);//Comment as marker
 		execve(path_name, cmd, converted_env_list);
-		ft_printf("I just execture exceve\n");
-        for (int i = 0; converted_env_list[i]; i++)
-            free(converted_env_list[i]);
 	}
 	else
 	{

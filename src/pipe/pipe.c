@@ -54,7 +54,6 @@ void	duplicate_and_close(int **pipes, int num_pipes, int i)
 		if (j != i)
 		{
 			close(pipes[j][0]);
-			close(pipes[j][1]);
 		}
 	}
 }
@@ -84,12 +83,6 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 	pid_t	pid;
 	int		status;
 
-		status = 0;
-	if (status)
-		status = 0;
-
-
-	printf("I am about to fork, the i cmd is [%s] \n", commands[i][0]);
 	pid = fork();
 	signal_action();
 	if (pid == -1)
@@ -109,11 +102,9 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 	}
 	else
 	{
-		printf("i am about to wait my cmd is [%s\n", commands[i][0]);
-		wait(NULL);
-		printf("just woke up my command was [%s] \n", commands[i][0]);
-		return (0);
-		//return (get_exit_code(status));
+		wait(&status);
+		close(mini->pipes[i][1]);
+		return (get_exit_code(status));
 	}
 
 	return (0);
@@ -128,14 +119,11 @@ int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 	if (mini->pipes == NULL)
 		return (1);
 	i = -1;
-	//printf("[%i] Pipe nums\n", num_pipes);
 	if (make_pipe(mini->pipes, num_pipes))
 		return (1);
 	while (commands[++i])
 	{
-		//printf("command before execute [%s]\n", commands[i][0]);
 		exit_code = execute_pipe(commands, mini, num_pipes, i);
-		printf("i just left my execute, my command was [%s]\n", commands[i][0]);
 		if (exit_code)
 		{
 			free_pipe(mini->pipes, num_pipes);
