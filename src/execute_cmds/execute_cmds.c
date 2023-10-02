@@ -66,7 +66,7 @@ void	start_execute_cmds(t_minishell *mini)
 {
 	int	num_pipes;
 
-	num_pipes = 0;
+	num_pipes = 1;
 	while (mini->cmds[num_pipes])
 		num_pipes++;
 	if (num_pipes > 1)
