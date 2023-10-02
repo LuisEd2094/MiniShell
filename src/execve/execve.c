@@ -88,12 +88,14 @@ void	try_execve(char **cmd, t_list *env_list)
 	{
 		printf("i am here\n");
 		converted_env_list = conver_env_list(env_list);
-		ft_printf("I am exectuting [%s]\n", cmd[0]);//Comment as marker
+		ft_printf("I am exectuting [%s]\n", converted_env_list[0]);//Comment as marker
 		execve(path_name, cmd, converted_env_list);
 	}
 	else
 	{
 		ft_printf("minishell: %s: command not found\n", cmd[0]);
+		if (path_name)
+			free (path_name);
 		exit(127);
 	}
 	if (path_name)

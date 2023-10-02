@@ -43,7 +43,7 @@ void	duplicate_and_close(int **pipes, int num_pipes, int i)
 		dup2(pipes[i - 1][0], STDIN_FILENO);
 		close(pipes[i - 1][0]);
 	}
-	if (i < num_pipes - 1)
+	if (i < num_pipes -1)
 	{
 		dup2(pipes[i][1], STDOUT_FILENO);
 		close(pipes[i][1]);
@@ -79,11 +79,12 @@ void	refinement(int **pipes, int num_pipes)
 		wait(NULL);
 }
 
-int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
+int	execute_pipe(char **commands, t_minishell *mini, int num_pipes, int i)
 {
 	pid_t	pid;
 	int		status;
 
+	status =  0;
 	pid = fork();
 	signal_action();
 	if (pid == -1)
@@ -91,16 +92,15 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 		perror("Error en fork");
 		exit(EXIT_FAILURE);
 	}
-	printf("[%i] I value inside execute\n",i);
 	if (pid == 0)
 	{
 		duplicate_and_close(mini->pipes, num_pipes, i);
-		if (check_and_handle_redirections(commands[i], mini))
+		if (check_and_handle_redirections(commands, mini))
 		{
 			perror("Error en execute");
 			exit(EXIT_FAILURE);
 		}
-		exit(execute_cmds(commands[i], mini->env_list));
+		exit(execute_cmds(commands, mini->env_list));
 	}
 	else
 	{
@@ -123,7 +123,8 @@ int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 		return (1);
 	while (++i < num_pipes)
 	{
-		exit_code = execute_pipe(commands, mini, num_pipes, i);
+		printf("command before execute [%s]\n", commands[i][0]);
+		exit_code = execute_pipe(commands[i], mini, num_pipes, i);
 		printf("Exit code %i\n", exit_code);
 		if (exit_code)
 		{

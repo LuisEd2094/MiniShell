@@ -25,7 +25,6 @@ static	void	action(int signal, siginfo_t *info, void *context)
 	}
 	else if (signal == SIGQUIT)
 	{
-		write(0, "exit\n", 5);
 		rl_on_new_line();
 		rl_redisplay();
 	}

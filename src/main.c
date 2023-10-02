@@ -31,10 +31,6 @@ void	main_loop(t_minishell *mini)
 			work_history(UPDATE, mini->input);
 			create_here_doc(mini);
 			get_cmds_value(mini->input, mini->env_list, mini);
-			for (int i = 0; mini->cmds[i]; i++)
-			{
-				printf("[%s]\n", mini->cmds[i][0]);
-			}
 			start_execute_cmds(mini);
 			prep_mini(mini);
 		}
