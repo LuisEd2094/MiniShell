@@ -16,7 +16,7 @@ t_list *get_env_before(t_list *env_list, char *str)
     return (NULL);
 }
 
-t_list *work_on_unset(t_list *env_list, char *str)
+t_list *ft_unset(t_list *env_list, char *str)
 {
     t_list *temp;
     t_list *next;
