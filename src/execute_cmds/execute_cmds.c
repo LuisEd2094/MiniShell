@@ -31,17 +31,17 @@ int execute_cmds(char **cmds, t_list *env_list)
 {
 
     if (compare_cmds(cmds[0], "env"))
-        print_all_env(env_list);
+        ft_env(env_list);
     else if (compare_cmds(cmds[0], "export"))
         work_on_export(env_list, cmds);
     else if (compare_cmds(cmds[0], "unset"))
         work_on_unset(env_list, cmds[1]);
     else if (compare_cmds(cmds[0], "pwd"))
-        ft_pwd(cmds);
+        return(ft_pwd(cmds));
     else if (compare_cmds(cmds[0], "echo"))
-        ft_echo(cmds);
+        return(ft_echo(cmds));
     else if (compare_cmds(cmds[0], "cd"))
-        ft_cd(cmds);
+        return(ft_cd(cmds));
     else
         try_execve(cmds, env_list);
     return (0);
