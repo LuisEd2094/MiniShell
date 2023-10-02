@@ -16,31 +16,43 @@ void	ft_env(t_list *env_list)
 
 void	free_env_list(t_list *env_list)
 {
-	t_list	*cursor;
 	t_list	*next;
 
-	cursor = env_list;
-	next = cursor->next;
-	while (cursor)
+	next = env_list->next;
+	while (env_list)
 	{
 		free(((t_env *)(cursor->content))->variable);
 		free(((t_env *)(cursor->content))->value);
 		free((cursor->content));
 		free(cursor);
-		cursor = next;
-		if (next)
-			next = next->next;
+		env_list = next;
 	}
+}
+
+void	iter_env(t_list *env_node, char *env, t_list *tmp, t_list *env_list);
+{
+	t_list	*new;
+
+	env_node = create_env_node(env[i]);
+	if (!env_node)
+		exit(1);
+	new = ft_lstnew(env_node);
+	if (!new)
+		exit (1);
+	tmp->next = new;
+	env_list->last = new;
+	tmp = new;
 }
 
 t_list	*init_env(char **env)
 {
 	t_list	*env_list;
 	t_list	*tmp;
-	t_list	*new;
 	t_env	*env_node;
 	int		i;
 
+	if (!env || !env[0])
+        	return NULL;
 	env_node = create_env_node(env[0]);
 	env_list = ft_lstnew(env_node);
 	if (!env_list)
@@ -50,15 +62,7 @@ t_list	*init_env(char **env)
 	i = 1;
 	while (env[i])
 	{
-		env_node = create_env_node(env[i]);
-		if (!env_node)
-			exit(1);
-		new = ft_lstnew(env_node);
-		if (!new)
-			exit (1);
-		tmp->next = new;
-		env_list->last = new;
-		tmp = new;
+		iter_env(env_node, env[i], tmp,env_list);
 		i++;
 	}
 	return (env_list);
