@@ -33,7 +33,7 @@ int execute_cmds(char **cmds, t_list *env_list)
     if (compare_cmds(cmds[0], "env"))
         ft_env(env_list);
     else if (compare_cmds(cmds[0], "export"))
-        work_on_export(env_list, cmds);
+        return(work_on_export(env_list, cmds));
     else if (compare_cmds(cmds[0], "unset"))
         work_on_unset(env_list, cmds[1]);
     else if (compare_cmds(cmds[0], "pwd"))
