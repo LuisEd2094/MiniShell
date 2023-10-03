@@ -33,7 +33,6 @@ void	exit_mini(t_minishell *mini);
 void	prep_mini(t_minishell *mini);
 void	init_mini(t_minishell *mini, char **env);
 
-int		print_error(char *err_description);
 void	get_cmds_value(char * input, t_list *env, t_minishell *mini);
 int		execute_cmds(char **cmds, t_list *env_list);
 void	create_here_doc(t_minishell *mini);

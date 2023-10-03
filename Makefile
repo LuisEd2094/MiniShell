@@ -10,7 +10,6 @@ EXECVE_PATH			= execve/
 PIPE_PATH			= pipe/
 BUILTINTS			= builtins/
 ARGUMENTS_PATH		= get_arguments/
-ERROR_PATH			= print_error/
 EXEC_CMDS_PATH		= execute_cmds/
 SIGNALS_PATH		= signals/
 REDIR_PATH			= redirections/
@@ -30,7 +29,6 @@ MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), \
 											$(HISTORY_PATH) \
 											$(BUILTINTS_PATH) \
 											$(ARGUMENTS_PATH) \
-											$(ERROR_PATH) \
 											$(EXECVE_PATH)\
 											$(EXEC_CMDS_PATH) \
 											$(MINI_SHARED_PATH) \
@@ -87,14 +85,13 @@ ARGUMENTS	=	get_cmd_value.c  get_double_quote.c move_start_and_argument_len.c \
 
 EXEC_CMDS	=	execute_cmds.c
 
-ERROR		=	print_error.c
-
 EXECVE		=	execve.c execve_aux.c
 
 
 MINI_SHARED	=	get_next_word_and_len.c is_ascii_no_space.c skips.c \
 				builtins_shared.c ft_single_split.c get_env_value_str.c \
-				replace_env.c create_or_add_env_node.c
+				replace_env.c create_or_add_env_node.c cmds_len.c \
+				print_error.c
 
 
 REDIRECTIONS	= aux_handle_redirections.c  handle_redirections.c  here_doc.c
@@ -110,8 +107,6 @@ PIPE 		=	memory_pipe.c  pipe.c
 HISTORY_FILES		=$(addprefix $(HISTORY_PATH), $(HISTORY))
 
 ARGUMENTS_FILES			=$(addprefix $(ARGUMENTS_PATH), $(ARGUMENTS))
-
-ERROR_FILES			=$(addprefix $(ERROR_PATH), $(ERROR))
 
 EXPORT_FILES		=$(addprefix $(EXPORT_PATH), $(EXPORT))
 ENV_FILES			=$(addprefix $(ENV_PATH), $(ENV))
@@ -140,7 +135,6 @@ DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
 										$(HISTORY:.c=.d) \
 										$(BUILTINTS_FILES:.c=.d) \
 										$(ARGUMENTS_FILES:.c=.d) \
-										$(ERROR_FILES:.c=.d) \
 										$(EXECVE_FILES:.c=.d) \
 										$(EXEC_CMDS_FILE:.c=.d) \
 										$(MINI_SHARED_FILES:.c=.d) \
@@ -153,7 +147,7 @@ DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
 
 #add .d files to deps
 
-SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES) $(ARGUMENTS_FILES) $(ERROR_FILES) \
+SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES) $(ARGUMENTS_FILES) \
 				$(EXECVE_FILES) $(EXEC_CMDS_FILE) $(PARSE_FILES) $(MINI_SHARED_FILES) \
 				$(REDIR_FILES) $(SIGNALS_FILES) $(PIPE_FILES)
 

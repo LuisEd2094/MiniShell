@@ -11,11 +11,14 @@
 /* ************************************************************************** */
 
 #include <builtins.h>
+#include <shared.h>
 
-void	ft_print_env(t_list *env_list)
+int	ft_print_env(char **cmds, t_list *env_list)
 {
 	t_list	*temp;
 
+	if (cmd_len(cmds) > 1)
+		return (print_error("env : invalid usage\n", 1));
 	temp = env_list;
 	while (temp)
 	{
@@ -24,6 +27,7 @@ void	ft_print_env(t_list *env_list)
 		((t_env *)(temp->content))->value);
 		temp = temp->next;
 	}
+	return (0);
 }
 
 void	free_env_list(t_list *env_list)
