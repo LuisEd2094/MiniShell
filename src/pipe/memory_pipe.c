@@ -35,7 +35,7 @@ int	**malloc_pipe(int num_pipes)
 	int	i;
 	int	**pipes;
 
-	pipes = (int **)malloc((num_pipes) * sizeof(int *));
+	pipes = (int **)malloc((num_pipes + 1) * sizeof(int *));
 	if (pipes == NULL)
 	{
 		perror("Error en malloc");
@@ -52,5 +52,6 @@ int	**malloc_pipe(int num_pipes)
 			return (NULL);
 		}
 	}
+	pipe[i] = NULL;
 	return (pipes);
 }
