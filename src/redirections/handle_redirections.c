@@ -28,7 +28,7 @@ int	open_file(char *file_name, int redir_type)
 	if (redir_type == INPUT_REDIRECT)
 	{
 		if (access(file_name, R_OK) != 0)
-			return (print_error(file_name));
+			return (print_error(file_name, 1));
 	}
 	if (redir_type == INPUT_REDIRECT)
 		fd = open(file_name, O_RDONLY);
@@ -37,7 +37,7 @@ int	open_file(char *file_name, int redir_type)
 	else if (redir_type == APPEND_OUTPUT)
 		fd = open(file_name, O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
-		return (print_error(file_name));
+		return (print_error(file_name, 1));
 	return (fd);
 }
 

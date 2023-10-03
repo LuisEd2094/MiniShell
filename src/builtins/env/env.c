@@ -68,11 +68,23 @@ t_list	*init_env(char **env)
 	t_env	*env_node;
 	int		i;
 
-	env_node = create_env_node(env[0]);
+	if (!env[0])
+	{
+		env_node = create_env_node(NULL);
+
+	}
+	else 
+		env_node = create_env_node(env[0]);
 	env_list = ft_lstnew(env_node);
 	if (!env_list)
 		exit(1);
 	env_list->last = env_list;
+
+	if (!env[0])
+	{
+		return(env_list);
+	}
+
 	tmp = env_list;
 	i = 1;
 	while (env[i])
