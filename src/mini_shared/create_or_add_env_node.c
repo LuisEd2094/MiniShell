@@ -32,9 +32,11 @@ void	create_or_update_env_node(t_list *env_list, char *str)
 		exit(1);
 	temp = get_env_node(env_list, tab[0]);
 	if (!temp)
-		temp = add_new_env(env_list, str);
-	else
 	{
+		add_new_env(env_list, str);
+	}
+	else
+	{		
 		free(((t_env *)(temp->content))->value);
 		((t_env *)(temp->content))->value = (char *)malloc(sizeof(char) * \
 		(ft_strlen(tab[1]) + 1));

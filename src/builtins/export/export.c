@@ -33,7 +33,7 @@ static void	work_on_print(t_list *env_list)
 
 	temp = env_list;
 	root = NULL;
-	while (temp)
+	while (temp->content)
 	{
 		root = insert_to_tbs(root, temp);
 		temp = temp->next;

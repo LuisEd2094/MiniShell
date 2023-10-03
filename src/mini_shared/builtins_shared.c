@@ -18,7 +18,7 @@ t_list	*get_env_node(t_list *env_list, char *str)
 
 	temp = env_list;
 	
-	while (temp)
+	while (temp->content)
 	{
 		if (ft_strcmp(((t_env *)(temp->content))->variable, str) == 0)
 			return (temp);
@@ -69,16 +69,18 @@ t_env	*create_env_node(char *str)
 
 t_list	*add_new_env(t_list *env_list, char *str)
 {
-	t_list	*temp;
 	t_list	*new;
 	t_env	*env_node;
 
-	temp = env_list->last;
-	printf("[%p][%p]\n", env_list, env_list->last);
 	env_node = create_env_node(str);
-	new = ft_lstnew(env_node);
-	temp->next = new;
-	env_list->last = new;
+	if (!env_list->content)
+		env_list->content = env_node;
+	else
+	{
+		new = ft_lstnew(env_node);
+		env_list->last->next = new;
+		env_list->last = new;
+	}
 	return (new);
 }
 

@@ -69,17 +69,14 @@ t_list	*init_env(char **env)
 	int		i;
 
 	if (!env[0])
-	{
-		env_node = create_env_node(NULL);
-
-	}
+		env_node = NULL;
 	else 
 		env_node = create_env_node(env[0]);
 	env_list = ft_lstnew(env_node);
 	if (!env_list)
 		exit(1);
 	env_list->last = env_list;
-
+	printf("[%p] [%p]\n", env_list->content, env_list->last->content);
 	if (!env[0])
 	{
 		return(env_list);
