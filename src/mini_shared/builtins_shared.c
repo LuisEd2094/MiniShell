@@ -17,10 +17,8 @@ t_list	*get_env_node(t_list *env_list, char *str)
 	t_list	*temp;
 
 	temp = env_list;
-	
-	while (temp->content)
+	while (temp)
 	{
-		printf("Variable [%s\n", ((t_env *)(env_list->last->content))->variable);
 		if (ft_strcmp(((t_env *)(temp->content))->variable, str) == 0)
 			return (temp);
 		temp = temp->next;
@@ -75,7 +73,6 @@ t_list	*add_new_env(t_list *env_list, char *str)
 		env_list->last->next = new;
 		env_list->last = new;
 	}
-	printf("Variable inside add new [%s\n", ((t_env *)(env_list->last->content))->variable);
 	return (new);
 }
 

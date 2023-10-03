@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include <builtins.h>
-
+// need to check if the node is the first one
 t_list	*get_env_before(t_list *env_list, char *str)
 {
 	t_list	*temp;
@@ -46,7 +46,7 @@ t_list	*ft_unset(t_list *env_list, char *str)
 		return (0);
 	temp = get_env_node(env_list, str);
 	before = get_env_before(env_list, str);
-	if (!temp)
+	if (!before)
 		return (0);
 	next = temp->next;
 	if (env_list == before)
