@@ -33,7 +33,9 @@ static void	work_on_print(t_list *env_list)
 
 	temp = env_list;
 	root = NULL;
-	while (temp->content)
+	if (!env_list->content)
+		return	;
+	while (temp)
 	{
 		root = insert_to_tbs(root, temp);
 		temp = temp->next;
@@ -57,5 +59,5 @@ int	ft_export(t_list *env_list, char **cmds)
 			i++;
 		}
 	}
-	return (1);
+	return (0);
 }

@@ -19,6 +19,8 @@ int	ft_print_env(char **cmds, t_list *env_list)
 
 	if (cmd_len(cmds) > 1)
 		return (print_error("env : invalid usage\n", 1));
+	if (!env_list->content)
+		return (0);
 	temp = env_list;
 	while (temp)
 	{
@@ -76,12 +78,8 @@ t_list	*init_env(char **env)
 	if (!env_list)
 		exit(1);
 	env_list->last = env_list;
-	printf("[%p] [%p]\n", env_list->content, env_list->last->content);
 	if (!env[0])
-	{
 		return(env_list);
-	}
-
 	tmp = env_list;
 	i = 1;
 	while (env[i])

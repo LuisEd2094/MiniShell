@@ -33,6 +33,7 @@ void	create_or_update_env_node(t_list *env_list, char *str)
 	temp = get_env_node(env_list, tab[0]);
 	if (!temp)
 	{
+		printf("i am about to create\n");
 		add_new_env(env_list, str);
 	}
 	else

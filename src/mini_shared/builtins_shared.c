@@ -20,6 +20,7 @@ t_list	*get_env_node(t_list *env_list, char *str)
 	
 	while (temp->content)
 	{
+		printf("Variable [%s\n", ((t_env *)(env_list->last->content))->variable);
 		if (ft_strcmp(((t_env *)(temp->content))->variable, str) == 0)
 			return (temp);
 		temp = temp->next;
@@ -47,13 +48,6 @@ t_env	*create_env_node(char *str)
 	char	**tab;
 
 	new = (t_env *)malloc(sizeof(t_env));
-	if (!str)
-	{
-		new->variable = NULL;
-		new->value = NULL;
-		new->assigned = 0;
-		return (new);
-	}
 	tab = ft_single_split(str, '=');
 	if (!new || !tab)
 		exit (1);
@@ -81,6 +75,7 @@ t_list	*add_new_env(t_list *env_list, char *str)
 		env_list->last->next = new;
 		env_list->last = new;
 	}
+	printf("Variable inside add new [%s\n", ((t_env *)(env_list->last->content))->variable);
 	return (new);
 }
 
