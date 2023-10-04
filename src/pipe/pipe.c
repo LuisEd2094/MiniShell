@@ -88,9 +88,7 @@ void	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 			perror("Error en execute");
 			exit(EXIT_FAILURE);
 		}
-		execute_cmds(commands[i], mini->env_list));
-		perror("Fallo execute_cmds");
-		exit(127);
+		exit(execute_cmds(commands[i], mini->env_list));
 	}
 }
 
