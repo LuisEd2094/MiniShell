@@ -103,18 +103,18 @@ int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 	if (make_pipe(mini->pipes, num_pipes))
 		return (1);
 	i = -1;
-	while (++i < num_pipes)
+	while (++i <= num_pipes)
 		execute_pipe(commands, mini, num_pipes, i);
 	refinement(mini->pipes, num_pipes);
 	i = -1;
-	while (++i < num_pipes)
+	while (++i <= num_pipes)
 	{
 		waitpid(-1, &status, 0);
-		if (WIFEXITED(status))
-			return (WEXITSTATUS(status));
-		else if (WIFSIGNALED(status))
-			return (WTERMSIG(status) + 128);
 	}
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	else if (WIFSIGNALED(status))
+		return (WTERMSIG(status) + 128);
 	free_pipe(mini->pipes, num_pipes);
 	return (0);
 }
