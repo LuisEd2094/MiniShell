@@ -28,6 +28,7 @@ void	free_pipe(int **pipes, int num_pipes)
 	while (++i < num_pipes)
 		free(pipes[i]);
 	free(pipes);
+	pipes = NULL;
 }
 
 int	**malloc_pipe(int num_pipes)
