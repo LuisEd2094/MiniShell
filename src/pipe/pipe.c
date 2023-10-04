@@ -29,36 +29,6 @@ int	make_pipe(int **pipes, int num_pipes)
 }
 
 /*
-** Redirige entrada desde la tubería anterior (excepto para el primer comando)
-** Redirige salida a la tubería actual (excepto para el último comando)
-** Cierra todas las otras tuberías en este proceso hijo
-*/
-
-void	duplicate_and_close(int **pipes, int num_pipes, int i)
-{
-	int	j;
-
-	if (i > 0)
-	{
-		dup2(pipes[i - 1][0], STDIN_FILENO);
-		close(pipes[i - 1][0]);
-	}
-	if (i < num_pipes -1)
-	{
-		dup2(pipes[i][1], STDOUT_FILENO);
-		close(pipes[i][1]);
-	}
-	j = -1;
-	while (++j < num_pipes - 1)
-	{
-		if (j != i)
-		{
-			close(pipes[j][0]);
-		}
-	}
-}
-
-/*
 ** Cierra todas las tuberías en el proceso padre
 ** Espera a que todos los procesos hijos terminen
 */
@@ -68,17 +38,37 @@ void	refinement(int **pipes, int num_pipes)
 	int	i;
 
 	i = -1;
-	while (++i < num_pipes - 1)
+	while (++i < num_pipes)
 	{
 		close(pipes[i][0]);
 		close(pipes[i][1]);
 	}
-	i = -1;
-	while (++i < num_pipes)
-		wait(NULL);
 }
 
-int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
+/*
+** Redirige entrada desde la tubería anterior (excepto para el primer comando)
+** Redirige salida a la tubería actual (excepto para el último comando)
+** Cierra todas las otras tuberías en este proceso hijo
+*/
+
+void	setup_pipe(int **pipes, int num_pipes, int i)
+{
+	if (i > 0)
+	{
+		close(pipes[i - 1][1]);
+		dup2(pipes[i - 1][0], STDIN_FILENO);
+		close(pipes[i - 1][0]);
+	}
+	if (i < num_pipes)
+	{
+		close(pipes[i][0]);
+		dup2(pipes[i][1], STDOUT_FILENO);
+		close(pipes[i][1]);
+	}
+	refinement(pipes, num_pipes);
+}
+
+void	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 {
 	pid_t	pid;
 	int		status;
@@ -92,7 +82,7 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 	}
 	if (pid == 0)
 	{
-		duplicate_and_close(mini->pipes, num_pipes, i);
+		setup_pipe(mini->pipes, num_pipes, i);
 		if (check_and_handle_redirections(commands[i], mini))
 		{
 			perror("Error en execute");
@@ -100,39 +90,33 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 		}
 		exit(execute_cmds(commands[i], mini->env_list));
 	}
-	else
-	{
-		wait(&status);
-		close(mini->pipes[i][1]);
-		return (get_exit_code(status));
-	}
-
-	return (0);
 }
 
 int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 {
 	int	i;
-	int	exit_code;
+	int	status;
 
 	mini->pipes = malloc_pipe(num_pipes);
 	if (mini->pipes == NULL)
 		return (1);
-	i = -1;
 	if (make_pipe(mini->pipes, num_pipes))
 		return (1);
-	while (commands[++i])
-	{
-		exit_code = execute_pipe(commands, mini, num_pipes, i);
-		if (exit_code)
-		{
-			free_pipe(mini->pipes, num_pipes);
-			return (exit_code);
-		}
-	}
+	i = -1;
+	while (++i < num_pipes)
+		execute_pipe(commands, mini, num_pipes, i);
 	refinement(mini->pipes, num_pipes);
+	i = -1;
+	while (++i < num_pipes)
+	{
+		waitpid(-1, &status, 0);
+		if (WIFEXITED(status))
+			return (WEXITSTATUS(status));
+		else if (WIFSIGNALED(status))
+			return (WTERMSIG(status) + 128);
+	}
 	free_pipe(mini->pipes, num_pipes);
-	return (exit_code);
+	return (0);
 }
 
 /*
@@ -145,11 +129,11 @@ int main() {
     char *command4[] = {"ls", "-la", NULL};
 
     char **commands[] = {command1, command2, command3, NULL};
-    int num_pipes = 1;
+    int num_commands = 0;
 
-    while (commands[num_pipes])
-        num_pipes++;
-    printf("%d",ft_pipe(commands, num_pipes, mini));
+    while (commands[num_commands])
+        num_commands++;
+    printf("%d",ft_pipe(commands, num_commands - 1, mini));
 
     return 0;
 }
