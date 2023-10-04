@@ -167,7 +167,7 @@ conf:
 
 $(OBJS_PATH)%.o: $(SRCS_PATH)%.c | $(MAKE_OBJ_DIR) $(DEPS_PATH)
 			@echo "$(CYAN)Compiling $< $(DEF_COLOR)"
-			@$(CC) $(CFLAGS) $(INCS) $(LIB) -MMD -MP -c -D READLINE_LIBRARY=1 $< -o  $@
+			@$(CC) $(CFLAGS) $(INCS) -MMD -MP -c -D READLINE_LIBRARY=1 $< -o  $@
 			@mv $(basename $@).d $(DEPS_PATH)
 
 

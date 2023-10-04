@@ -93,7 +93,7 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 	else
 	{
 		wait(&status);
-		refinement(pipes, num_pipes);
+		refinement(mini->pipes, num_pipes);
 		return (get_exit_code(status));
 	}
 	return (0);

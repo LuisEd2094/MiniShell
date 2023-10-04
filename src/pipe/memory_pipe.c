@@ -12,12 +12,13 @@
 
 #include <pipe.h>
 
-void	wait_pipe(int status)
+int	wait_pipe(int status)
 {
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
 		return (WTERMSIG(status) + 128);
+	return (0);
 }
 
 void	free_pipe(int **pipes, int num_pipes)
@@ -53,6 +54,6 @@ int	**malloc_pipe(int num_pipes)
 			return (NULL);
 		}
 	}
-	pipe[i] = NULL;
+	pipes[i] = NULL;
 	return (pipes);
 }

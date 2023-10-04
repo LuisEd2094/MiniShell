@@ -64,18 +64,18 @@ int	handle_single_built_int(t_minishell *mini)
 
 void	start_execute_cmds(t_minishell *mini)
 {
-	int	num_pipes;
+	int	num_commands;
 
-	num_pipes = 1;
-	while (mini->cmds[num_pipes])
-		num_pipes++;
-	if (num_pipes > 1)
-		mini->exit_code = ft_pipe(mini->cmds, num_pipes, mini);
-	else if (num_pipes == 1)
+	num_commands = 0;
+	while (mini->cmds[num_commands])
+		num_commands++;
+	if (num_commands > 1)
+		mini->exit_code = ft_pipe(mini->cmds, num_commands - 1, mini);
+	else if (num_commands == 1)
 	{
 		if (is_built_in(mini->cmds[0]))
 			mini->exit_code = handle_single_built_int(mini);
 		else
-			mini->exit_code = ft_pipe(mini->cmds, num_pipes, mini);
+			mini->exit_code = ft_pipe(mini->cmds, num_commands -1, mini);
 	}
 }

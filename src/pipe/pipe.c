@@ -68,12 +68,13 @@ void	setup_pipe(int **pipes, int num_pipes, int i)
 	refinement(pipes, num_pipes);
 }
 
-void	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
+int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 {
 	pid_t	pid;
 	int		status;
 
 	pid = fork();
+	printf("this is pid %i\n",pid);
 	signal_action();
 	if (pid == -1)
 	{
@@ -90,12 +91,19 @@ void	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 		}
 		exit(execute_cmds(commands[i], mini->env_list));
 	}
+	if (i == num_pipes)
+	{
+		mini->last_pid  = pid;
+	}
+	return (0);
 }
 
 int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 {
 	int	i;
 	int	status;
+	int last_status;
+
 
 	mini->pipes = malloc_pipe(num_pipes);
 	if (mini->pipes == NULL)
@@ -103,18 +111,30 @@ int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 	if (make_pipe(mini->pipes, num_pipes))
 		return (1);
 	i = -1;
-	while (++i < num_pipes)
+
+	while (++i <= num_pipes)
 		execute_pipe(commands, mini, num_pipes, i);
 	refinement(mini->pipes, num_pipes);
 	i = -1;
-	while (++i < num_pipes)
+	while (++i <= num_pipes)
 	{
-		waitpid(-1, &status, 0);
-		if (WIFEXITED(status))
-			return (WEXITSTATUS(status));
-		else if (WIFSIGNALED(status))
-			return (WTERMSIG(status) + 128);
+		status = 0;
+		printf("Child num [%i]\n", i);
+		if (mini->last_pid == waitpid(-1, &status, 0))
+			last_status = status;
+		printf("Exit code : {%i} \n", status);
+		
+
+		
 	}
+
+	if (WIFEXITED(last_status))
+	{
+		return (WEXITSTATUS(last_status));
+
+	}
+	else if (WIFSIGNALED(last_status))
+		return (WTERMSIG(last_status) + 128);
 	free_pipe(mini->pipes, num_pipes);
 	return (0);
 }

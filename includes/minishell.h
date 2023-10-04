@@ -21,6 +21,7 @@ typedef struct s_minishell
 	int		here_doc_number;
 	char	here_doc_name[200];
 	char	*here_doc_end;
+	pid_t	last_pid;
 
 }	t_minishell;
 
