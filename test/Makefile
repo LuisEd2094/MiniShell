@@ -5,7 +5,7 @@ LIB_DIR = /home/luised2094/MiniShell/Libft
 LIB_FILES := $(wildcard $(LIB_DIR)/**/*.c)
 
 
-SRC_FILES = mytest.c unity.c 
+SRC_FILES = mytest.c unity.c ../parse_input.c
 
 LIB_FLAGS = -I./ -I$(LIB_DIR)/includes
 
