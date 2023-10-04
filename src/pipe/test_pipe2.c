@@ -102,7 +102,6 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 {
 	int	i;
-	int	exit_code;
 
 	mini->pipes = malloc_pipe(num_pipes);
 	if (mini->pipes == NULL)
@@ -111,17 +110,10 @@ int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 		return (1);
 	i = -1;
 	while (commands[++i])
-	{
-		exit_code = execute_pipe(commands, mini, num_pipes, i);
-		if (exit_code)
-		{
-			free_pipe(mini->pipes, num_pipes);
-			return (exit_code);
-		}
-	}
+		mini->exit_code = execute_pipe(commands, mini, num_pipes, i);
 	refinement(mini->pipes, num_pipes);
 	free_pipe(mini->pipes, num_pipes);
-	return (exit_code);
+	return (0);
 }
 
 /*
