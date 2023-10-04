@@ -12,40 +12,38 @@
 
 #include <builtins.h>
 
-int	check_home(char *home_directory)
+int	change_directory(char *directory)
 {
-	if (home_directory == NULL)
+	if (directory == NULL)
 	{
-		perror("No se pudo obtener el directorio de inicio");
+		perror("No se pudo obtener el directorio");
 		return (-1);
 	}
-	if (chdir(home_directory) == -1)
+	if (chdir(directory) == -1)
 	{
-		perror("Error al cambiar al directorio de inicio");
+		perror("Error al cambiar al directorio");
 		return (-1);
 	}
 	return (0);
 }
 
-int	ft_cd(char **arguments)
+int	ft_cd(char **arguments, t_list *env_list)
 {
 	char	*home_directory;
+	char	*save_old_directory;
+	int		error;
 
+	error = 0;
 	home_directory = getenv("HOME");
 	if (arguments == NULL)
 		return (-1);
+	save_old_directory = getcwd(NULL, 0);
 	if (arguments[1] == NULL)
-	{
-		if (check_home(home_directory) == -1)
-			return (-1);
-	}
+		error = change_directory(home_directory);
 	else
-	{
-		if (chdir(arguments[1]) == -1)
-		{
-			perror("Error al cambiar de directorio");
-			return (-1);
-		}
-	}
-	return (0);
+		error = change_directory(arguments[1]);
+	if (error == 0)
+		create_or_update_env_node(env_list, "OLDPWD", save_old_directory);
+	free(save_old_directory);
+	return (error);
 }
