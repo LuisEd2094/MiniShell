@@ -27,37 +27,53 @@ void check_basic_input(void)
 void check_quotes(void)
 {
     TEST_ASSERT_EQUAL(0, parse_input("\"Hola\""));
-    TEST_ASSERT_EQUAL(1, parse_input("\"Hola"));
-
-    TEST_ASSERT_EQUAL(1, parse_input("\"Hola \" \" "));
-    TEST_ASSERT_EQUAL(0, parse_input("\"Hola \" \" \""));
-    TEST_ASSERT_EQUAL(0, parse_input("\"\"\"\""));
-
-
-
-    TEST_ASSERT_EQUAL(0, parse_input("\'Hola\'"));
-    TEST_ASSERT_EQUAL(1, parse_input("\'Hola"));
-
-    TEST_ASSERT_EQUAL(1, parse_input("\'Hola \' \' "));
     TEST_ASSERT_EQUAL(0, parse_input("\'Hola \' \' \'"));
     TEST_ASSERT_EQUAL(0, parse_input("\'\'\'\'"));
+    TEST_ASSERT_EQUAL(0, parse_input("\"Hola \" \" \""));
+    TEST_ASSERT_EQUAL(0, parse_input("\"\"\"\""));
+    TEST_ASSERT_EQUAL(0, parse_input("\'Hola\'"));
+
+
+    TEST_ASSERT_EQUAL(1, parse_input("\"Hola"));
+    TEST_ASSERT_EQUAL(1, parse_input("\"Hola \" \" "));
+    TEST_ASSERT_EQUAL(1, parse_input("\'Hola"));
+    TEST_ASSERT_EQUAL(1, parse_input("\'Hola \' \' "));
+
 }
 
 void check_pipes(void)
 {
+    
     TEST_ASSERT_EQUAL(0, parse_input("hola | hola"));
+    TEST_ASSERT_EQUAL(0, parse_input("hola | hola| hola"));
+
     TEST_ASSERT_EQUAL(1, parse_input("hola | "));
     TEST_ASSERT_EQUAL(1, parse_input(" | hola"));
-    TEST_ASSERT_EQUAL(0, parse_input("hola | hola| hola"));
     TEST_ASSERT_EQUAL(1, parse_input("hola | hola| "));
     TEST_ASSERT_EQUAL(1, parse_input("hola | | hola"));
     TEST_ASSERT_EQUAL(1, parse_input("hola | |  "));
-
-
-
-
 }
 
+void check_redirections(void)
+{
+        TEST_ASSERT_EQUAL(0, parse_input("hola > hola"));
+        TEST_ASSERT_EQUAL(1, parse_input("hola >"));
+}
+
+
+void check_all(void)
+{
+    TEST_ASSERT_EQUAL(0, parse_input("hola > \"hola\""));
+    TEST_ASSERT_EQUAL(0, parse_input("hola > \"hola\" | cat"));
+    TEST_ASSERT_EQUAL(0, parse_input("hola > \"hola\" | cat < infile"));
+    TEST_ASSERT_EQUAL(0, parse_input("hola > \"hola\" | cat < infile | ls"));
+    TEST_ASSERT_EQUAL(0, parse_input("hola > \"hola\" | cat < infile | ls >> outfile"));
+
+
+
+    
+
+}
 
 int main(int argc, char **argv, char **env)
 {  
@@ -65,6 +81,7 @@ int main(int argc, char **argv, char **env)
     RUN_TEST(check_basic_input);
     RUN_TEST(check_quotes);
     RUN_TEST(check_pipes);
+    RUN_TEST(check_all);
 
 
     return UNITY_END();
