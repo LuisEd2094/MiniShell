@@ -3,7 +3,8 @@
 
 # include <stdio.h>
 # include <signal.h>
-# include <readline/readline.h>
+// # include <readline/readline.h>
+// # include <readline/history.h>
 # include <unistd.h>
 
 void signal_action(void);

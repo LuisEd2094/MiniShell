@@ -23,7 +23,7 @@ int	close_redirections(t_minishell *mini)
 
 int	open_file(char *file_name, int redir_type)
 {
-	int	fd;
+	int	fd=0;
 
 	if (redir_type == INPUT_REDIRECT)
 	{

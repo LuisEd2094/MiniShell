@@ -40,5 +40,5 @@ void	work_history(int order, char *input)
 	else if (order == UPDATE)
 		update_history(&(head), input, &(size));
 	else if (order == CLOSE)
-		close_history(head, size, open(HISTORY_FILE, O_WRONLY | O_CREAT, 0644));
+		ft_close_history(head, size, open(HISTORY_FILE, O_WRONLY | O_CREAT, 0644));
 }

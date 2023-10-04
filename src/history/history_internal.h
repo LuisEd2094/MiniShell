@@ -37,6 +37,6 @@ t_list	*ft_read_history(int fd, t_list **head, int *size);
 void	remove_new_line(char *line);
 void	add_to_history(t_list *node);
 void	update_history(t_list **head, char *input, int *size);
-void	close_history(t_list *head, int size, int fd);
+void	ft_close_history(t_list *head, int size, int fd);
 
 #endif

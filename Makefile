@@ -1,5 +1,5 @@
 NAME        = minishell
-CFLAGS      = -g -Wall -Wextra  -Werror
+CFLAGS      = -g #-Wall -Wextra  -Werror
 RM          = rm -f
 SRCS_PATH           = src/
 OBJS_PATH           = obj/
@@ -41,11 +41,12 @@ MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), \
 
 DEPS_PATH	= deps/
 LIB_PATH	= 	./Libft
-LIB			=	$(LIB_PATH)/libft.a
-LDFLAGS		= 	-L$(LIB_PATH) -lft
-LINEFLAGS	=	-lreadline
+LIB			=	$(LIB_PATH)/libft.a ./readline/libreadline.a ./readline/libhistory.a
+LDFLAGS		= 	-L$(LIB_PATH) -lft 
+#LINEFLAGS	=	-lreadline
 
-INCS        = -I./includes/
+INCS        = -I./includes/ \
+-I./readline/ 
 
 #Colors
 
@@ -156,19 +157,26 @@ SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES) $(ARGUMENTS_FILES) \
 OBJS        =	$(addprefix $(OBJS_PATH), $(SRC:.c=.o)) 
 				
 
-all: make_lib $(NAME)
+all: conf make_lib $(NAME)
+
+conf:
+	@if [ ! -f $(READL)config.status ]; then\
+		cd $(READL) && ./configure &> /dev/null; \
+		echo "✅ ==== $(G)$(ligth)Create config.status$(E)==== ✅"; \
+	fi
 
 $(OBJS_PATH)%.o: $(SRCS_PATH)%.c | $(MAKE_OBJ_DIR) $(DEPS_PATH)
 			@echo "$(CYAN)Compiling $< $(DEF_COLOR)"
-			@$(CC) $(CFLAGS) $(INCS) -MMD -MP -c $< -o  $@
+			@$(CC) $(CFLAGS) $(INCS) $(LIB) -MMD -MP -c -D READLINE_LIBRARY=1 $< -o  $@
 			@mv $(basename $@).d $(DEPS_PATH)
 
 
 $(NAME): $(OBJS) $(LIB)
-	@$(CC) $(CFLAGS) $(INCS) $(OBJS) $(LINEFLAGS) -o $(NAME) $(LDFLAGS)
+	@$(CC) $(CFLAGS) $(INCS) $(OBJS) $(LINEFLAGS) $(LIB) -ltermcap -o $(NAME) $(LDFLAGS)
 	@echo "$(LIGHT_GREEN)Created $(NAME) executable$(DEF_COLOR)"
 
 make_lib:
+	make -C ./readline/ --no-print-directory &> /dev/null
 	@echo "$(GREEN)Checking Libft$(DEF_COLOR)"
 	@$(MAKE) -s -C $(LIB_PATH)
 	@echo "$(BLUE)Done checking Libft$(DEF_COLOR)"

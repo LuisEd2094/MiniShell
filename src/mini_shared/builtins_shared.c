@@ -61,7 +61,7 @@ t_env	*create_env_node(char *str)
 
 t_list	*add_new_env(t_list *env_list, char *str)
 {
-	t_list	*new;
+	t_list	*new=NULL;
 	t_env	*env_node;
 
 	env_node = create_env_node(str);

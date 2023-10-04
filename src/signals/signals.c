@@ -11,6 +11,9 @@
 /* ************************************************************************** */
 
 #include <signals_mini.h>
+#include "../readline/readline.h"
+//void rl_replace_line (const char *, int);
+
 
 static	void	action(int signal, siginfo_t *info, void *context)
 {

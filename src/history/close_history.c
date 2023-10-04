@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   close_history.c                                    :+:      :+:    :+:   */
+/*   ft_close_history.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "history_internal.h"
 
-void	close_history(t_list *head, int size, int fd)
+void	ft_close_history(t_list *head, int size, int fd)
 {
 	t_list	*temp;
 	int		i;
@@ -31,5 +31,5 @@ void	close_history(t_list *head, int size, int fd)
 	}
 	close(fd);
 	ft_lstclear(&(head), free);
-	rl_clear_history();
+	// rl_clear_history();
 }
