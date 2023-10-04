@@ -1,5 +1,11 @@
 *.d
 *.o
+*.so
+*.a
+readline/libhistory.a
+readline/libreadline.a
+readline/shlib/libhistory.8.2.dylib
+readline/shlib/libreadline.8.2.dylib
 minishell
 *.txt
 *.exe
