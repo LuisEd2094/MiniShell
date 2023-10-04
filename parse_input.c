@@ -9,7 +9,7 @@ typedef struct s_input
     int     redir_pos;
     bool    pipe;
     bool    left_of_pipe;
-    bool    redirections;
+    bool    redirection;
 }   t_input;
 
 void init_checker(t_input *checker)
