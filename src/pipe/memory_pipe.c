@@ -12,15 +12,12 @@
 
 #include <pipe.h>
 
-int	get_exit_code(int status)
+void	wait_pipe(int status)
 {
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
 		return (WTERMSIG(status) + 128);
-	else
-		return(0);
-	
 }
 
 void	free_pipe(int **pipes, int num_pipes)
@@ -31,6 +28,7 @@ void	free_pipe(int **pipes, int num_pipes)
 	while (++i < num_pipes)
 		free(pipes[i]);
 	free(pipes);
+	pipes = NULL;
 }
 
 int	**malloc_pipe(int num_pipes)
@@ -38,7 +36,7 @@ int	**malloc_pipe(int num_pipes)
 	int	i;
 	int	**pipes;
 
-	pipes = (int **)malloc((num_pipes) * sizeof(int *));
+	pipes = (int **)malloc((num_pipes + 1) * sizeof(int *));
 	if (pipes == NULL)
 	{
 		perror("Error en malloc");
@@ -55,5 +53,6 @@ int	**malloc_pipe(int num_pipes)
 			return (NULL);
 		}
 	}
+	pipe[i] = NULL;
 	return (pipes);
 }
