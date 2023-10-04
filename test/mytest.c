@@ -41,16 +41,30 @@ void check_quotes(void)
     TEST_ASSERT_EQUAL(1, parse_input("\'Hola \' \' "));
     TEST_ASSERT_EQUAL(0, parse_input("\'Hola \' \' \'"));
     TEST_ASSERT_EQUAL(0, parse_input("\'\'\'\'"));
+}
+
+void check_pipes(void)
+{
+    TEST_ASSERT_EQUAL(0, parse_input("hola | hola"));
+    TEST_ASSERT_EQUAL(1, parse_input("hola | "));
+    TEST_ASSERT_EQUAL(1, parse_input(" | hola"));
+    TEST_ASSERT_EQUAL(0, parse_input("hola | hola| hola"));
+    TEST_ASSERT_EQUAL(1, parse_input("hola | hola| "));
+    TEST_ASSERT_EQUAL(1, parse_input("hola | | hola"));
+    TEST_ASSERT_EQUAL(1, parse_input("hola | |  "));
+
 
 
 
 }
+
 
 int main(int argc, char **argv, char **env)
 {  
     UNITY_BEGIN();
     RUN_TEST(check_basic_input);
     RUN_TEST(check_quotes);
+    RUN_TEST(check_pipes);
 
 
     return UNITY_END();
