@@ -18,12 +18,19 @@ void init_checker(t_input *checker)
     checker->redirections = 0;
 }
 
-bool    check_vals(t_input *checker)
+int    check_vals(t_input *checker)
 {
-    return (checker->quote || !checker->left_of_pipe || checker->pipe);
+    if (checker->quote)
+        return (1); //print custom msg
+    if (checker->pipe)
+        return (1); //custom msg
+
+    return (checker->pipe);
 }
 
-bool    parse_input(char *input)
+
+ /// 258 == unexpected token 
+int    parse_input(char *input)
 {
     t_input checker;
     int     i;
@@ -45,15 +52,20 @@ bool    parse_input(char *input)
         else if (!checker.pipe && input[i] == '|')
         {
             if (!checker.left_of_pipe)
-                return (1);
+                return (258); // return error
             checker.pipe = 1;
         }
         else if (checker.pipe)
         {
             if (input[i] == '|')
-                return (1);
+                return (258);
             if (!ft_isspace(input[i]))
                 checker.pipe = 0;
+        }
+        else if (!checker.redirections && (input[i] == '>' || input[i] == '<'))
+        {
+
+
         }
         i++;
     }
