@@ -96,7 +96,6 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 		refinement(mini->pipes, num_pipes);
 		free_pipe(mini->pipes, num_pipes);
 		work_history(CLOSE, NULL);
-
 		exit(status);
 	}
 	if (i == num_pipes)
