@@ -17,3 +17,5 @@ lines.c
 macro.sh
 .vscode/MiniShell.code-workspace
 config.status
+readline/shlib/libhistory.so.8.2
+readline/shlib/libreadline.so.8.2
