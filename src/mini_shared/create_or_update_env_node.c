@@ -25,7 +25,6 @@ static void	free_tab_export(char **tab)
 void	create_or_update_env_node(t_list *env_list, char *variable, char *value)
 {
 	t_list	*temp;
-	char	**tab;
 
 	temp = get_env_node(env_list, variable);
 	if (!temp)
@@ -36,14 +35,12 @@ void	create_or_update_env_node(t_list *env_list, char *variable, char *value)
 	{		
 		free(((t_env *)(temp->content))->value);
 		((t_env *)(temp->content))->value = (char *)malloc(sizeof(char) * \
-		(ft_strlen(tab[1]) + 1));
-		ft_strlcpy(((t_env *)(temp->content))->value, tab[1], \
-				ft_strlen(tab[1]) + 1);
+		(ft_strlen(value) + 1));
+		ft_strlcpy(((t_env *)(temp->content))->value, value, \
+				ft_strlen(value) + 1);
 		if (value[0])
 			((t_env *)(temp->content))->assigned = 1;
 		else
 			((t_env *)(temp->content))->assigned = 0;
 	}
-	if (tab)
-		free_tab_export(tab);
 }

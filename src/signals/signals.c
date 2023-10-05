@@ -37,6 +37,7 @@ void	signal_action(void)
 {
 	struct sigaction	act;
 
+	sigemptyset(&act.sa_mask); 
 	act.sa_sigaction = action;
 	act.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &act, NULL);
