@@ -49,7 +49,7 @@ t_env	*create_env_node(char *variable, char *value)
 		exit (1);
 	new->variable = variable;
 	new->value = value;
-	if (value[0])
+	if (value && value[0])
 		new->assigned = 1;
 	else
 		new->assigned = 0;

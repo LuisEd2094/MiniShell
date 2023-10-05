@@ -76,7 +76,7 @@ t_list	*init_env(char **env)
 	int		i;
 
 	if (!env[0])
-		env_node = NULL;
+		env_node = create_env_node(NULL, NULL);
 	else
 	{
 		tab = ft_single_split(env[0], '=');
