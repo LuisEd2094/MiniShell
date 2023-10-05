@@ -69,7 +69,7 @@ void	handle_here_document(t_minishell *mini, int i)
 	while (1)
 	{
 		input = readline(">");
-		if (ft_strcmp(input, mini->here_doc_end) == 0)
+		if (ft_strncmp(input, mini->here_doc_end, ft_strlen(mini->here_doc_end) + 1) == 0)
 			break ;
 		input = check_input(input, mini);
 		write (fd, input, ft_strlen(input));

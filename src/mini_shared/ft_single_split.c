@@ -18,7 +18,7 @@ char	**ft_single_split(char const *s, char c)
 	int		i;
 	int		j;
 
-	tab = (char **)malloc(sizeof(char *) * 2);
+	tab = (char **)malloc(sizeof(char *) * 3);
 	if (!tab)
 		return (NULL);
 	i = 0;
@@ -44,5 +44,6 @@ char	**ft_single_split(char const *s, char c)
 		i++;
 	}
 	tab[1][i] = '\0';
+	tab[2] = NULL;
 	return (tab);
 }

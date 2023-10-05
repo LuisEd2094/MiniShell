@@ -21,7 +21,7 @@ void	main_loop(t_minishell *mini)
 		mini->input = readline(">> ");
 		if (!mini->input)
 			exit_mini(mini);
-		if (ft_strcmp(mini->input, "exit") == 0)
+		if (ft_strncmp(mini->input, "exit", ft_strlen("exit") + 1) == 0)
 		{
 			free(mini->input);
 			break ;

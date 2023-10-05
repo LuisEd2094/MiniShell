@@ -19,7 +19,7 @@ t_list	*get_env_node(t_list *env_list, char *str)
 	temp = env_list;
 	while (temp)
 	{
-		if (ft_strcmp(((t_env *)(temp->content))->variable, str) == 0)
+		if (ft_strncmp(((t_env *)(temp->content))->variable, str, ft_strlen(str) + 1) == 0)
 			return (temp);
 		temp = temp->next;
 	}
@@ -60,33 +60,28 @@ t_list		*add_new_env(t_list *env_list, char *variable, char *value)
 {
 	t_list	*new;
 	t_env	*env_node;
+	t_list *temp;
 
 	env_node = create_env_node(variable, value);
+	printf("env node p [%p] [%p]\n", env_node->variable, env_node->value);
 	if (!env_list->content)
 		env_list->content = env_node;
 	else
 	{
-		new = ft_lstnew(env_node);
-		env_list->last->next = new;
-		env_list->last = new;
+		temp = env_list;
+		while(temp->next)
+			temp = temp->next;
+		env_node = create_env_node(variable, value);
+		printf("[%s] \n", env_node->variable);
+		temp->next = ft_lstnew(env_node);
+		printf("env node p [%p] [%p]\n", ((t_env *)temp->next->content)->variable, ((t_env *)temp->next->content)->value);
+
+		//temp->next = new;
+	//	env_list->last = new;
 	}
+
+
+	//ft_print_env(env_arr, env_list);
 	return (new);
 }
 
-void	update_env_value(char *env_node_str, char *str)
-{
-	int		i;
-	char	*new;
-
-	free(env_node_str);
-	ft_strlcpy(env_node_str, str, ft_strlen(str));
-	i = ft_strlen(str);
-	new = (char *)malloc(sizeof(char) * i + 1);
-	if (!new)
-		exit(0);
-	i = -1;
-	while (str[++i])
-		new[i] = str[i];
-	new[i] = '\0';
-	env_node_str = new;
-}

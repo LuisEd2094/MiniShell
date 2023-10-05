@@ -17,7 +17,7 @@ t_tree_node	*insert_to_tbs(t_tree_node *root, t_list *value)
 	int			compare_result;
 	t_tree_node	*new_node;
 
-	if (ft_strcmp(((t_env *)(value->content))->variable, "_") == 0)
+	if (ft_strncmp(((t_env *)(value->content))->variable, "_", ft_strlen("_") + 1) == 0)
 		return (root);
 	if (!root)
 	{
@@ -29,8 +29,9 @@ t_tree_node	*insert_to_tbs(t_tree_node *root, t_list *value)
 		new_node->right = NULL;
 		return (new_node);
 	}
-	compare_result = ft_strcmp(((t_env *)(value->content))->variable, \
-	((t_env *)(root->data->content))->variable);
+	compare_result = ft_strncmp(((t_env *)(value->content))->variable, \
+	((t_env *)(root->data->content))->variable, \
+	ft_strlen(((t_env *)(root->data->content))->variable) + 1);
 	if (compare_result < 0)
 		root->left = insert_to_tbs(root->left, value);
 	else if (compare_result > 0)

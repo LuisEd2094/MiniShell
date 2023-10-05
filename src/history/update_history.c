@@ -18,7 +18,7 @@ void	update_history(t_list **head, char *input, int *size)
 	t_list	*temp;
 	char	*content;
 
-	if ((*head) && ft_strcmp((*head)->last->content, input) == 0)
+	if ((*head) && ft_strncmp((*head)->last->content, input, ft_strlen(input) + 1) == 0)
 		return ;
 	remove_new_line(input);
 	content = ft_strdup(input);
