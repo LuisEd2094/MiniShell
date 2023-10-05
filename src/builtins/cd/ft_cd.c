@@ -12,6 +12,27 @@
 
 #include <builtins.h>
 
+int	send_old_directory(t_list *env_list, char *sol)
+{
+	char	*old_directory;
+	
+	old_directory = malloc((ft_strlen("OLDPWD") + 1) * sizeof(char));
+	if (old_directory == NULL)
+	{
+		perror("Error OLDPWD: Fallo en malloc");
+		return (3);
+	}
+	if (sol == NULL)
+	{
+		free(old_directory);
+		perror("Error OLDPWD: Fallo en malloc");
+		return (3);
+	}
+	ft_strlcpy(old_directory, "OLDPWD", ft_strlen("OLDPWD"));
+	create_or_update_env_node(env_list, old_directory, sol);
+	return (0);
+}
+
 int	change_directory(char *directory)
 {
 	if (directory == NULL)
@@ -32,10 +53,10 @@ char	*expand_tilde(char *path)
 	char	*expanded_path;
 	size_t	expanded_size;
 
-	if (!(getenv("HOME")))
+	if (getenv("HOME") == NULL)
 	{
 		perror("No se pudo obtener el directorio");
-		return NULL;
+		return (NULL);
 	}
 	expanded_size = ft_strlen(getenv("HOME")) + ft_strlen(path);
 	expanded_path = malloc(expanded_size * sizeof(char));
@@ -48,12 +69,12 @@ int	ft_cd(char **arguments, t_list *env_list)
 {
 	char	*home_directory;
 	char	*tilde_directory;
-//	char	*save_old_directory;
+	char	*save_old_directory;
 	int		error;
 
 	error = 0;
 	home_directory = getenv("HOME");
-//	save_old_directory = getcwd(NULL, 0);
+	save_old_directory = getcwd(NULL, 0);
 	if (arguments[1] == NULL)
 		error = change_directory(home_directory);
 	else if (arguments[1][0] == '~')
@@ -64,8 +85,7 @@ int	ft_cd(char **arguments, t_list *env_list)
 	}
 	else
 		error = change_directory(arguments[1]);
-//	if (error == 0)
-//		create_or_update_env_node(env_list, "OLDPWD", save_old_directory);
-//	free(save_old_directory);
+	if (error == 0)
+		error = send_old_directory(env_list, save_old_directory);
 	return (error);
 }
