@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 11:46:01 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 11:47:25 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/05 14:45:46 by galo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	execute_cmds(char **cmds, t_list *env_list)
 	else if (compare_cmds(cmds[0], "echo"))
 		return (ft_echo(cmds));
 	else if (compare_cmds(cmds[0], "cd"))
-		return (ft_cd(cmds));
+		return (ft_cd(cmds, env_list));
 	else
 		try_execve(cmds, env_list);
 	return (0);

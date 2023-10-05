@@ -38,7 +38,7 @@ char        **ft_single_split(char const *s, char c);
 
 /*	---	builtins	---	*/
 
-int	ft_cd(char **arguments);
+int	ft_cd(char **arguments, t_list *env_list);
 int	ft_echo(char **arguments);
 int	ft_print_env(char **cmds, t_list *env_list);
 int	ft_export(t_list *env_list, char **cmds);
