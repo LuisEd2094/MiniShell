@@ -4,6 +4,7 @@
 int	ft_print_env(char **cmds, t_list *env_list)
 {
 	t_list	*temp;
+
 	if (cmd_len(cmds) > 1)
 		return (print_error("env : invalid usage\n", 1));
 	if (!env_list->content)
@@ -23,6 +24,7 @@ void	free_env_list(t_list *env_list)
 {
 	t_list	*next;
 	t_list	*cursor;
+
 	cursor = env_list;
 	while (cursor)
 	{
@@ -39,6 +41,7 @@ t_list	*iter_env(char *env)
 {
 	t_list	*new;
 	t_env	*env_node;
+
 	env_node = create_env_node(env);
 	if (!env_node)
 		exit(1);
@@ -54,6 +57,7 @@ t_list	*init_env(char **env)
 	t_list	*tmp;
 	t_env	*env_node;
 	int		i;
+
 	if (!env[0])
 		env_node = NULL;
 	else
