@@ -34,10 +34,8 @@ void	create_or_update_env_node(t_list *env_list, char *variable, char *value)
 	else
 	{		
 		free(((t_env *)(temp->content))->value);
-		((t_env *)(temp->content))->value = (char *)malloc(sizeof(char) * \
-		(ft_strlen(value) + 1));
-		ft_strlcpy(((t_env *)(temp->content))->value, value, \
-				ft_strlen(value) + 1);
+		((t_env *)(temp->content))->value = value;
+		free(variable);
 		if (value[0])
 			((t_env *)(temp->content))->assigned = 1;
 		else

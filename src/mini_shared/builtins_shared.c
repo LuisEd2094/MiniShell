@@ -58,7 +58,6 @@ t_env	*create_env_node(char *variable, char *value)
 
 t_list		*add_new_env(t_list *env_list, char *variable, char *value)
 {
-	t_list	*new;
 	t_env	*env_node;
 	t_list *temp;
 
@@ -70,17 +69,7 @@ t_list		*add_new_env(t_list *env_list, char *variable, char *value)
 		temp = env_list;
 		while(temp->next)
 			temp = temp->next;
-		env_node = create_env_node(variable, value);
-		printf("[%s] \n", env_node->variable);
 		temp->next = ft_lstnew(env_node);
-		printf("env node p [%p] [%p]\n", ((t_env *)temp->next->content)->variable, ((t_env *)temp->next->content)->value);
-
-		//temp->next = new;
-	//	env_list->last = new;
 	}
-
-
-	//ft_print_env(env_arr, env_list);
-	return (new);
 }
 
