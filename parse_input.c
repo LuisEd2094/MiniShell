@@ -5,6 +5,8 @@
 typedef struct s_input
 {
     char    quote;
+    char    redir_token;
+    int     redir_pos;
     bool    pipe;
     bool    left_of_pipe;
     bool    redirections;
@@ -16,6 +18,7 @@ void init_checker(t_input *checker)
     checker->left_of_pipe = 0;
     checker->pipe = 0;
     checker->redirections = 0;
+    checker->redir_token = 0;
 }
 
 int    check_vals(t_input *checker)
@@ -36,7 +39,6 @@ int    parse_input(char *input)
 {
     t_input checker;
     int     i;
-    char    quote;
 
     init_checker(&checker);
     i = 0;
@@ -66,12 +68,19 @@ int    parse_input(char *input)
         }
         else if (!checker.redirections && (input[i] == '>' || input[i] == '<'))
         {
-            if (input[i + 1])
             checker.redirections = 1;
+            checker.redir_token = input[i];
+            checker.redir_pos = i;
         }
         else if (checker.redirections)
         {
-            if (!ft_isspace(input[i]))
+            if (input[checker.redir_pos + 1] && input[checker.redir_pos] == input[checker.redir_pos + 1] && \
+            (input[i] == '|' || ((input[i] == '>' || input[i] == '<') && i != checker.redir_pos + 1)))
+                return(258);
+
+                
+            if (!(checker.redir_token == input[i] && checker.redir_pos == i - 1) && \
+            !(ft_isascii(input[i]) && !ft_isalnum(input[i])))
                 checker.redirections = 0;
         }
         i++;
