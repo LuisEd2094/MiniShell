@@ -71,6 +71,7 @@ void check_redirections(void)
 
     TEST_ASSERT_EQUAL(0, parse_input("hola >|infile"));
 
+    TEST_ASSERT_EQUAL(0, parse_input("ls >$ out"));
 
 
     TEST_ASSERT_EQUAL(0, parse_input("hola > hola > hola > hola"));
@@ -83,6 +84,7 @@ void check_redirections(void)
     TEST_ASSERT_EQUAL(258, parse_input("hola <<>hola "));
     TEST_ASSERT_EQUAL(258, parse_input("hola < >hola "));
     TEST_ASSERT_EQUAL(258, parse_input("hola ><hola "));
+    TEST_ASSERT_EQUAL(1, parse_input("ls >$out")); //bash: $out: ambiguous redirect
 
 
 }
@@ -97,11 +99,13 @@ void check_all(void)
     TEST_ASSERT_EQUAL(0, parse_input("hola > \"hola\" | cat < infile | ls"));
     TEST_ASSERT_EQUAL(0, parse_input("hola > \"hola\" | cat < infile | ls >> outfile"));
     TEST_ASSERT_EQUAL(0, parse_input("ls | > outfile"));
+    TEST_ASSERT_EQUAL(0, parse_input("ls | > asda #outfile"));
 
 
     TEST_ASSERT_EQUAL(1, parse_input("hola > \"hola"));
     TEST_ASSERT_EQUAL(1, parse_input("hola > \""));
     TEST_ASSERT_EQUAL(258, parse_input("hola > "));
+    TEST_ASSERT_EQUAL(258, parse_input("ls | > #outfile")); //newline
 
 
 

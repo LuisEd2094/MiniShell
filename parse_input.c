@@ -24,6 +24,8 @@ int    check_vals(t_input *checker)
         return (1); //print custom msg
     if (checker->pipe)
         return (1); //custom msg
+    if (checker->redirections)
+        return (258); //new line
 
     return (checker->pipe);
 }
@@ -64,8 +66,13 @@ int    parse_input(char *input)
         }
         else if (!checker.redirections && (input[i] == '>' || input[i] == '<'))
         {
-
-
+            if (input[i + 1])
+            checker.redirections = 1;
+        }
+        else if (checker.redirections)
+        {
+            if (!ft_isspace(input[i]))
+                checker.redirections = 0;
         }
         i++;
     }
