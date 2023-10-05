@@ -62,6 +62,7 @@ int	ft_export(t_list *env_list, char **cmds)
 				exit(1);
 			printf("[%s]  [%s] [%s]\n", tab[0], tab[1] ,tab[2]);
 			create_or_update_env_node(env_list, tab[0], tab[1]);
+			free(tab);
 			i++;
 		}
 	}

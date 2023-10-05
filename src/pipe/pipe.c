@@ -89,7 +89,15 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 			perror("Error en execute");
 			exit(EXIT_FAILURE);
 		}
-		exit(execute_cmds(commands[i], mini->env_list));
+		status = execute_cmds(commands[i], mini->env_list);
+		free_env_list(mini->env_list);
+		free_cmds(mini->cmds);
+		free(mini->input);
+		refinement(mini->pipes, num_pipes);
+		free_pipe(mini->pipes, num_pipes);
+		work_history(CLOSE, NULL);
+
+		exit(status);
 	}
 	if (i == num_pipes)
 	{
@@ -127,7 +135,7 @@ int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 
 		
 	}
-
+	free_pipe(mini->pipes, num_pipes);
 	if (WIFEXITED(last_status))
 	{
 		return (WEXITSTATUS(last_status));
@@ -135,7 +143,6 @@ int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 	}
 	else if (WIFSIGNALED(last_status))
 		return (WTERMSIG(last_status) + 128);
-	free_pipe(mini->pipes, num_pipes);
 	return (0);
 }
 

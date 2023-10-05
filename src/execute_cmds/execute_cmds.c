@@ -39,6 +39,8 @@ bool	is_built_in(char **cmds)
 
 int	execute_cmds(char **cmds, t_list *env_list)
 {
+	int exit_val;
+	
 	if (compare_cmds(cmds[0], "env"))
 		return (ft_print_env(cmds, env_list));
 	else if (compare_cmds(cmds[0], "export"))
