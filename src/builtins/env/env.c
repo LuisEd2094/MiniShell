@@ -1,5 +1,6 @@
 #include <builtins.h>
 #include <shared.h>
+
 int	ft_print_env(char **cmds, t_list *env_list)
 {
 	t_list	*temp;
@@ -17,6 +18,7 @@ int	ft_print_env(char **cmds, t_list *env_list)
 	}
 	return (0);
 }
+
 void	free_env_list(t_list *env_list)
 {
 	t_list	*next;
@@ -32,6 +34,7 @@ void	free_env_list(t_list *env_list)
 		cursor = next;
 	}
 }
+
 t_list	*iter_env(char *env)
 {
 	t_list	*new;
@@ -44,6 +47,7 @@ t_list	*iter_env(char *env)
 		exit (1);
 	return (new);
 }
+
 t_list	*init_env(char **env)
 {
 	t_list	*env_list;
