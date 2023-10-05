@@ -47,6 +47,7 @@ void	free_env_list(t_list *env_list)
 		free(cursor);
 		cursor = next;
 	}
+	free(cursor);
 }
 
 t_list	*iter_env(char *env)
@@ -64,6 +65,7 @@ t_list	*iter_env(char *env)
 	new = ft_lstnew(env_node);
 	if (!new)
 		exit (1);
+	free(tab);
 	return (new);
 }
 
@@ -83,6 +85,7 @@ t_list	*init_env(char **env)
 		if (!tab)
 			exit(1);
 		env_node = create_env_node(tab[0], tab[1]);
+		free(tab);
 	} 
 	env_list = ft_lstnew(env_node);
 	if (!env_list)

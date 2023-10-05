@@ -63,7 +63,6 @@ t_list		*add_new_env(t_list *env_list, char *variable, char *value)
 	t_list *temp;
 
 	env_node = create_env_node(variable, value);
-	printf("env node p [%p] [%p]\n", env_node->variable, env_node->value);
 	if (!env_list->content)
 		env_list->content = env_node;
 	else
