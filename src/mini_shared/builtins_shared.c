@@ -40,31 +40,28 @@ bool	has_equal(char *str)
 	return (0);
 }
 
-t_env	*create_env_node(char *str)
+t_env	*create_env_node(char *variable, char *value)
 {
 	t_env	*new;
-	char	**tab;
 
 	new = (t_env *)malloc(sizeof(t_env));
-	tab = ft_single_split(str, '=');
-	if (!new || !tab)
+	if (!new)
 		exit (1);
-	new->variable = tab[0];
-	new->value = tab[1];
-	if (has_equal(str))
+	new->variable = variable;
+	new->value = value;
+	if (value[0])
 		new->assigned = 1;
 	else
 		new->assigned = 0;
-	free(tab);
 	return (new);
 }
 
-t_list	*add_new_env(t_list *env_list, char *str)
+t_list		*add_new_env(t_list *env_list, char *variable, char *value)
 {
-	t_list	*new=NULL;
+	t_list	*new;
 	t_env	*env_node;
 
-	env_node = create_env_node(str);
+	env_node = create_env_node(variable, value);
 	if (!env_list->content)
 		env_list->content = env_node;
 	else

@@ -24,9 +24,9 @@ void		print_in_order(t_tree_node* root);
 t_list		*init_env(char **env);
 t_list		*get_env_node(t_list *env_list, char *str);
 char		*get_env_str(char *input, t_list *env_list);
-t_env		*create_env_node(char *str);
+t_env       *create_env_node(char *variable, char *value);
 void		update_env_value(char *env_node_str, char *str);
-t_list		*add_new_env(t_list *env_list, char *str);
+t_list		*add_new_env(t_list *env_list, char *variable, char *value);
 void		free_env_list(t_list *env_list);
 
 
@@ -38,7 +38,7 @@ char        **ft_single_split(char const *s, char c);
 
 /*	---	builtins	---	*/
 
-int	ft_cd(char **arguments);
+int	ft_cd(char **arguments, t_list *env_list);
 int	ft_echo(char **arguments);
 int	ft_print_env(char **cmds, t_list *env_list);
 int	ft_export(t_list *env_list, char **cmds);

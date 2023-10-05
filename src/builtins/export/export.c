@@ -46,6 +46,7 @@ static void	work_on_print(t_list *env_list)
 
 int	ft_export(t_list *env_list, char **cmds)
 {
+	char **tab;
 	int	i;
 
 	i = 1;
@@ -55,7 +56,10 @@ int	ft_export(t_list *env_list, char **cmds)
 	{
 		while (cmds[i])
 		{
-			create_or_update_env_node(env_list, cmds[i]);
+			tab = ft_single_split(cmds[i], '=');
+			if (!tab)
+				exit(1);
+			create_or_update_env_node(env_list, tab[0], tab[1]);
 			i++;
 		}
 	}

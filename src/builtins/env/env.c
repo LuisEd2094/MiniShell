@@ -17,7 +17,7 @@ int	ft_print_env(char **cmds, t_list *env_list)
 {
 	t_list	*temp;
 
-	if (cmd_len(cmds) > 1)
+	if (cmds[1])
 		return (print_error("env : invalid usage\n", 1));
 	if (!env_list->content)
 		return (0);
@@ -53,8 +53,12 @@ t_list	*iter_env(char *env)
 {
 	t_list	*new;
 	t_env	*env_node;
+	char	**tab;
 
-	env_node = create_env_node(env);
+	tab = ft_single_split(env, '=');
+	if (!tab)
+		exit(1);
+	env_node = create_env_node(tab[0], tab[1]);
 	if (!env_node)
 		exit(1);
 	new = ft_lstnew(env_node);
@@ -68,12 +72,18 @@ t_list	*init_env(char **env)
 	t_list	*env_list;
 	t_list	*tmp;
 	t_env	*env_node;
+	char	**tab;
 	int		i;
 
 	if (!env[0])
 		env_node = NULL;
-	else 
-		env_node = create_env_node(env[0]);
+	else
+	{
+		tab = ft_single_split(env[0], '=');
+		if (!tab)
+			exit(1);
+		env_node = create_env_node(tab[0], tab[1]);
+	} 
 	env_list = ft_lstnew(env_node);
 	if (!env_list)
 		exit(1);

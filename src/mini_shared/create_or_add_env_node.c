@@ -22,18 +22,16 @@ static void	free_tab_export(char **tab)
 		free(tab);
 }
 
-void	create_or_update_env_node(t_list *env_list, char *str)
+void	create_or_update_env_node(t_list *env_list, char *variable, char *value)
 {
 	t_list	*temp;
 	char	**tab;
 
-	tab = ft_single_split(str, '=');
-	if (!tab)
-		exit(1);
-	temp = get_env_node(env_list, tab[0]);
+	temp = get_env_node(env_list, variable);
 	if (!temp)
 	{
-		add_new_env(env_list, str);
+		printf("i am creating [%s] [%s] \n", variable, value);
+		add_new_env(env_list, variable, value);
 	}
 	else
 	{		
@@ -42,7 +40,7 @@ void	create_or_update_env_node(t_list *env_list, char *str)
 		(ft_strlen(tab[1]) + 1));
 		ft_strlcpy(((t_env *)(temp->content))->value, tab[1], \
 				ft_strlen(tab[1]) + 1);
-		if (has_equal(str))
+		if (value[0])
 			((t_env *)(temp->content))->assigned = 1;
 		else
 			((t_env *)(temp->content))->assigned = 0;
