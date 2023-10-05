@@ -75,10 +75,11 @@ char	*get_path_name(char **cmd, char **path_list)
 		i++;
 	}
 	free_path_list(path_list);
+	
 	return (path_name);
 }
 
-void	try_execve(char **cmd, t_list *env_list)
+int	try_execve(char **cmd, t_list *env_list)
 {
 	char	**converted_env_list;
 	char	*path_name;
@@ -88,15 +89,13 @@ void	try_execve(char **cmd, t_list *env_list)
 	{
 		converted_env_list = conver_env_list(env_list);
 		execve(path_name, cmd, converted_env_list);
+		return (0);
 	}
 	else
 	{
 		ft_printf("minishell: %s: command not found\n", cmd[0]);
 		if (path_name)
 			free (path_name);
-		exit(127);
+		return (127);
 	}
-	if (path_name)
-		free (path_name);
-	return ;
 }

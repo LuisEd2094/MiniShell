@@ -19,7 +19,7 @@ void	free_path_list(char **path_list)
 	i = 0;
 	while (path_list[i])
 		free(path_list[i++]);
-	free(path_list[i]);
+	free(path_list);
 }
 
 char	*join_path(char *path_list, char *cmd)

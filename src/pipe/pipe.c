@@ -126,12 +126,8 @@ int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 	while (++i <= num_pipes)
 	{
 		status = 0;
-		printf("Child num [%i]\n", i);
 		if (mini->last_pid == waitpid(-1, &status, 0))
-			last_status = status;
-		printf("Exit code : {%i} \n", status);
-		
-
+			last_status = status;	
 		
 	}
 	free_pipe(mini->pipes, num_pipes);
