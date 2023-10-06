@@ -13,6 +13,8 @@ char *ft_replace(char *cmd, char *env, int i, bool found);
 void create_or_update_env_node(t_list *env_list, char *variable, char *value);
 int cmd_len(char **cmd);
 int print_error(char *err_description, int err_value);
+void	free_node(t_list *temp);
+
 
 
 

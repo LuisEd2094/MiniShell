@@ -89,7 +89,7 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 			perror("Error en execute");
 			exit(EXIT_FAILURE);
 		}
-		status = execute_cmds(commands[i], mini->env_list);
+		status = execute_cmds(commands[i], mini->env_list, mini);
 		free_env_list(mini->env_list);
 		free_cmds(mini->cmds);
 		free(mini->input);

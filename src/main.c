@@ -31,13 +31,16 @@ void	main_loop(t_minishell *mini)
 			work_history(UPDATE, mini->input);
 			create_here_doc(mini);
 			get_cmds_value(mini->input, mini->env_list, mini);
+			ft_printf("Before execute[%p]\n", &(mini->env_list));
 			start_execute_cmds(mini);
+			ft_printf("After execute[%p]\n", &(mini->env_list));
 			ft_printf("After execution exit_code [%i]\n", mini->exit_code);
 			prep_mini(mini);
 		}
 		free(mini->input);
 	}
 }
+
 
 int	main(int argc, char **argv, char **env)
 {

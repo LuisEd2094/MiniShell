@@ -92,7 +92,7 @@ EXECVE		=	execve.c execve_aux.c
 MINI_SHARED	=	get_next_word_and_len.c is_ascii_no_space.c skips.c \
 				builtins_shared.c ft_single_split.c get_env_value_str.c \
 				replace_env.c create_or_update_env_node.c cmds_len.c \
-				print_error.c
+				print_error.c free_node.c
 
 
 REDIRECTIONS	= aux_handle_redirections.c  handle_redirections.c  here_doc.c

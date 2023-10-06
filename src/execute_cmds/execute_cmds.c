@@ -37,7 +37,7 @@ bool	is_built_in(char **cmds)
 	return (0);
 }
 
-int	execute_cmds(char **cmds, t_list *env_list)
+int	execute_cmds(char **cmds, t_list *env_list, t_minishell *mini)
 {
 	int exit_val;
 	
@@ -46,7 +46,7 @@ int	execute_cmds(char **cmds, t_list *env_list)
 	else if (compare_cmds(cmds[0], "export"))
 		return (ft_export(env_list, cmds));
 	else if (compare_cmds(cmds[0], "unset"))
-		ft_unset(env_list, cmds[1]);
+		return (ft_unset(env_list, cmds, mini));
 	else if (compare_cmds(cmds[0], "pwd"))
 		return (ft_pwd(cmds));
 	else if (compare_cmds(cmds[0], "echo"))
@@ -61,7 +61,7 @@ int	execute_cmds(char **cmds, t_list *env_list)
 int	handle_single_built_int(t_minishell *mini)
 {
 	check_and_handle_redirections(mini->cmds[0], mini);
-	return (execute_cmds(mini->cmds[0], mini->env_list));
+	return (execute_cmds(mini->cmds[0], mini->env_list, mini));
 }
 
 void	start_execute_cmds(t_minishell *mini)

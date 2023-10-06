@@ -3,7 +3,6 @@
 # include <libft.h>
 # include <stdbool.h>
 
-
 typedef struct s_env
 {
     char    *variable;
@@ -42,6 +41,6 @@ int	ft_echo(char **arguments);
 int	ft_print_env(char **cmds, t_list *env_list);
 int	ft_export(t_list *env_list, char **cmds);
 int	ft_pwd(char **arguments);
-t_list		*ft_unset(t_list *env_list, char *str);
+
 
 #endif

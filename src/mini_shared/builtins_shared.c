@@ -26,20 +26,6 @@ t_list	*get_env_node(t_list *env_list, char *str)
 	return (NULL);
 }
 
-bool	has_equal(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '=')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 t_env	*create_env_node(char *variable, char *value)
 {
 	t_env	*new;
@@ -73,3 +59,16 @@ t_list		*add_new_env(t_list *env_list, char *variable, char *value)
 	}
 }
 
+bool has_equal(char *str)
+{
+    int i;
+
+    i = 0;
+    while(str[i])
+    {
+        if (str[i] == '=')
+            return (1);
+        i++;
+    }
+    return (0);
+}

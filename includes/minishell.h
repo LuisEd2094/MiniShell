@@ -35,7 +35,7 @@ void	prep_mini(t_minishell *mini);
 void	init_mini(t_minishell *mini, char **env);
 
 void	get_cmds_value(char * input, t_list *env, t_minishell *mini);
-int		execute_cmds(char **cmds, t_list *env_list);
+int		execute_cmds(char **cmds, t_list *env_list, t_minishell *mini);
 void	create_here_doc(t_minishell *mini);
 void	delete_temp_files(t_minishell *mini);
 void	handle_here_document(t_minishell *mini, int i);
@@ -48,6 +48,9 @@ int		ft_pipe(char ***commands, int num_pipes, t_minishell *mini);
 void	signal_action(void);
 
 void	start_execute_cmds(t_minishell *mini);
+
+int		ft_unset(t_list *env_list, char **cmds, t_minishell *mini);
+
 
 
 

@@ -41,10 +41,7 @@ void	free_env_list(t_list *env_list)
 	while (cursor)
 	{
 		next = cursor->next;
-		free(((t_env *)(cursor->content))->variable);
-		free(((t_env *)(cursor->content))->value);
-		free((cursor->content));
-		free(cursor);
+		free_node(cursor);
 		cursor = next;
 	}
 	free(cursor);
