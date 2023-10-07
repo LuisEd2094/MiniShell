@@ -2,6 +2,8 @@
 
 #include "parse_input_internal.h"
 
+
+// need to check <> 
 void init_checker(t_input *checker)
 {
     checker->quote = 0;
@@ -15,7 +17,30 @@ int     print_input_error(char *str, char *error, int code)
 {
     print_error(str, code);
     if (error)
-        print_error(error, code);
+    {
+        if (error[1])
+        {
+            if (error[0] == '|' && error[1] == '|')
+                print_error("||", code);
+            else if (error[0] == '|')
+                print_error("|", code);
+            else if (error[0] == '>' && error[1] == '>')
+                print_error(">>", code);
+            else if (error[0] == '>')
+                print_error(">", code);
+            else if (error[0] == '<')
+            {
+                if (error[2] && error[1] == '<' && error[2] == '<' )
+                        print_error("<<<", code);
+                else if (error[0] == '<' && error[1] == '<')
+                    print_error("<<", code);
+            }
+
+        }
+        else
+            print_error(error, code);
+
+    }
     print_error("\n", code);
     return (code);
 }
