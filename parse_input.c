@@ -9,7 +9,7 @@ typedef struct s_input
     int     redir_pos;
     bool    pipe;
     bool    left_of_pipe;
-    bool    redirection;
+    bool    redirections;
 }   t_input;
 
 void init_checker(t_input *checker)
@@ -29,8 +29,7 @@ int    check_vals(t_input *checker)
         return (1); //custom msg
     if (checker->redirections)
         return (258); //new line
-
-    return (checker->pipe);
+    return (0);
 }
 
 
@@ -41,32 +40,12 @@ int    parse_input(char *input)
     int     i;
 
     init_checker(&checker);
-    i = 0;
-    while (input[i])
+    i = -1;
+    while (input[++i])
     {
-        if (!checker.left_of_pipe && !ft_isspace(input[i]) && input[i] != '|')
-            checker.left_of_pipe = 1;
-        if (!checker.quote && (input [i] == '\'' || input[i] == '"'))
-            checker.quote = input[i];
-        else if (checker.quote)
-        {
-            if (input[i] == checker.quote)
-                checker.quote = 0;
-        }
-        else if (!checker.pipe && input[i] == '|')
-        {
-            if (!checker.left_of_pipe)
-                return (258); // return error
-            checker.pipe = 1;
-        }
-        else if (checker.pipe)
-        {
-            if (input[i] == '|')
-                return (258);
-            if (!ft_isspace(input[i]))
-                checker.pipe = 0;
-        }
-        else if (!checker.redirections && (input[i] == '>' || input[i] == '<'))
+        if (ft_isspace(input[i]))
+               continue;
+        if (!checker.redirections && !checker.quote && (input[i] == '>' || input[i] == '<'))
         {
             checker.redirections = 1;
             checker.redir_token = input[i];
@@ -75,15 +54,43 @@ int    parse_input(char *input)
         else if (checker.redirections)
         {
             if (input[checker.redir_pos + 1] && input[checker.redir_pos] == input[checker.redir_pos + 1] && \
-            (input[i] == '|' || ((input[i] == '>' || input[i] == '<') && i != checker.redir_pos + 1)))
+            ((input[i] == '>' || input[i] == '<') && i != checker.redir_pos + 1))
                 return(258);
-
-                
-            if (!(checker.redir_token == input[i] && checker.redir_pos == i - 1) && \
-            !(ft_isascii(input[i]) && !ft_isalnum(input[i])))
+            if (i == checker.redir_pos + 1 && (input[i] == '|' || (input[i] == '>' || input[i] == '<')))
+            {
+                if (checker.redir_token == '>' && input[i] == '<')
+                    return(258);
+                continue;
+            }
+            else
+            {
+                if (input[i] == '>' || input[i] == '<')
+                    return(258);
+            }
+            if (input[i] !=  '|')
                 checker.redirections = 0;
         }
-        i++;
+        if (!checker.left_of_pipe && input[i] != '|')
+            checker.left_of_pipe = 1;
+        if (!checker.quote && (input [i] == '\'' || input[i] == '"'))
+            checker.quote = input[i];
+        else if (checker.quote)
+        {
+            if (input[i] == checker.quote)
+                checker.quote = 0;
+        }
+        if (!checker.pipe && input[i] == '|')
+        {
+            if (!checker.left_of_pipe)
+                return (258);
+            checker.pipe = 1;
+        }
+        else if (checker.pipe)
+        {
+            if (input[i] == '|')
+                return (258);
+            checker.pipe = 0;
+        }
     }
     return check_vals(&checker);
 }
