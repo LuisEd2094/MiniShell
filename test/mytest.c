@@ -110,6 +110,11 @@ void check_all(void)
     TEST_ASSERT_EQUAL(0, parse_input("ls | > outfile"));
     TEST_ASSERT_EQUAL(0, parse_input("ls | > asda #outfile"));
     TEST_ASSERT_EQUAL(0, parse_input("ls | > #outfile")); //newline
+    TEST_ASSERT_EQUAL(0, parse_input("ls|>outfile")); //newline
+    TEST_ASSERT_EQUAL(0, parse_input("ls|cat -e")); //newline
+    TEST_ASSERT_EQUAL(0, parse_input("ls>|cat")); //newline
+    TEST_ASSERT_EQUAL(0, parse_input("ls>|cat -e")); //newline
+
 
 
 
