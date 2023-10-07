@@ -22,6 +22,7 @@ PWD_PATH			= $(BUILTINTS)pwd/
 BUILTINTS_PATH		= $(EXPORT_PATH) $(ENV_PATH) $(UNSET_PATH) $(CD_PATH) $(ECHO_PATH) $(PWD_PATH)
 MINI_SHARED_PATH	= mini_shared/
 SIGNALS_PATH		= signals/
+PARSE_INPUT_PATH	= parse_input/
 
 
 ## Add new path, just need name/
@@ -35,6 +36,7 @@ MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), \
 											$(REDIR_PATH) \
 											$(SIGNALS_PATH) \
 											$(PIPE_PATH) \
+											$(PARSE_INPUT_PATH) \
 											) 
 										
 #Add new path to objects
@@ -102,6 +104,8 @@ SIGNALS		=	signals.c
 PIPE 		=	memory_pipe.c  pipe.c
 
 
+PARSE_INPUT =	parse_input.c
+
 
 ## Add names of your files
 
@@ -130,6 +134,8 @@ SIGNALS_FILES		= $(addprefix $(SIGNALS_PATH), $(SIGNALS))
 
 PIPE_FILES			= $(addprefix $(PIPE_PATH), $(PIPE))
 
+PARSE_INPUT_FILES	= $(addprefix $(PARSE_INPUT_PATH), $(PARSE_INPUT))
+
 ## append the path to your files
 
 DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
@@ -142,6 +148,7 @@ DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
 										$(REDIR_FILES:.c=.d) \
 										$(SIGNALS_FILES:.c=.d) \
 										$(PIPE_FILES:.c=.d)\
+										$(PARSE_INPUT_FILES:.c=.d)\
 										) 
 										
 										
@@ -150,7 +157,7 @@ DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
 
 SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES) $(ARGUMENTS_FILES) \
 				$(EXECVE_FILES) $(EXEC_CMDS_FILE) $(PARSE_FILES) $(MINI_SHARED_FILES) \
-				$(REDIR_FILES) $(SIGNALS_FILES) $(PIPE_FILES)
+				$(REDIR_FILES) $(SIGNALS_FILES) $(PIPE_FILES) $(PARSE_INPUT_FILES)
 
 ## add to sercs
 

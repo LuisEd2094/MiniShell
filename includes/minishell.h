@@ -51,6 +51,8 @@ void	start_execute_cmds(t_minishell *mini);
 
 int		ft_unset(t_list *env_list, char **cmds, t_minishell *mini);
 
+int		parse_input(char *input);
+
 
 
 

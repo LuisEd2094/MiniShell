@@ -29,13 +29,19 @@ void	main_loop(t_minishell *mini)
 		if (mini->input[0] != '\0')
 		{
 			work_history(UPDATE, mini->input);
-			create_here_doc(mini);
-			get_cmds_value(mini->input, mini->env_list, mini);
-			ft_printf("Before execute[%p]\n", &(mini->env_list));
-			start_execute_cmds(mini);
-			ft_printf("After execute[%p]\n", &(mini->env_list));
+			mini->exit_code = parse_input(mini->input);
 			ft_printf("After execution exit_code [%i]\n", mini->exit_code);
-			prep_mini(mini);
+			if	(mini->exit_code == 0)
+			{
+				create_here_doc(mini);
+				get_cmds_value(mini->input, mini->env_list, mini);
+				ft_printf("Before execute[%p]\n", &(mini->env_list));
+				start_execute_cmds(mini);
+				ft_printf("After execute[%p]\n", &(mini->env_list));
+				ft_printf("After execution exit_code [%i]\n", mini->exit_code);
+				prep_mini(mini);
+			}
+
 		}
 		free(mini->input);
 	}
