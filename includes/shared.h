@@ -1,7 +1,7 @@
 #ifndef SHARED_H
 # define SHARED_H
 
-int     et_next_word_len(char *cmd);
+int     get_next_word_len(char *cmd);
 char    *get_next_word(char *cmd);
 int     get_quotes_size(char *input);
 int     get_white_space_size(char *input);

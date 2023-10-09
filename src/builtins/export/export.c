@@ -35,7 +35,7 @@ static void *work_on_print(t_list *env_list)
 	temp = env_list;
 	root = NULL;
 	if (!env_list->content)
-		return	;
+		return ((void *) 1);
 	while (temp)
 	{
 		root = insert_to_tbs(root, temp);
@@ -67,7 +67,7 @@ int	ft_export(t_list *env_list, char **cmds)
 				exit(1);
 			if(!create_or_update_env_node(env_list, tab[0], tab[1]))
 				return (errno);
-)			free(tab);
+			free(tab);
 			i++;
 		}
 	}

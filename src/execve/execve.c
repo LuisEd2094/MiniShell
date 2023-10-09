@@ -92,7 +92,8 @@ int	try_execve(char **cmd, t_list *env_list)
 		if (!converted_env_list)
 			return (errno);
 		execve(path_name, cmd, converted_env_list);
-		return (0);
+		perror("minishell :");
+		exit(EXIT_FAILURE);
 	}
 	else
 	{

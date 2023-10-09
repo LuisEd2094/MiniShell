@@ -43,7 +43,7 @@ t_env	*create_env_node(char *variable, char *value)
 	return (new);
 }
 
-t_list		*add_new_env(t_list *env_list, char *variable, char *value)
+void	*add_new_env(t_list *env_list, char *variable, char *value)
 {
 	t_env	*env_node;
 	t_list *temp;

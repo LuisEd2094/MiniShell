@@ -74,7 +74,6 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 	int		status;
 
 	pid = fork();
-	printf("this is pid %i\n",pid);
 	signal_action();
 	if (pid == -1)
 	{
