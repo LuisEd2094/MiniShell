@@ -100,9 +100,9 @@ int	try_execve(char **cmd, t_list *env_list)
 	}
 	else
 	{
-		ft_printf("minishell: %s: command not found\n", cmd[0]);
-		if (path_name)
-			free (path_name);
+		write(STDERR_FILENO, "minishell: ", ft_strlen("minishell: "));
+		write(STDERR_FILENO, cmd[0], ft_strlen(cmd[0]));
+		write(STDERR_FILENO, ": command not found\n", ft_strlen( ": command not found\n"));
 		return (127);
 	}
 }
