@@ -2,6 +2,7 @@
 # define BUILTINS_H
 # include <libft.h>
 # include <stdbool.h>
+# include <errno.h>
 
 typedef struct s_env
 {

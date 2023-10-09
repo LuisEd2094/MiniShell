@@ -13,6 +13,7 @@
 #include <builtins.h>
 #include <shared.h>
 
+
 static void	free_tbs(t_tree_node *root)
 {
 	t_tree_node	*temp;
@@ -26,7 +27,7 @@ static void	free_tbs(t_tree_node *root)
 	}
 }
 
-static void	work_on_print(t_list *env_list)
+static void *work_on_print(t_list *env_list)
 {
 	t_list		*temp;
 	t_tree_node	*root;
@@ -38,6 +39,8 @@ static void	work_on_print(t_list *env_list)
 	while (temp)
 	{
 		root = insert_to_tbs(root, temp);
+		if (!root)
+			return (NULL);
 		temp = temp->next;
 	}
 	print_in_order(root);
@@ -51,7 +54,10 @@ int	ft_export(t_list *env_list, char **cmds)
 
 	i = 1;
 	if (!cmds[i])
-		work_on_print(env_list);
+	{
+		if (!work_on_print(env_list))
+			return (errno);
+	}
 	else
 	{
 		while (cmds[i])

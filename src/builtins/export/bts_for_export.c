@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <builtins.h>
+#include <shared.h>
 
 t_tree_node	*insert_to_tbs(t_tree_node *root, t_list *value)
 {
@@ -23,7 +24,7 @@ t_tree_node	*insert_to_tbs(t_tree_node *root, t_list *value)
 	{
 		new_node = (t_tree_node *)malloc(sizeof(t_tree_node));
 		if (!new_node)
-			exit (1);
+			return (print_perror()); // need to free the full tree
 		new_node->data = value;
 		new_node->left = NULL;
 		new_node->right = NULL;
@@ -33,9 +34,18 @@ t_tree_node	*insert_to_tbs(t_tree_node *root, t_list *value)
 	((t_env *)(root->data->content))->variable, \
 	ft_strlen(((t_env *)(root->data->content))->variable) + 1);
 	if (compare_result < 0)
+	{
 		root->left = insert_to_tbs(root->left, value);
+		if (!root->left)
+			return (NULL); 
+
+	}
 	else if (compare_result > 0)
+	{
 		root->right = insert_to_tbs(root->right, value);
+		if	(!root->left)
+			return(NULL);
+	}
 	return (root);
 }
 
@@ -52,7 +62,7 @@ void	print_in_order(t_tree_node *root)
 		print_in_order(root->right);
 	}
 }
-
+/*
 t_tree_node	*init_tbs_env(t_list *env_list)
 {
 	t_tree_node	*root;
@@ -63,7 +73,9 @@ t_tree_node	*init_tbs_env(t_list *env_list)
 	while (temp)
 	{
 		root = insert_to_tbs(root, temp);
+		if (!root)
+			return (NULL);
 		temp = temp->next;
 	}
 	return (root);
-}
+}*/

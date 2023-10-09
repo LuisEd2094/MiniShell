@@ -32,7 +32,7 @@ t_env	*create_env_node(char *variable, char *value)
 
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
-		exit (1);
+		return (NULL);
 	new->variable = variable;
 	new->value = value;
 	if (value && value[0])
