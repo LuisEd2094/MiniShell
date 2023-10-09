@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <builtins.h>
+#include <shared.h>
 
 t_list	*get_env_node(t_list *env_list, char *str)
 {
@@ -32,7 +33,7 @@ t_env	*create_env_node(char *variable, char *value)
 
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
-		return (NULL);
+		return (print_perror());
 	new->variable = variable;
 	new->value = value;
 	if (value && value[0])
@@ -48,6 +49,8 @@ t_list		*add_new_env(t_list *env_list, char *variable, char *value)
 	t_list *temp;
 
 	env_node = create_env_node(variable, value);
+	if (!env_node)
+		return (NULL);
 	if (!env_list->content)
 		env_list->content = env_node;
 	else

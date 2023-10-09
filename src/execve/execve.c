@@ -13,6 +13,7 @@
 #include <execve.h>
 #include <builtins.h>
 #include "execve_internal.h"
+#include <shared.h>
 
 char	**conver_env_list(t_list *env_list)
 {
@@ -29,7 +30,7 @@ char	**conver_env_list(t_list *env_list)
 	}
 	new = (char **)malloc(sizeof(char *) * (i + 1));
 	if (!new)
-		exit (1);
+		return (print_perror());
 	i = 0;
 	temp = env_list;
 	while (temp)
@@ -88,6 +89,8 @@ int	try_execve(char **cmd, t_list *env_list)
 	if (path_name)
 	{
 		converted_env_list = conver_env_list(env_list);
+		if (!converted_env_list)
+			return (errno);
 		execve(path_name, cmd, converted_env_list);
 		return (0);
 	}

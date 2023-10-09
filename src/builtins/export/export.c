@@ -65,8 +65,9 @@ int	ft_export(t_list *env_list, char **cmds)
 			tab = ft_single_split(cmds[i], '=');
 			if (!tab)
 				exit(1);
-			create_or_update_env_node(env_list, tab[0], tab[1]);
-			free(tab);
+			if(!create_or_update_env_node(env_list, tab[0], tab[1]))
+				return (errno);
+)			free(tab);
 			i++;
 		}
 	}

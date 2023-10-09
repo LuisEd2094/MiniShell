@@ -12,24 +12,15 @@
 
 #include <minishell.h>
 
-static void	free_tab_export(char **tab)
-{
-	if (tab[0])
-		free(tab[0]);
-	if (tab[1])
-		free(tab[1]);
-	if (tab)
-		free(tab);
-}
-
-void	create_or_update_env_node(t_list *env_list, char *variable, char *value)
+void	*create_or_update_env_node(t_list *env_list, char *variable, char *value)
 {
 	t_list	*temp;
 
 	temp = get_env_node(env_list, variable);
 	if (!temp)
 	{
-		add_new_env(env_list, variable, value);
+		if (!add_new_env(env_list, variable, value))
+			return (NULL);
 	}
 	else
 	{		
@@ -41,4 +32,5 @@ void	create_or_update_env_node(t_list *env_list, char *variable, char *value)
 		else
 			((t_env *)(temp->content))->assigned = 0;
 	}
+	return ((void *) 1);
 }
