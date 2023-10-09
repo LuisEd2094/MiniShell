@@ -67,9 +67,9 @@ void check_redirections(void)
     TEST_ASSERT_EQUAL(0, parse_input("hola <<hola"));
     TEST_ASSERT_EQUAL(0, parse_input("hola<hola"));
     TEST_ASSERT_EQUAL(0, parse_input("hola<<hola"));
-    TEST_ASSERT_EQUAL(0, parse_input("hola<>hola"));
+    TEST_ASSERT_EQUAL(1, parse_input("hola<>hola"));
 
-    TEST_ASSERT_EQUAL(0, parse_input("hola >|infile"));
+    TEST_ASSERT_EQUAL(1, parse_input("hola >|infile"));
     TEST_ASSERT_EQUAL(0, parse_input("ls >$out"));
     TEST_ASSERT_EQUAL(0, parse_input("ls >$ out"));
 
