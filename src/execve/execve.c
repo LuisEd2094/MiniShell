@@ -85,7 +85,10 @@ int	try_execve(char **cmd, t_list *env_list)
 	char	**converted_env_list;
 	char	*path_name;
 
-	path_name = get_path_name(cmd, get_paths(get_env_node(env_list, "PATH")));
+	if (access(cmd[0], F_OK) != -1 && access(cmd[0], X_OK) != -1)
+		path_name = cmd[0];
+	else
+		path_name = get_path_name(cmd, get_paths(get_env_node(env_list, "PATH")));
 	if (path_name)
 	{
 		converted_env_list = conver_env_list(env_list);
