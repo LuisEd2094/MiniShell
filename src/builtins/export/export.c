@@ -39,8 +39,12 @@ static void *work_on_print(t_list *env_list)
 	while (temp)
 	{
 		root = insert_to_tbs(root, temp);
-		if (!root)
+		if (errno == ENOMEM)
+		{
+			print_perror();
+			free_tbs(root);
 			return (NULL);
+		}
 		temp = temp->next;
 	}
 	print_in_order(root);

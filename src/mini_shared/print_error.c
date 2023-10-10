@@ -9,6 +9,6 @@ int print_error(char *err_description, int err_value)
 
 void    *print_perror(void)
 {
-    perror("minishell :");
+    perror("minishell ");
     return (NULL);
 }

@@ -13,18 +13,30 @@
 #include <builtins.h>
 #include <shared.h>
 
+static void	free_tbs(t_tree_node *root)
+{
+	t_tree_node	*temp;
+
+	if (root != NULL)
+	{
+		free_tbs(root->left);
+		temp = root->right;
+		free(root);
+		free_tbs(temp);
+	}
+}
+
+
 t_tree_node	*insert_to_tbs(t_tree_node *root, t_list *value)
 {
 	int			compare_result;
 	t_tree_node	*new_node;
 
-	if (ft_strncmp(((t_env *)(value->content))->variable, "_", ft_strlen("_") + 1) == 0)
-		return (root);
 	if (!root)
 	{
-		new_node = (t_tree_node *)malloc(sizeof(t_tree_node));
+		new_node =(t_tree_node *)malloc(sizeof(t_tree_node));
 		if (!new_node)
-			return (print_perror()); // need to free the full tree
+			return (NULL);
 		new_node->data = value;
 		new_node->left = NULL;
 		new_node->right = NULL;
@@ -37,14 +49,13 @@ t_tree_node	*insert_to_tbs(t_tree_node *root, t_list *value)
 	{
 		root->left = insert_to_tbs(root->left, value);
 		if (!root->left)
-			return (NULL); 
-
+			return (root);
 	}
 	else if (compare_result > 0)
 	{
 		root->right = insert_to_tbs(root->right, value);
-		if	(!root->left)
-			return(NULL);
+		if	(!root->right)
+			return(root);
 	}
 	return (root);
 }
