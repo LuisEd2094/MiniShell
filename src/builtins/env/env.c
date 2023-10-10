@@ -55,7 +55,7 @@ t_list	*iter_env(char *env)
 
 	tab = ft_single_split(env, '=');
 	if (!tab)
-		exit(1);
+		return (NULL);
 	env_node = create_env_node(tab[0], tab[1]);
 	if (!env_node)
 		exit(1);
@@ -80,13 +80,18 @@ t_list	*init_env(char **env)
 	{
 		tab = ft_single_split(env[0], '=');
 		if (!tab)
-			exit(1);
+			return (print_perror());
 		env_node = create_env_node(tab[0], tab[1]);
 		free(tab);
 	} 
+	if (!env_node)
+		return (print_perror());
 	env_list = ft_lstnew(env_node);
 	if (!env_list)
-		exit(1);
+	{
+		free_node(env_node);
+		return (print_perror());
+	}
 	env_list->last = env_list;
 	if (!env[0])
 		return(env_list);

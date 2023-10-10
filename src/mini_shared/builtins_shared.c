@@ -33,7 +33,7 @@ t_env	*create_env_node(char *variable, char *value)
 
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
-		return (print_perror());
+		return (NULL);
 	new->variable = variable;
 	new->value = value;
 	if (value && value[0])
@@ -50,7 +50,7 @@ void	*add_new_env(t_list *env_list, char *variable, char *value)
 
 	env_node = create_env_node(variable, value);
 	if (!env_node)
-		return (NULL);
+		return (print_perror());
 	if (!env_list->content)
 		env_list->content = env_node;
 	else
