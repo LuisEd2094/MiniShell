@@ -54,9 +54,11 @@ char	**get_paths(t_list *path_node)
 {
 	char	**tab;
 
+	if (!path_node)
+		return (NULL);
 	tab = ft_split(((t_env *)(path_node->content))->value, ':');
 	if (!tab)
-		exit (1);
+		return (NULL);
 	return (tab);
 }
 
@@ -65,6 +67,12 @@ char	*get_path_name(char **cmd, char **path_list)
 	char	*path_name;
 	int		i;
 
+	if (!path_list)
+	{
+		if (errno != ENOMEM)
+			errno = ENOENT;
+		return (NULL);
+	}
 	path_name = NULL;
 	i = 0;
 	while (path_list[i])
@@ -74,14 +82,18 @@ char	*get_path_name(char **cmd, char **path_list)
 		else
 			path_name = ft_strjoin(path_list[i], cmd[0]);
 		if (!path_name)
-			exit (1);
+		{
+			free_2d_array(path_list);
+			return (print_perror());
+		}
 		if (access(path_name, F_OK) != -1 && access(path_name, X_OK) != -1)
 			break ;
 		free(path_name);
 		path_name = NULL;
 		i++;
 	}
-	free_path_list(path_list);
+	errno = 0;
+	free_2d_array(path_list);
 	return (path_name);
 }
 
@@ -94,8 +106,6 @@ int	try_execve(char **cmd, t_list *env_list)
 		path_name = cmd[0];
 	else
 		path_name = get_path_name(cmd, get_paths(get_env_node(env_list, "PATH")));
-	if (errno == ENOMEM)
-		return (errno);
 	if (path_name)
 	{
 		converted_env_list = conver_env_list(env_list);
@@ -110,9 +120,18 @@ int	try_execve(char **cmd, t_list *env_list)
 	}
 	else
 	{
-		write(STDERR_FILENO, "minishell: ", ft_strlen("minishell: "));
-		write(STDERR_FILENO, cmd[0], ft_strlen(cmd[0]));
-		write(STDERR_FILENO, ": command not found\n", ft_strlen( ": command not found\n"));
+		if (errno == ENOMEM)
+			print_perror();
+		else
+		{
+			write(STDERR_FILENO, "minishell: ", ft_strlen("minishell: "));
+			write(STDERR_FILENO, cmd[0], ft_strlen(cmd[0]));
+			write(STDERR_FILENO, ": ", ft_strlen(": "));
+			if (errno == ENOENT)
+				perror(NULL);
+			else
+				write(STDERR_FILENO, "command not found\n", ft_strlen( ": command not found\n"));
+		}
 		return (127);
 	}
 }

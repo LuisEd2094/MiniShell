@@ -35,6 +35,9 @@ void	main_loop(t_minishell *mini)
 				create_here_doc(mini);
 				get_cmds_value(mini->input, mini->env_list, mini);
 				start_execute_cmds(mini);
+				printf("[%i]exit code\n", mini->exit_code);
+				if (errno)
+					errno = 0;
 				prep_mini(mini);
 			}
 
