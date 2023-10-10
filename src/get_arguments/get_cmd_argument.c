@@ -55,7 +55,7 @@ char	*ft_get_arg(char *cmd, int arg_start)
 		return (ft_substr(cmd, arg_start, arg_len));
 }
 
-char	**ft_argument_split(char *cmd, t_list *env_list)
+char	**ft_argument_split(char *cmd)
 {
 	char	**args;
 	int		arg_count;
