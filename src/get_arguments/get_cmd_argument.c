@@ -40,11 +40,11 @@ int	get_argument_count(char *cmd)
 	arg_count = 0;
 	while (cmd[i])
 	{
-		if (cmd [i] == '\"' || cmd[i] == '\'' || \
+		if (cmd[i] == '\"' || cmd[i] == '\'' || \
 			cmd[i] == '>' || cmd[i] == '<' || \
 			is_ascii_no_space(cmd[i]))
 		{
-			if (cmd [i] == '\"' || cmd[i] == '\'')
+			if (cmd[i] == '\"' || cmd[i] == '\'')
 				i += get_quotes_size(&cmd[i]);
 			else if (cmd[i] == '>' || cmd[i] == '<')
 				i += get_redirection_size(&cmd[i]);
@@ -64,7 +64,7 @@ char	**ft_argument_split(char *cmd)
 	int		arg_count;
 	int		i;
 	int		arg_start;
-   
+
 	arg_count = get_argument_count(cmd);
 	args = (char **)malloc(sizeof(char *) * (arg_count + 1));
 	if (!args)
@@ -113,8 +113,8 @@ char	**get_cmd_argument(char *cmd)
 {
 	char	**cmd_arguments;
 
-	if(!cmd)
-		return(NULL);
+	if (!cmd)
+		return (NULL);
 	cmd_arguments = ft_argument_split(cmd);
 	if (!cmd_arguments)
 		return (NULL);
