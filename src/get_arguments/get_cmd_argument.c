@@ -19,6 +19,8 @@ int	get_argument_count(char *cmd)
 
 	i = 0;
 	arg_count = 0;
+	if(!cmd)
+	    return(0);
 	while (cmd[i])
 	{
 		if (cmd [i] == '\"' || cmd[i] == '\'' || \
