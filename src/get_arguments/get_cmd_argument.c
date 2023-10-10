@@ -12,6 +12,25 @@
 
 #include "get_arguments_internal.h"
 
+char	*ft_get_arg(char *cmd, int arg_start)
+{
+	int	arg_len;
+
+	arg_len = 0;
+	if (cmd[arg_start])
+	{
+		if (cmd[arg_start] == '\"' || cmd[arg_start] == '\'')
+			arg_len += get_quotes_size(&cmd[arg_start]);
+		else if (cmd[arg_start] == '>' || cmd[arg_start] == '<')
+			arg_len += get_redirection_size(&cmd[arg_start]);
+		else if (is_ascii_no_space(cmd[arg_start]))
+			arg_len += get_arg_size_skip_redirections(&cmd[arg_start]);
+	}
+	else
+		return (NULL);
+	return (ft_substr(cmd, arg_start, arg_len));
+}
+
 int	get_argument_count(char *cmd)
 {
 	int	i;
@@ -41,27 +60,13 @@ int	get_argument_count(char *cmd)
 	return (arg_count);
 }
 
-char	*ft_get_arg(char *cmd, int arg_start)
-{
-	int	arg_len;
-
-	if (cmd[arg_start] == '<' || cmd[arg_start] == '>')
-		arg_len = get_redirection_size(&cmd[arg_start]);
-	else
-		arg_len = get_argument_len(&cmd[arg_start]);
-	if (cmd[arg_start] == '\'')
-		return (ft_substr(cmd, arg_start + 1, arg_len));
-	else
-		return (ft_substr(cmd, arg_start, arg_len));
-}
-
-char	**ft_argument_split(char *cmd, t_list *env_list)
+char	**ft_argument_split(char *cmd)
 {
 	char	**args;
 	int		arg_count;
 	int		i;
 	int		arg_start;
-
+   
 	arg_count = get_argument_count(cmd);
 	args = (char **)malloc(sizeof(char *) * (arg_count + 1));
 	if (!args)
@@ -71,13 +76,10 @@ char	**ft_argument_split(char *cmd, t_list *env_list)
 	while (i < arg_count)
 	{
 		arg_start += get_white_space_size(&cmd[arg_start]);
-		if (cmd[arg_start] == '"')
-			args[i] = get_double_quote(&cmd[arg_start + 1], env_list);
-		else
-			args[i] = ft_get_arg(cmd, arg_start);
+		args[i] = ft_get_arg(cmd, arg_start);
 		if (!args[i])
 			exit (1);
-		arg_start += move_start(&cmd[arg_start]);
+		arg_start += ft_strlen(args[i]);
 		i++;
 	}
 	args[i] = NULL;
@@ -109,13 +111,12 @@ void	get_cmd_loop(char **cmd_arguments, t_list *env, t_minishell *mini)
 	}
 }
 
-char	**get_cmd_argument(char *cmd, t_list *env, t_minishell *mini)
+char	**get_cmd_argument(char *cmd)
 {
 	char	**cmd_arguments;
-
-	cmd_arguments = ft_argument_split(cmd, env);
+    
+	cmd_arguments = ft_argument_split(cmd);
 	if (!cmd_arguments)
 		return (NULL);
-	get_cmd_loop(cmd_arguments, env, mini);
 	return (cmd_arguments);
 }
