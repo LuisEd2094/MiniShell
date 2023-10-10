@@ -14,13 +14,6 @@
 #include <fcntl.h>
 #include <libft.h>
 
-int	close_redirections(t_minishell *mini)
-{
-	dup2(mini->og_in, STDIN_FILENO);
-	dup2(mini->og_out, STDOUT_FILENO);
-	return (1);
-}
-
 int	open_file(char *file_name, int redir_type)
 {
 	int	fd=0;

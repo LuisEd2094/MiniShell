@@ -12,13 +12,14 @@
 
 #include <builtins.h>
 #include <shared.h>
+#include <minishell.h>
 
 int	ft_print_env(char **cmds, t_list *env_list)
 {
 	t_list	*temp;
 
 	if (cmds[1])
-		return (print_error("env : invalid usage\n", 1));
+		return (print_error("minishell : env: invalid usage\n", 1));
 	if (!env_list->content)
 		return (0);
 	temp = env_list;
@@ -47,62 +48,85 @@ void	free_env_list(t_list *env_list)
 	free(cursor);
 }
 
+t_env	*create_new_env_node(char *env)
+{
+	t_env	*env_node;
+	char	**tab;
+
+	tab = ft_single_split(env, '=');
+	if (!tab)
+		return (print_perror());
+	env_node = create_env_node(tab[0], tab[1]);
+	free(tab);
+	if (!env_node)
+	{
+		free(tab[0]);
+		free(tab[1]);
+		return (print_perror());
+	}
+	return (env_node);
+}
+
 t_list	*iter_env(char *env)
 {
 	t_list	*new;
 	t_env	*env_node;
 	char	**tab;
 
-	tab = ft_single_split(env, '=');
-	if (!tab)
-		return (NULL);
-	env_node = create_env_node(tab[0], tab[1]);
+	env_node = create_new_env_node(env);
 	if (!env_node)
-		exit(1);
+		return (NULL);
 	new = ft_lstnew(env_node);
 	if (!new)
-		exit (1);
-	free(tab);
+	{
+		free_env_node(env_node);
+		return (print_perror());
+	}
 	return (new);
 }
 
-t_list	*init_env(char **env)
+t_list	*fill_up_env_list(t_list *env_list, char **env)
 {
-	t_list	*env_list;
-	t_list	*tmp;
-	t_env	*env_node;
-	char	**tab;
 	int		i;
+	t_list	*tmp;
 
-	if (!env[0])
-		env_node = create_env_node(NULL, NULL);
-	else
-	{
-		tab = ft_single_split(env[0], '=');
-		if (!tab)
-			return (print_perror());
-		env_node = create_env_node(tab[0], tab[1]);
-		free(tab);
-	} 
-	if (!env_node)
-		return (print_perror());
-	env_list = ft_lstnew(env_node);
-	if (!env_list)
-	{
-		free_node(env_node);
-		return (print_perror());
-	}
-	env_list->last = env_list;
-	if (!env[0])
-		return(env_list);
 	tmp = env_list;
 	i = 1;
 	while (env[i])
 	{
 		tmp->next = iter_env(env[i]);
+		if (!tmp->next)
+			break ;
 		tmp = tmp->next;
 		env_list->last = tmp;
 		i++;
 	}
 	return (env_list);
+}
+
+t_list	*init_env(char **env)
+{
+	t_list	*env_list;
+	t_env	*env_node;
+
+	if (!env[0])
+	{
+		env_list = ft_lstnew(NULL);
+		if (!env_list)
+			exit(EXIT_FAILURE);
+		return (env_list);
+	}
+	env_node = create_new_env_node(env[0]);
+	if (!env_node)
+		return (print_perror());
+	env_list = ft_lstnew(env_node);
+	if (!env_list)
+	{
+		free_env_node(env_node);
+		return (print_perror());
+	}
+	env_list->last = env_list;
+	if (!env[0])
+		return(env_list);
+	return (fill_up_env_list(env_list, env));
 }

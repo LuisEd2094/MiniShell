@@ -53,9 +53,9 @@ void	init_mini(t_minishell *mini, char **env)
 {
 	mini->exit_code = 0;
 	mini->env_list = init_env(env);
-	mini->here_doc_number = 0;
-	mini->og_in = dup(STDIN_FILENO);
-	mini->og_out = dup(STDOUT_FILENO);
+	if (!mini->env_list)
+		exit(EXIT_FAILURE);
 	work_history(INIT, NULL);
+	mini->here_doc_number = 0;
 	signal_action();
 }

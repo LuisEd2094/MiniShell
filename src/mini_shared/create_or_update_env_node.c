@@ -19,6 +19,7 @@ void	*create_or_update_env_node(t_list *env_list, char *variable, char *value)
 	temp = get_env_node(env_list, variable);
 	if (!temp)
 	{
+		printf(" I am here\n");
 		if (!add_new_env(env_list, variable, value))
 			return (NULL);
 	}

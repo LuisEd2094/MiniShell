@@ -28,7 +28,7 @@ t_list	*get_env_before(t_list *env_list, t_list *node_to_search)
 }
 
 
-static	int remove_node(t_list *env_list, char *str, t_minishell *mini)
+static	int remove_node(char *str, t_minishell *mini)
 {
 	t_list	*to_remove;
 	t_list	*next;
@@ -36,21 +36,32 @@ static	int remove_node(t_list *env_list, char *str, t_minishell *mini)
 
 	if (!str)
 		return (0);
-	to_remove = get_env_node(env_list, str);
+	printf("[%s]\n", str);
+	to_remove = get_env_node(mini->env_list, str);
 	if (!to_remove)
 		return (0);
-	if (env_list == to_remove)
+	if (mini->env_list == to_remove)
 	{
-		mini->env_list = env_list->next;
-		free_node(to_remove);
+		if (!mini->env_list->next)
+		{
+			free_env_node(mini->env_list->content);
+			mini->env_list->content = NULL;
+		}
+		else
+		{
+			printf("[%p]before\n", ((t_env *)(mini->env_list->content))->variable);
+			mini->env_list = to_remove->next;
+			printf("[%p]after\n", ((t_env *)(mini->env_list->content))->variable);
+			free_node(to_remove);
+		}
 	}
 	else
 	{
-		before = get_env_before(env_list, to_remove);
+		before = get_env_before(mini->env_list, to_remove);
 		next = to_remove->next;
 		before->next = next;
-		if (to_remove == env_list->last)
-			env_list->last = before;
+		if (to_remove == mini->env_list->last)
+			mini->env_list->last = before;
 		free_node(to_remove);
 	}
 	return (0);
@@ -72,7 +83,9 @@ int	ft_unset(t_list *env_list, char **cmds, t_minishell *mini)
 			error = print_error("': not a valid identifier\n", 1);
 		}
 		else
-			remove_node(env_list, cmds[i], mini);
+		{
+			remove_node(cmds[i], mini);
+		}
 		i++;
 	}
 	return (error);

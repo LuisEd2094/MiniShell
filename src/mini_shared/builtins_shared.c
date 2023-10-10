@@ -17,8 +17,10 @@ t_list	*get_env_node(t_list *env_list, char *str)
 {
 	t_list	*temp;
 
+	if (!env_list->content)
+		return (NULL);
 	temp = env_list;
-	while (temp)
+	while (temp && (t_env *)(temp->content))
 	{
 		if (ft_strncmp(((t_env *)(temp->content))->variable, str, ft_strlen(str) + 1) == 0)
 			return (temp);

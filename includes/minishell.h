@@ -13,10 +13,6 @@ typedef struct s_minishell
 	char	***cmds;
 	char	*input;
 	int		**pipes;
-	int		fd_out;
-	int		og_out;
-	int		fd_in;
-	int		og_in;
 	int		exit_code;
 	int		here_doc_number;
 	char	here_doc_name[200];
@@ -52,6 +48,7 @@ void	start_execute_cmds(t_minishell *mini);
 int		ft_unset(t_list *env_list, char **cmds, t_minishell *mini);
 
 int		parse_input(char *input);
+void	free_env_node(t_env *env_node);
 
 
 

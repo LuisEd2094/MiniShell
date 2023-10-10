@@ -55,7 +55,7 @@ int	execute_cmds(char **cmds, t_list *env_list, t_minishell *mini)
 		return(try_execve(cmds, env_list));
 }
 
-int	handle_single_built_int(t_minishell *mini)
+int	handle_single_builtin(t_minishell *mini)
 {
 	check_and_handle_redirections(mini->cmds[0], mini);
 	return (execute_cmds(mini->cmds[0], mini->env_list, mini));
@@ -73,7 +73,7 @@ void	start_execute_cmds(t_minishell *mini)
 	else if (num_commands == 1)
 	{
 		if (is_built_in(mini->cmds[0]))
-			mini->exit_code = handle_single_built_int(mini);
+			mini->exit_code = handle_single_builtin(mini);
 		else
 			mini->exit_code = ft_pipe(mini->cmds, num_commands -1, mini);
 	}
