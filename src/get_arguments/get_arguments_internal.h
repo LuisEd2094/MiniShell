@@ -27,7 +27,7 @@ char	*get_file_name(char *input, int *i);
 
 /// new functions ///
 
-char	**get_cmd_argument(char *cmd, t_list *env, t_minishell *mini);
+char	**get_cmd_argument(char *cmd);
 int		get_cmds_number(char *input);
 int		get_argument_count(char *cmd);
 int		is_ascii_no_space(char c);
@@ -46,5 +46,10 @@ char	*get_env_str_from_quote(char *cmd, t_list *env_list);
 char	*get_next_word(char *cmd);
 int		get_next_word_len(char *cmd);
 int		get_argument_count(char *cmd);
+char    **ft_commands_split(char *input);
+int     ft_commands_count(char *input);
+int     get_cmd_size(char *input, int i);
+
+
 
 #endif

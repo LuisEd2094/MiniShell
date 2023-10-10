@@ -30,7 +30,7 @@ void	exit_mini(t_minishell *mini);
 void	prep_mini(t_minishell *mini);
 void	init_mini(t_minishell *mini, char **env);
 
-void	get_cmds_value(char * input, t_list *env, t_minishell *mini);
+char	***get_cmds_value(char * input);
 int		execute_cmds(char **cmds, t_list *env_list, t_minishell *mini);
 void	create_here_doc(t_minishell *mini);
 void	delete_temp_files(t_minishell *mini);
