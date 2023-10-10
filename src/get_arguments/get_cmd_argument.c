@@ -38,8 +38,6 @@ int	get_argument_count(char *cmd)
 
 	i = 0;
 	arg_count = 0;
-	if(!cmd)
-	    return(0);
 	while (cmd[i])
 	{
 		if (cmd [i] == '\"' || cmd[i] == '\'' || \
@@ -114,7 +112,9 @@ void	get_cmd_loop(char **cmd_arguments, t_list *env, t_minishell *mini)
 char	**get_cmd_argument(char *cmd)
 {
 	char	**cmd_arguments;
-    
+
+	if(!cmd)
+		return(NULL);
 	cmd_arguments = ft_argument_split(cmd);
 	if (!cmd_arguments)
 		return (NULL);
