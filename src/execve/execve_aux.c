@@ -28,6 +28,8 @@ char	*join_path(char *path_list, char *cmd)
 	char	*path_name;
 
 	temp_path = ft_strjoin(path_list, "/");
+	if (!temp_path)
+		return (NULL);
 	path_name = ft_strjoin(temp_path, cmd);
 	free(temp_path);
 	return (path_name);

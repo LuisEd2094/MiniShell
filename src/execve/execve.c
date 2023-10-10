@@ -31,7 +31,7 @@ char	**conver_env_list(t_list *env_list)
 	}
 	new = (char **)malloc(sizeof(char *) * (i + 1));
 	if (!new)
-		return (print_perror());
+		return (NULL);
 	i = 0;
 	temp = env_list;
 	while (temp)
@@ -39,10 +39,7 @@ char	**conver_env_list(t_list *env_list)
 		new[i] = reconstruct_env(((t_env *)(temp->content))->variable, \
 				((t_env *)(temp->content))->value);
 		if (!new[i])
-		{
-			print_perror();
 			return(free_2d_array(new));
-		}
 		temp = temp->next;
 		i++;
 	}
@@ -79,13 +76,11 @@ char	*get_path_name(char **cmd, char **path_list)
 	{
 		if (path_list[i][ft_strlen(path_list[i])] != '/')
 			path_name = join_path(path_list[i], cmd[0]);
+
 		else
 			path_name = ft_strjoin(path_list[i], cmd[0]);
 		if (!path_name)
-		{
-			free_2d_array(path_list);
-			return (print_perror());
-		}
+			return (free_2d_array(path_list));
 		if (access(path_name, F_OK) != -1 && access(path_name, X_OK) != -1)
 			break ;
 		free(path_name);
@@ -112,6 +107,7 @@ int	try_execve(char **cmd, t_list *env_list)
 		if (!converted_env_list)
 		{
 			free(path_name);
+			print_perror();
 			return (errno);
 		}
 		execve(path_name, cmd, converted_env_list);
@@ -121,7 +117,10 @@ int	try_execve(char **cmd, t_list *env_list)
 	else
 	{
 		if (errno == ENOMEM)
+		{
 			print_perror();
+			return (errno);
+		}
 		else
 		{
 			write(STDERR_FILENO, "minishell: ", ft_strlen("minishell: "));
@@ -131,7 +130,7 @@ int	try_execve(char **cmd, t_list *env_list)
 				perror(NULL);
 			else
 				write(STDERR_FILENO, "command not found\n", ft_strlen( ": command not found\n"));
+			return (127);
 		}
-		return (127);
 	}
 }
