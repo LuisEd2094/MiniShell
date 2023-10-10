@@ -39,8 +39,6 @@ bool	is_built_in(char **cmds)
 
 int	execute_cmds(char **cmds, t_list *env_list, t_minishell *mini)
 {
-	int exit_val;
-	
 	if (compare_cmds(cmds[0], "env"))
 		return (ft_print_env(cmds, env_list));
 	else if (compare_cmds(cmds[0], "export"))
@@ -54,8 +52,7 @@ int	execute_cmds(char **cmds, t_list *env_list, t_minishell *mini)
 	else if (compare_cmds(cmds[0], "cd"))
 		return (ft_cd(cmds, env_list));
 	else
-		return (try_execve(cmds, env_list));
-	return (0);
+		return(try_execve(cmds, env_list));
 }
 
 int	handle_single_built_int(t_minishell *mini)

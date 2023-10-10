@@ -40,10 +40,9 @@ static void *work_on_print(t_list *env_list)
 	{
 		root = insert_to_tbs(root, temp);
 		if (errno == ENOMEM)
-		{
-			print_perror();
+		{			
 			free_tbs(root);
-			return (NULL);
+			return (print_perror());
 		}
 		temp = temp->next;
 	}

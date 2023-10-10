@@ -13,20 +13,6 @@
 #include <builtins.h>
 #include <shared.h>
 
-static void	free_tbs(t_tree_node *root)
-{
-	t_tree_node	*temp;
-
-	if (root != NULL)
-	{
-		free_tbs(root->left);
-		temp = root->right;
-		free(root);
-		free_tbs(temp);
-	}
-}
-
-
 t_tree_node	*insert_to_tbs(t_tree_node *root, t_list *value)
 {
 	int			compare_result;
