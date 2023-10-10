@@ -16,9 +16,7 @@
 # include <stdlib.h>
 # include <libft.h>
 
-void	free_path_list(char **path_list);
 char	*join_path(char *path_list, char *cmd);
-void	free_path_list(char **path_list);
 char	*reconstruct_env(char	*variable, char	*value);
 
 #endif

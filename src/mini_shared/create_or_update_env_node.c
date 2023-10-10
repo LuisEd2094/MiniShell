@@ -12,46 +12,62 @@
 
 #include <minishell.h>
 
-void	*create_or_update_env_node(t_list *env_list, char *variable, char *value)
+static int check_equal(char *var)
+{
+
+	if (var[ft_strlen(var) - 1] == '+')
+		return (1);
+	else
+		return (0);
+}
+
+static int size(char *og_val, char *new_val)
+{
+	return (ft_strlen(og_val) + ft_strlen(new_val) + 1);
+}
+
+void	*update_node(t_env *env_node, char *var, char *value, int plus)
+{
+	char *new;
+
+	if (plus)
+	{
+		new = (char *)malloc(sizeof(char) * size(env_node->value, value));
+		if (!new)
+			return (print_perror);
+		ft_strlcpy(new, (env_node->value), ft_strlen((env_node->value)) + 1);
+		ft_strlcat(new, value, ft_strlen(new) + ft_strlen(value) + 1);
+		free(env_node->value);
+		env_node->value = new;
+	}
+	else
+	{
+		free(env_node->value);
+		env_node->value = value;
+	}
+		free(var);
+	if (value[0])
+		env_node->assigned = 1;
+	else
+		env_node->assigned = 0;
+}
+
+void	*create_or_update_env_node(t_list *env_list, char *var, char *value)
 {
 	t_list	*temp;
 	int		has_plus;
 	char	*new;
 
-	if (variable[ft_strlen(variable) - 1] == '+')
-		has_plus = 1;
-	else
-		has_plus = 0;
+		has_plus = check_equal(var);
 	if (has_plus)
-		variable[ft_strlen(variable) - 1] = '\0';
-	temp = get_env_node(env_list, variable);
+		var[ft_strlen(var) - 1] = '\0';
+	temp = get_env_node(env_list, var);
 	if (!temp)
 	{
-		if (!add_new_env(env_list, variable, value))
+		if (!add_new_env(env_list, var, value))
 			return (NULL);
 	}
 	else
-	{
-		if (has_plus)
-		{
-			new = (char *)malloc(sizeof(char) * (ft_strlen(((t_env *)(temp->content))->value) + ft_strlen(value) + 1));
-			if (!new)
-				return (print_perror);
-			ft_strlcpy(new, (((t_env *)(temp->content))->value), ft_strlen((((t_env *)(temp->content))->value)) + 1);
-			ft_strlcat(new, value, ft_strlen(new) + ft_strlen(value) + 1);
-			free(((t_env *)(temp->content))->value);
-			((t_env *)(temp->content))->value = new;
-		}
-		else
-		{
-			free(((t_env *)(temp->content))->value);
-			((t_env *)(temp->content))->value = value;
-		}
-		free(variable);
-		if (value[0])
-			((t_env *)(temp->content))->assigned = 1;
-		else
-			((t_env *)(temp->content))->assigned = 0;
-	}
+		update_node(temp->content, var, value, has_plus);
 	return ((void *) 1);
 }

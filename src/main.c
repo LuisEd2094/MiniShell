@@ -38,7 +38,6 @@ void	main_loop(t_minishell *mini)
 				printf("[%i]exit code\n", mini->exit_code);
 				prep_mini(mini);
 			}
-
 		}
 		free(mini->input);
 	}

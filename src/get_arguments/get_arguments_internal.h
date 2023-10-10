@@ -35,8 +35,6 @@ int		is_ascii_no_space(char c);
 int		get_white_space_size(char *input);
 char	*get_double_quote(char *cmd, t_list *env_list);
 int		get_redirection_size(char *input);
-int		get_argument_len(char *cmd);
-int		move_start(char *cmd);
 
 char	*replace_env(char *cmd, t_list *env_list, int j);
 char	*ft_replace(char *cmd, char *env, int i, bool found);

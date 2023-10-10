@@ -30,7 +30,6 @@ void		free_env_list(t_list *env_list);
 
 
 bool		has_equal(char *str);
-void		free_tab(char **tab);
 
 char        **ft_single_split(char const *s, char c);
 

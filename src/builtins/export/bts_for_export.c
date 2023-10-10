@@ -59,20 +59,3 @@ void	print_in_order(t_tree_node *root)
 		print_in_order(root->right);
 	}
 }
-/*
-t_tree_node	*init_tbs_env(t_list *env_list)
-{
-	t_tree_node	*root;
-	t_list		*temp;
-
-	root = NULL;
-	temp = env_list;
-	while (temp)
-	{
-		root = insert_to_tbs(root, temp);
-		if (!root)
-			return (NULL);
-		temp = temp->next;
-	}
-	return (root);
-}*/

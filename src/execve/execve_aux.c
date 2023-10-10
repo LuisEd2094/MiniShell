@@ -12,16 +12,6 @@
 
 #include "execve_internal.h"
 
-void	free_path_list(char **path_list)
-{
-	int	i;
-
-	i = 0;
-	while (path_list[i])
-		free(path_list[i++]);
-	free(path_list);
-}
-
 char	*join_path(char *path_list, char *cmd)
 {
 	char	*temp_path;
@@ -34,7 +24,6 @@ char	*join_path(char *path_list, char *cmd)
 	free(temp_path);
 	return (path_name);
 }
-
 
 char	*reconstruct_env(char	*variable, char	*value)
 {

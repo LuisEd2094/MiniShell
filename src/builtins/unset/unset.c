@@ -27,7 +27,6 @@ t_list	*get_env_before(t_list *env_list, t_list *node_to_search)
 	}
 }
 
-
 static	int remove_node(char *str, t_minishell *mini)
 {
 	t_list	*to_remove;
@@ -36,7 +35,6 @@ static	int remove_node(char *str, t_minishell *mini)
 
 	if (!str)
 		return (0);
-	printf("[%s]\n", str);
 	to_remove = get_env_node(mini->env_list, str);
 	if (!to_remove)
 		return (0);
@@ -49,9 +47,7 @@ static	int remove_node(char *str, t_minishell *mini)
 		}
 		else
 		{
-			printf("[%p]before\n", ((t_env *)(mini->env_list->content))->variable);
 			mini->env_list = to_remove->next;
-			printf("[%p]after\n", ((t_env *)(mini->env_list->content))->variable);
 			free_node(to_remove);
 		}
 	}
