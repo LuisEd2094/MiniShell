@@ -78,6 +78,8 @@ int		ft_isspace(char chr);
 int		check_if_white_right_left(char *argv);
 void    remove_white_space(char *argv);
 int		get_sign(char *argv);
+void    *free_2d_array(char **array);
+
 
 
 #endif

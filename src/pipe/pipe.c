@@ -89,6 +89,13 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 			exit(EXIT_FAILURE);
 		}
 		status = execute_cmds(commands[i], mini->env_list, mini);
+
+		free_env_list(mini->env_list);
+		free_cmds(mini->cmds);
+		free(mini->input);
+		refinement(mini->pipes, num_pipes);
+		free_pipe(mini->pipes, num_pipes);
+		work_history(CLOSE, NULL);
 		exit(status);
 	}
 	if (i == num_pipes)

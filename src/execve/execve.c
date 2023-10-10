@@ -15,6 +15,7 @@
 #include "execve_internal.h"
 #include <shared.h>
 
+
 char	**conver_env_list(t_list *env_list)
 {
 	int		i;
@@ -37,6 +38,11 @@ char	**conver_env_list(t_list *env_list)
 	{
 		new[i] = reconstruct_env(((t_env *)(temp->content))->variable, \
 				((t_env *)(temp->content))->value);
+		if (!new[i])
+		{
+			print_perror();
+			return(free_2d_array(new));
+		}
 		temp = temp->next;
 		i++;
 	}
@@ -76,7 +82,6 @@ char	*get_path_name(char **cmd, char **path_list)
 		i++;
 	}
 	free_path_list(path_list);
-	
 	return (path_name);
 }
 
@@ -89,11 +94,16 @@ int	try_execve(char **cmd, t_list *env_list)
 		path_name = cmd[0];
 	else
 		path_name = get_path_name(cmd, get_paths(get_env_node(env_list, "PATH")));
+	if (errno == ENOMEM)
+		return (errno);
 	if (path_name)
 	{
 		converted_env_list = conver_env_list(env_list);
 		if (!converted_env_list)
+		{
+			free(path_name);
 			return (errno);
+		}
 		execve(path_name, cmd, converted_env_list);
 		perror("minishell :");
 		exit(EXIT_FAILURE);

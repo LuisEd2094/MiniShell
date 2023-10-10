@@ -41,10 +41,10 @@ char	*reconstruct_env(char	*variable, char	*value)
 
 	temp = ft_strjoin(variable, "=");
 	if (!temp)
-		exit(1);
+		return (NULL);
 	new = ft_strjoin(temp, value);
 	free(temp);
 	if (!new)
-		exit (1);
+		return (NULL);
 	return (new);
 }
