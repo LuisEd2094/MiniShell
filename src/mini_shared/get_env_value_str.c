@@ -18,8 +18,6 @@ char	*get_env_str(char *input, t_list *env_list)
 	char	*env_value;
 	char	*temp;
 
-
-	printf("env name [%s]\n", input);
 	env_node = get_env_node(env_list, input);
 	if (!env_node)
 		env_value = (char *)malloc(sizeof(char) * 1);

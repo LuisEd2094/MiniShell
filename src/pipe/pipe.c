@@ -142,23 +142,3 @@ int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 		return (WTERMSIG(last_status) + 128);
 	return (0);
 }
-
-/*
-#include <stdio.h>
-
-int main() {
-    char *command1[] = {"echo", "valor_de_hola", NULL};
-    char *command2[] = {"cat", "main.c", NULL};
-    char *command3[] = {"ls", "-la", NULL};
-    char *command4[] = {"ls", "-la", NULL};
-
-    char **commands[] = {command1, command2, command3, NULL};
-    int num_commands = 0;
-
-    while (commands[num_commands])
-        num_commands++;
-    printf("%d",ft_pipe(commands, num_commands - 1, mini));
-
-    return 0;
-}
-*/

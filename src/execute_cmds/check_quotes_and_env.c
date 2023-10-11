@@ -38,7 +38,11 @@ char    *replace_values(char *cmd, t_minishell *mini)
     else if (cmd[0] == '$' && \
     is_ascii_no_space(cmd[1]) && \
     cmd[1])
+    {
+        temp = cmd;
         cmd = replace_env(cmd, mini->env_list , 0);
+        free(temp);
+    }
     if (!cmd)
         return (NULL);
     return (cmd);

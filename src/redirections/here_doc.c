@@ -73,7 +73,6 @@ void	handle_here_document(t_minishell *mini)
 	fd = open(mini->here_doc_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	while (1)
 	{		
-		printf("[%s]\n", mini->here_doc_end);
 		input = readline(">");
 		if (ft_strncmp(input, mini->here_doc_end, ft_strlen(mini->here_doc_end) + 1) == 0)
 			break ;
