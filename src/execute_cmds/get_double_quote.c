@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_arguments_internal.h"
+#include "execute_cmds_internal.h"
 
 char *get_double_quote(char *cmd, t_list *env_list)
 {
@@ -24,7 +24,7 @@ char *get_double_quote(char *cmd, t_list *env_list)
     new = cmd;
     while (new[i] && new[i] != '"')
     {
-        if (new[i] == '$' && is_ascii_no_space(new[i + 1]) && new[i + 1] != '"') //Leaving comment, need to check what are valid $ENV names
+        if (new[i] == '$' && new[i + 1] && is_ascii_no_space(new[i + 1]) && new[i + 1] != '"') //Leaving comment, need to check what are valid $ENV names
         {
             env = get_env_str_from_quote(&new[i + 1], env_list);
             new = ft_replace(new, env, i, found_env);

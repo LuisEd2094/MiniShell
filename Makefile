@@ -83,17 +83,16 @@ ECHO		=	ft_echo.c
 
 PWD			=	ft_pwd.c
 
-ARGUMENTS	=	get_cmd_value.c  get_double_quote.c move_start_and_argument_len.c \
-				 get_cmd_argument.c 
+ARGUMENTS	=	get_cmd_value.c get_cmd_argument.c 
 
-EXEC_CMDS	=	execute_cmds.c
+EXEC_CMDS	=	execute_cmds.c check_quotes_and_env.c get_double_quote.c
 
 EXECVE		=	execve.c execve_aux.c
 
 
 MINI_SHARED	=	get_next_word_and_len.c is_ascii_no_space.c skips.c \
 				builtins_shared.c ft_single_split.c get_env_value_str.c \
-				replace_env.c create_or_update_env_node.c cmds_len.c \
+				replace_env.c create_or_update_env_node.c \
 				print_error.c free_node.c
 
 

@@ -83,6 +83,9 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 	if (pid == 0)
 	{
 		setup_pipe(mini->pipes, num_pipes, i);
+		check_quotes_and_env(commands[i], mini);
+
+
 		if (check_and_handle_redirections(commands[i], mini))
 		{
 			perror("Error en execute");
@@ -128,7 +131,6 @@ int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 		status = 0;
 		if (mini->last_pid == waitpid(-1, &status, 0))
 			last_status = status;	
-		
 	}
 	free_pipe(mini->pipes, num_pipes);
 	if (WIFEXITED(last_status))
