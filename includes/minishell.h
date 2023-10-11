@@ -50,6 +50,7 @@ void	signal_action(void);
 void	start_execute_cmds(t_minishell *mini);
 
 int		ft_unset(t_list *env_list, char **cmds, t_minishell *mini);
+int		ft_exit(char **cmd, t_minishell	*mini);
 
 int		parse_input(char *input);
 void	free_env_node(t_env *env_node);

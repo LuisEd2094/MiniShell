@@ -34,6 +34,8 @@ bool	is_built_in(char **cmds)
 		return (1);
 	else if (compare_cmds(cmds[0], "cd"))
 		return (1);
+	else if (compare_cmds(cmds[0], "exit"))
+		return (1);
 	return (0);
 }
 
@@ -51,6 +53,8 @@ int	execute_cmds(char **cmds, t_list *env_list, t_minishell *mini)
 		return (ft_echo(cmds));
 	else if (compare_cmds(cmds[0], "cd"))
 		return (ft_cd(cmds, env_list));
+	else if (compare_cmds(cmds[0], "exit"))
+		return (ft_exit(cmds, mini));
 	else
 		return(try_execve(cmds, env_list));
 }

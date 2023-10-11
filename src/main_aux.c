@@ -49,7 +49,7 @@ int close_redirections(t_minishell *mini)
 {
     dup2(mini->og_in, STDIN_FILENO);
     dup2(mini->og_out, STDOUT_FILENO);
-    return (1);
+    return (0);
 }
 void	prep_mini(t_minishell *mini)
 {
