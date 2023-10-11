@@ -27,8 +27,11 @@ void	get_doc_name(t_minishell *mini)
 
 void	delete_temp_files(t_minishell *mini)
 {
+	int i;
+
 	while (1)
 	{
+		i = 0;
 		get_doc_name(mini);
 		if (access(mini->here_doc_name, F_OK) != -1)
 			unlink(mini->here_doc_name);
@@ -37,6 +40,8 @@ void	delete_temp_files(t_minishell *mini)
 			mini->here_doc_number = 0;
 			break ;
 		}
+		while (i < 200)
+			mini->here_doc_name[i++] = '\0';
 	}
 }
 
@@ -58,16 +63,16 @@ static char	*check_input(char *input, t_minishell *mini)
 	return (input);
 }
 
-void	handle_here_document(t_minishell *mini, int i)
+void	handle_here_document(t_minishell *mini)
 {
 	int		fd;
 	char	*input;
 
-	mini->here_doc_end = get_next_word(&(mini->input[i]));
 	get_doc_name(mini);
 	fd = open(mini->here_doc_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	while (1)
-	{
+	{		
+		printf("[%s]\n", mini->here_doc_end);
 		input = readline(">");
 		if (ft_strncmp(input, mini->here_doc_end, ft_strlen(mini->here_doc_end) + 1) == 0)
 			break ;
@@ -77,19 +82,27 @@ void	handle_here_document(t_minishell *mini, int i)
 		free(input);
 	}
 	close(fd);
-	free(mini->here_doc_end);
 }
 
 void	create_here_doc(t_minishell *mini)
 {
 	int	i;
+	int j;
 
 	i = 0;
-	while (mini->input[i])
+	while (mini->cmds[i])
 	{
-		if (mini->input[i] == '<' && mini->input[i + 1] == '<')
-			handle_here_document(mini, i + 2 + \
-					get_white_space_size(&mini->input[i + 2]));
+		j = 0;
+		while (mini->cmds[i][j])
+		{
+			if (mini->cmds[i][j][0] == '<' && mini->cmds[i][j][1] == '<')
+			{
+				mini->here_doc_end = mini->cmds[i][j + 1];
+				handle_here_document(mini);
+				j++;
+			}
+			j++;
+		}
 		i++;
 	}
 	mini->here_doc_number = 0;

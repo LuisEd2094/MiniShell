@@ -25,7 +25,11 @@ char    *replace_values(char *cmd, t_minishell *mini)
     else if (cmd[0] == '\'')
         cmd = remove_single_quote(cmd);
     else if (cmd[0] == '$' && cmd[1] == '?')
+    {
+        printf("I am exit value [%i] \n", mini->exit_code);
         cmd = ft_itoa(mini->exit_code);
+
+    }
     else if (cmd[0] == '$' && \
     is_ascii_no_space(cmd[1]) && \
     cmd[1])
@@ -33,6 +37,25 @@ char    *replace_values(char *cmd, t_minishell *mini)
     if (!cmd)
         return (NULL);
     return (cmd);
+}
+
+void    ft_redirections(char **cmd, t_minishell *mini, int i)
+{
+    int j; 
+    
+    cmd[i + 1] = replace_values(cmd[i + 1], mini);
+    check_and_handle_redirections(cmd[i], cmd[i + 1], mini);
+    free(cmd[i]);
+    free(cmd[i + 1]);
+    j = i + 2;
+    while (cmd[j])
+    {
+        cmd[i] = cmd[j];
+        i++;
+        j++;
+    }
+    cmd[j - 1] = NULL;
+    cmd[j - 2] = NULL;
 }
 
 int check_quotes_and_env(char **cmd, t_minishell *mini)
@@ -45,42 +68,11 @@ int check_quotes_and_env(char **cmd, t_minishell *mini)
     {
         if (cmd[i][0] == '>' || cmd[i][0] == '<')
         {
-            printf("I am redirection\n");
-            check_and_handle_redirections(cmd[i], replace_values(cmd[i + 1], mini), mini);
-            free(cmd[i]);
-            free(cmd[i + 1]);
-            j = i + 2;
-            int temp = i;
-            while (cmd[j])
-            {
-                cmd[i] = cmd[j];
-                i++;
-                j++;
-            }
-            cmd[j - 1] = NULL;
-            cmd[j - 2] = NULL;
-            i = temp - 1;
-
-
+            ft_redirections(cmd, mini, i);
+            i--;
         }
         else
-        {
-            printf("[%s] I am not redirectio\n", cmd[i]);
             cmd[i] = replace_values(cmd[i], mini);
-        }
-        /*
-        if (cmd[i][j] == '"')
-            cmd[i] = get_double_quote(&cmd[i][j + 1], mini->env_list);
-        else if (cmd[i][j] == '\'')
-            cmd[i] = remove_single_quote(cmd[i]);
-        else if (cmd[i][j] == '$' && cmd[i][j + 1] == '?')
-            cmd[i] = ft_itoa(mini->exit_code);
-        else if (cmd[i][j] == '$' && \
-        is_ascii_no_space(cmd[i][j + 1]) && \
-        cmd[i][j + 1])
-            cmd[i] = replace_env(cmd[i], mini->env_list , j);
-        if (!cmd[i])
-            exit(1);*/
         i++;
     }
 }

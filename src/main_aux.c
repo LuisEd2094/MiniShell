@@ -24,13 +24,18 @@ void	free_cmds(char ***cmds)
 		while (cmds[i][j])
 		{
 			if (cmds[i][j])
+			{
 				free(cmds[i][j]);
+				cmds[i][j] = NULL;
+			}
 			j++;
 		}
 		free(cmds[i]);
+		cmds[i] = NULL;
 		i++;
 	}
 	free(cmds);
+	cmds = NULL;
 }
 
 void	exit_mini(t_minishell *mini)
@@ -62,6 +67,7 @@ void	prep_mini(t_minishell *mini)
 void	init_mini(t_minishell *mini, char **env)
 {
 	mini->exit_code = 0;
+	mini->input_code = 0;
 	mini->env_list = init_env(env);
     mini->og_in = dup(STDIN_FILENO);
     mini->og_out = dup(STDOUT_FILENO);

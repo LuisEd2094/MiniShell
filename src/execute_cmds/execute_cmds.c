@@ -57,9 +57,7 @@ int	execute_cmds(char **cmds, t_list *env_list, t_minishell *mini)
 
 int	handle_single_builtin(t_minishell *mini)
 {
-	printf("Hello [%s]\n", mini->cmds[0][0]);
 	check_quotes_and_env(mini->cmds[0], mini);
-	//check_and_handle_redirections(mini->cmds[0], mini);
 	return (execute_cmds(mini->cmds[0], mini->env_list, mini));
 }
 

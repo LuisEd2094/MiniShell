@@ -29,16 +29,23 @@ void	main_loop(t_minishell *mini)
 		if (mini->input[0] != '\0')
 		{
 			work_history(UPDATE, mini->input);
-			mini->exit_code = parse_input(mini->input);
-			if	(mini->exit_code == 0)
+			mini->input_code = parse_input(mini->input);
+			if	(mini->input_code == 0)
 			{
-				create_here_doc(mini);
 				mini->cmds = get_cmds_value(mini->input);
+				create_here_doc(mini);
+
+				printf("Before [%i]exit code\n", mini->exit_code);
 				start_execute_cmds(mini);
-				printf("[%i]exit code\n", mini->exit_code);
+				printf("After [%i]exit code\n", mini->exit_code);
 				prep_mini(mini);
+				printf("After [%i]exit code\n", mini->exit_code);
+
 			}
+			else
+				mini->exit_code = mini->input_code;
 		}
+
 		free(mini->input);
 	}
 }
