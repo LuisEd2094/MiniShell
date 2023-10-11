@@ -17,6 +17,8 @@ int	get_next_word_len(char *cmd)
 	int	len;
 
 	len = 0;
+	if (cmd[len] == '?')
+		return (1);
 	while (cmd[len] && cmd[len] != '"' && !ft_isspace(cmd[len]) \
 		&& cmd[len] != '<' && cmd[len] != '>' && cmd[len] != '$')
 		len++;

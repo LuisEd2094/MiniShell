@@ -20,15 +20,20 @@ char *remove_single_quote(char *str)
 
 char    *replace_values(char *cmd, t_minishell *mini)
 {
+    char    *exit_code;
+    char    *temp;
+
     if (cmd[0] == '"')
         cmd = get_double_quote(&cmd[1], mini->env_list);
     else if (cmd[0] == '\'')
         cmd = remove_single_quote(cmd);
     else if (cmd[0] == '$' && cmd[1] == '?')
     {
-        printf("I am exit value [%i] \n", mini->exit_code);
-        cmd = ft_itoa(mini->exit_code);
-
+        exit_code = ft_itoa(mini->exit_code);
+        temp = cmd;
+        cmd = ft_replace(cmd, exit_code, 0, 0);
+        printf("new cmd [%s]\n", cmd);
+        free(temp);
     }
     else if (cmd[0] == '$' && \
     is_ascii_no_space(cmd[1]) && \

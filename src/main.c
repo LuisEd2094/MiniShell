@@ -34,13 +34,9 @@ void	main_loop(t_minishell *mini)
 			{
 				mini->cmds = get_cmds_value(mini->input);
 				create_here_doc(mini);
-
-				printf("Before [%i]exit code\n", mini->exit_code);
 				start_execute_cmds(mini);
-				printf("After [%i]exit code\n", mini->exit_code);
 				prep_mini(mini);
 				printf("After [%i]exit code\n", mini->exit_code);
-
 			}
 			else
 				mini->exit_code = mini->input_code;
