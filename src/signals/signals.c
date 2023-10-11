@@ -45,7 +45,7 @@ void	signal_action(void)
 	
 	sigaction(SIGINT, &act, NULL);
 	sigaction(SIGQUIT, &act, NULL);
-	sigaction(SIGTSTP, &act, NULL);
+	//sigaction(SIGTSTP, &act, NULL);
 }
 
 

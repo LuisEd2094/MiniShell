@@ -81,7 +81,7 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 	}
 	if (pid == 0)
 	{
-		signal_action();
+		//signal_action();
 		setup_pipe(mini->pipes, num_pipes, i);
 		check_quotes_and_env(mini->cmds[i], mini);
 /*

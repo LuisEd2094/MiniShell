@@ -78,8 +78,6 @@ void	handle_here_document(t_minishell *mini)
 	if (pid == 0)
 	{
 		child_action_signal();
-			rl_catch_signals = 0;
-
 		get_doc_name(mini);
 		fd = open(mini->here_doc_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 		while (1)

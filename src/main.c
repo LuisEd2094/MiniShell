@@ -13,12 +13,9 @@
 #include <minishell.h>
 #include <stdlib.h>
 #include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 
 void	main_loop(t_minishell *mini)
 {
-	rl_catch_signals = 0;
 	while (1)
 	{
 		mini->input = readline(">> ");
