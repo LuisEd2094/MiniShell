@@ -68,7 +68,7 @@ void	setup_pipe(int **pipes, int num_pipes, int i)
 	refinement(pipes, num_pipes);
 }
 
-void	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
+int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 {
 	pid_t	pid;
 	int		status;
@@ -83,19 +83,37 @@ void	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 	if (pid == 0)
 	{
 		setup_pipe(mini->pipes, num_pipes, i);
+		check_quotes_and_env(mini->cmds[i], mini);
+/*
+
 		if (check_and_handle_redirections(commands[i], mini))
 		{
 			perror("Error en execute");
 			exit(EXIT_FAILURE);
-		}
-		exit(execute_cmds(commands[i], mini->env_list));
+		}*/
+		status = execute_cmds(commands[i], mini->env_list, mini);
+
+		free_env_list(mini->env_list);
+		free_cmds(mini->cmds);
+		free(mini->input);
+		refinement(mini->pipes, num_pipes);
+		free_pipe(mini->pipes, num_pipes);
+		work_history(CLOSE, NULL);
+		exit(status);
 	}
+	if (i == num_pipes)
+	{
+		mini->last_pid  = pid;
+	}
+	return (0);
 }
 
 int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 {
 	int	i;
 	int	status;
+	int last_status;
+
 
 	mini->pipes = malloc_pipe(num_pipes);
 	if (mini->pipes == NULL)
@@ -103,38 +121,24 @@ int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 	if (make_pipe(mini->pipes, num_pipes))
 		return (1);
 	i = -1;
+
 	while (++i <= num_pipes)
 		execute_pipe(commands, mini, num_pipes, i);
 	refinement(mini->pipes, num_pipes);
 	i = -1;
 	while (++i <= num_pipes)
 	{
-		waitpid(-1, &status, 0);
+		status = 0;
+		if (mini->last_pid == waitpid(-1, &status, 0))
+			last_status = status;	
 	}
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	else if (WIFSIGNALED(status))
-		return (WTERMSIG(status) + 128);
 	free_pipe(mini->pipes, num_pipes);
+	if (WIFEXITED(last_status))
+	{
+		return (WEXITSTATUS(last_status));
+
+	}
+	else if (WIFSIGNALED(last_status))
+		return (WTERMSIG(last_status) + 128);
 	return (0);
 }
-
-/*
-#include <stdio.h>
-
-int main() {
-    char *command1[] = {"echo", "valor_de_hola", NULL};
-    char *command2[] = {"cat", "main.c", NULL};
-    char *command3[] = {"ls", "-la", NULL};
-    char *command4[] = {"ls", "-la", NULL};
-
-    char **commands[] = {command1, command2, command3, NULL};
-    int num_commands = 0;
-
-    while (commands[num_commands])
-        num_commands++;
-    printf("%d",ft_pipe(commands, num_commands - 1, mini));
-
-    return 0;
-}
-*/

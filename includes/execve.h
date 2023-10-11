@@ -4,6 +4,6 @@
 # include   <libft.h>
 #include    <unistd.h>
 
-void    try_execve(char **cmd, t_list *env_list);
+int    try_execve(char **cmd, t_list *env_list);
 
 #endif

@@ -26,5 +26,6 @@ void	free_pipe(int **pipes, int num_pipes);
 
 /*  ---  Pipe  ---  */
 int		ft_pipe(char ***commands, int num_pipes, t_minishell *mini);
+int     get_exit_code(int status);
 
 #endif

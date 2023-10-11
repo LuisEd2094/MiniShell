@@ -1,5 +1,5 @@
 NAME        = minishell
-CFLAGS      = -g ##-Wall -Wextra  -Werror -g
+CFLAGS      = -g #-Wall -Wextra  -Werror
 RM          = rm -f
 SRCS_PATH           = src/
 OBJS_PATH           = obj/
@@ -10,7 +10,6 @@ EXECVE_PATH			= execve/
 PIPE_PATH			= pipe/
 BUILTINTS			= builtins/
 ARGUMENTS_PATH		= get_arguments/
-ERROR_PATH			= print_error/
 EXEC_CMDS_PATH		= execute_cmds/
 SIGNALS_PATH		= signals/
 REDIR_PATH			= redirections/
@@ -21,9 +20,9 @@ CD_PATH				= $(BUILTINTS)cd/
 ECHO_PATH			= $(BUILTINTS)echo/
 PWD_PATH			= $(BUILTINTS)pwd/
 BUILTINTS_PATH		= $(EXPORT_PATH) $(ENV_PATH) $(UNSET_PATH) $(CD_PATH) $(ECHO_PATH) $(PWD_PATH)
-PARSE_PATH			= parse_input/
 MINI_SHARED_PATH	= mini_shared/
 SIGNALS_PATH		= signals/
+PARSE_INPUT_PATH	= parse_input/
 
 
 ## Add new path, just need name/
@@ -31,25 +30,25 @@ MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), \
 											$(HISTORY_PATH) \
 											$(BUILTINTS_PATH) \
 											$(ARGUMENTS_PATH) \
-											$(ERROR_PATH) \
 											$(EXECVE_PATH)\
 											$(EXEC_CMDS_PATH) \
-											$(PARSE_PATH) \
 											$(MINI_SHARED_PATH) \
 											$(REDIR_PATH) \
 											$(SIGNALS_PATH) \
 											$(PIPE_PATH) \
+											$(PARSE_INPUT_PATH) \
 											) 
 										
 #Add new path to objects
 
 DEPS_PATH	= deps/
 LIB_PATH	= 	./Libft
-LIB			=	$(LIB_PATH)/libft.a
-LDFLAGS		= 	-L$(LIB_PATH) -lft
+LIB			=	$(LIB_PATH)/libft.a #./readline/libreadline.a ./readline/libhistory.a
+LDFLAGS		= 	-L$(LIB_PATH) -lft 
 LINEFLAGS	=	-lreadline
 
-INCS        = -I./includes/
+INCS        = -I./includes/ \
+-I./readline/ 
 
 #Colors
 
@@ -67,7 +66,7 @@ LIGHT_GREEN = \033[1;92m
 
 ###
 
-SRC         =	main.c 
+SRC         =	main.c main_aux.c
 
 HISTORY		= 	add_to_history.c  close_history.c  history_init.c  \
 				remove_new_line.c  update_history.c work_history.c
@@ -84,20 +83,17 @@ ECHO		=	ft_echo.c
 
 PWD			=	ft_pwd.c
 
-ARGUMENTS	=	get_cmd_value.c  get_double_quote.c move_start_and_argument_len.c \
-				 get_cmd_argument.c 
+ARGUMENTS	=	get_cmd_value.c get_cmd_argument.c 
 
-EXEC_CMDS	=	execute_cmds.c
+EXEC_CMDS	=	execute_cmds.c check_quotes_and_env.c get_double_quote.c
 
-ERROR		=	print_error.c
+EXECVE		=	execve.c execve_aux.c
 
-EXECVE		=	execve.c
-
-PARSE		=	parse_input.c
 
 MINI_SHARED	=	get_next_word_and_len.c is_ascii_no_space.c skips.c \
 				builtins_shared.c ft_single_split.c get_env_value_str.c \
-				replace_env.c create_or_add_env_node.c
+				replace_env.c create_or_update_env_node.c \
+				print_error.c free_node.c
 
 
 REDIRECTIONS	= aux_handle_redirections.c  handle_redirections.c  here_doc.c
@@ -107,14 +103,14 @@ SIGNALS		=	signals.c
 PIPE 		=	memory_pipe.c  pipe.c
 
 
+PARSE_INPUT =	parse_input.c
+
 
 ## Add names of your files
 
 HISTORY_FILES		=$(addprefix $(HISTORY_PATH), $(HISTORY))
 
 ARGUMENTS_FILES			=$(addprefix $(ARGUMENTS_PATH), $(ARGUMENTS))
-
-ERROR_FILES			=$(addprefix $(ERROR_PATH), $(ERROR))
 
 EXPORT_FILES		=$(addprefix $(EXPORT_PATH), $(EXPORT))
 ENV_FILES			=$(addprefix $(ENV_PATH), $(ENV))
@@ -129,8 +125,6 @@ EXECVE_FILES		=$(addprefix $(EXECVE_PATH), $(EXECVE))
 
 EXEC_CMDS_FILE		= $(addprefix $(EXEC_CMDS_PATH), $(EXEC_CMDS))
 
-PARSE_FILES			= $(addprefix $(PARSE_PATH), $(PARSE))
-
 MINI_SHARED_FILES	= $(addprefix $(MINI_SHARED_PATH), $(MINI_SHARED))
 
 REDIR_FILES			= $(addprefix $(REDIR_PATH), $(REDIRECTIONS))
@@ -139,48 +133,56 @@ SIGNALS_FILES		= $(addprefix $(SIGNALS_PATH), $(SIGNALS))
 
 PIPE_FILES			= $(addprefix $(PIPE_PATH), $(PIPE))
 
+PARSE_INPUT_FILES	= $(addprefix $(PARSE_INPUT_PATH), $(PARSE_INPUT))
+
 ## append the path to your files
 
 DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
 										$(HISTORY:.c=.d) \
 										$(BUILTINTS_FILES:.c=.d) \
 										$(ARGUMENTS_FILES:.c=.d) \
-										$(ERROR_FILES:.c=.d) \
 										$(EXECVE_FILES:.c=.d) \
 										$(EXEC_CMDS_FILE:.c=.d) \
-										$(PARSE_FILES:.c=.d) \
 										$(MINI_SHARED_FILES:.c=.d) \
 										$(REDIR_FILES:.c=.d) \
 										$(SIGNALS_FILES:.c=.d) \
 										$(PIPE_FILES:.c=.d)\
+										$(PARSE_INPUT_FILES:.c=.d)\
 										) 
 										
 										
 
 #add .d files to deps
 
-SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES) $(ARGUMENTS_FILES) $(ERROR_FILES) \
+SRC			+=	$(HISTORY_FILES) $(BUILTINTS_FILES) $(ARGUMENTS_FILES) \
 				$(EXECVE_FILES) $(EXEC_CMDS_FILE) $(PARSE_FILES) $(MINI_SHARED_FILES) \
-				$(REDIR_FILES) $(SIGNALS_FILES) $(PIPE_FILES)
+				$(REDIR_FILES) $(SIGNALS_FILES) $(PIPE_FILES) $(PARSE_INPUT_FILES)
 
 ## add to sercs
 
 OBJS        =	$(addprefix $(OBJS_PATH), $(SRC:.c=.o)) 
 				
 
-all: make_lib $(NAME)
+all: conf make_lib $(NAME)
+
+conf:
+	@if [ ! -f $(READL)config.status ]; then\
+		cd $(READL) && ./configure &> /dev/null; \
+		echo "✅ ==== $(G)$(ligth)Create config.status$(E)==== ✅"; \
+	fi
 
 $(OBJS_PATH)%.o: $(SRCS_PATH)%.c | $(MAKE_OBJ_DIR) $(DEPS_PATH)
 			@echo "$(CYAN)Compiling $< $(DEF_COLOR)"
-			@$(CC) $(CFLAGS) $(INCS) -MMD -MP -c $< -o  $@
+			@$(CC) $(CFLAGS) $(INCS) -MMD -MP -c -D READLINE_LIBRARY=1 $< -o  $@
 			@mv $(basename $@).d $(DEPS_PATH)
 
 
 $(NAME): $(OBJS) $(LIB)
-	@$(CC) $(CFLAGS) $(INCS) $(OBJS) $(LINEFLAGS) -o $(NAME) $(LDFLAGS)
+	@$(CC) $(CFLAGS) $(INCS) $(OBJS) $(LINEFLAGS) $(LIB) -ltermcap -o $(NAME) $(LDFLAGS)
 	@echo "$(LIGHT_GREEN)Created $(NAME) executable$(DEF_COLOR)"
 
 make_lib:
+	make -C ./readline/ --no-print-directory &> /dev/null
 	@echo "$(GREEN)Checking Libft$(DEF_COLOR)"
 	@$(MAKE) -s -C $(LIB_PATH)
 	@echo "$(BLUE)Done checking Libft$(DEF_COLOR)"

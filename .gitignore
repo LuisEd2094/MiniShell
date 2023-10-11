@@ -1,5 +1,11 @@
 *.d
 *.o
+*.so
+*.a
+readline/libhistory.a
+readline/libreadline.a
+readline/shlib/libhistory.8.2.dylib
+readline/shlib/libreadline.8.2.dylib
 minishell
 *.txt
 *.exe
@@ -10,3 +16,6 @@ create_2000_lines.c
 lines.c
 macro.sh
 .vscode/MiniShell.code-workspace
+config.status
+readline/shlib/libhistory.so.8.2
+readline/shlib/libreadline.so.8.2

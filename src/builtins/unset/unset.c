@@ -1,49 +1,88 @@
-#include <builtins.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/02 10:49:15 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/02 10:50:39 by lsoto-do         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-t_list	*get_env_before(t_list *env_list, char *str)
+#include <builtins.h>
+#include <shared.h>
+#include <minishell.h>
+
+t_list	*get_env_before(t_list *env_list, t_list *node_to_search)
 {
 	t_list	*temp;
 
 	temp = env_list;
-	if (ft_strcmp(((t_env *)(temp->content))->variable, str) == 0)
-		return (temp);
 	while (temp->next)
 	{
-		if (ft_strcmp(((t_env *)(temp->next->content))->variable, str) == 0)
+		if (temp->next == node_to_search)
 			return (temp);
 		temp = temp->next;
 	}
-	return (NULL);
 }
 
-t_list	*ft_unset(t_list *env_list, char *str)
+static	int remove_node(char *str, t_minishell *mini)
 {
-	t_list	*temp;
+	t_list	*to_remove;
 	t_list	*next;
 	t_list	*before;
 
 	if (!str)
 		return (0);
-	temp = get_env_node(env_list, str);
-	before = get_env_before(env_list, str);
-	if (!temp)
+	to_remove = get_env_node(mini->env_list, str);
+	if (!to_remove)
 		return (0);
-	next = temp->next;
-	if (env_list == before)
+	if (mini->env_list == to_remove)
 	{
-		next->last = env_list->last;
-		env_list = next;
+		if (!mini->env_list->next)
+		{
+			free_env_node(mini->env_list->content);
+			mini->env_list->content = NULL;
+		}
+		else
+		{
+			mini->env_list = to_remove->next;
+			free_node(to_remove);
+		}
 	}
-	free(((t_env *)(temp->content))->value);
-	free(((t_env *)(temp->content))->variable);
-	free(((t_env *)(temp->content)));
-	free(temp);
-	if (next)
-		before->next = next;
 	else
 	{
-		before->next = NULL;
-		env_list->last = before;
+		before = get_env_before(mini->env_list, to_remove);
+		next = to_remove->next;
+		before->next = next;
+		if (to_remove == mini->env_list->last)
+			mini->env_list->last = before;
+		free_node(to_remove);
 	}
-	return (env_list);
+	return (0);
+}
+
+int	ft_unset(t_list *env_list, char **cmds, t_minishell *mini)
+{
+	int i;
+	int error;
+
+	i = 1;
+	error = 0;
+	while (cmds[i])
+	{
+		if (has_equal(cmds[i]))
+		{
+			error = print_error("minishell: unset: '", 1);
+			error = print_error(cmds[i], 1);
+			error = print_error("': not a valid identifier\n", 1);
+		}
+		else
+		{
+			remove_node(cmds[i], mini);
+		}
+		i++;
+	}
+	return (error);
 }
