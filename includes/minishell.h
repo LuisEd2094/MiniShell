@@ -13,6 +13,8 @@ typedef struct s_minishell
 	char	***cmds;
 	char	*input;
 	int		**pipes;
+	int		og_in;
+	int		og_out;
 	int		exit_code;
 	int		here_doc_number;
 	char	here_doc_name[200];
@@ -36,7 +38,9 @@ void	create_here_doc(t_minishell *mini);
 void	delete_temp_files(t_minishell *mini);
 void	handle_here_document(t_minishell *mini, int i);
 
-int		check_and_handle_redirections(char **cmds, t_minishell *mini);
+int	check_and_handle_redirections(char *redir, char *file, t_minishell *mini);
+int		handle_redirection(char *redirection, char *file_name);
+
 int		close_redirections(t_minishell *mini);
 
 int		ft_pipe(char ***commands, int num_pipes, t_minishell *mini);

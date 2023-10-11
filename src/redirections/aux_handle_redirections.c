@@ -36,23 +36,13 @@ int	read_here_document(t_minishell *mini)
 	return (1);
 }
 
-int	check_and_handle_redirections(char **cmds, t_minishell *mini)
+int	check_and_handle_redirections(char *redir, char *file, t_minishell *mini)
 {
 	int	i;
 
-	i = 0;
-	while (cmds[i])
-	{
-		if (cmds[i][0] == '<' || cmds[i][0] == '>')
-		{
-			if (cmds[i][0] == '<' && cmds[i][1] == '<')
-				read_here_document(mini);
-			else
-				handle_redirection(cmds[i], cmds[i + 1]);
-			remove_redir_from_cmds(cmds, i);
-			i--;
-		}
-		i++;
-	}
+	if (redir[0] == '<' && redir[1] == '<')
+		read_here_document(mini);
+	else
+		handle_redirection(redir, file);
 	return (0);
 }

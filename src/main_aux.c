@@ -40,19 +40,31 @@ void	exit_mini(t_minishell *mini)
 	exit(0);
 }
 
+int close_redirections(t_minishell *mini)
+{
+    dup2(mini->og_in, STDIN_FILENO);
+    dup2(mini->og_out, STDOUT_FILENO);
+    return (1);
+}
 void	prep_mini(t_minishell *mini)
 {
 	mini->here_doc_number = 0;
 	free_cmds(mini->cmds);
+	close_redirections(mini);
 	delete_temp_files(mini);
 	if (errno)
 		errno = 0;
 }
 
+
+
+
 void	init_mini(t_minishell *mini, char **env)
 {
 	mini->exit_code = 0;
 	mini->env_list = init_env(env);
+    mini->og_in = dup(STDIN_FILENO);
+    mini->og_out = dup(STDOUT_FILENO);
 	if (!mini->env_list)
 		exit(EXIT_FAILURE);
 	work_history(INIT, NULL);
