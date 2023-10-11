@@ -41,7 +41,10 @@ int	check_and_handle_redirections(char *redir, char *file, t_minishell *mini)
 	int	i;
 
 	if (redir[0] == '<' && redir[1] == '<')
+	{
 		read_here_document(mini);
+
+	}	
 	else
 		handle_redirection(redir, file);
 	return (0);

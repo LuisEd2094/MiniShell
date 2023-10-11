@@ -13,20 +13,29 @@
 #include <minishell.h>
 #include <stdlib.h>
 #include <unistd.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 void	main_loop(t_minishell *mini)
 {
+	rl_catch_signals = 0;
 	while (1)
 	{
 		mini->input = readline(">> ");
+		//printf("[%s]\n", mini->input);
 		if (!mini->input)
+		{
+			ft_printf("exit\n");
 			exit_mini(mini);
+		}
 		/*
 		if (ft_strncmp(mini->input, "exit", ft_strlen("exit") + 1) == 0)
 		{
 			free(mini->input);
 			break ;
 		}*/
+		if (!mini->input)
+			exit (0);
 		if (mini->input[0] != '\0')
 		{
 			work_history(UPDATE, mini->input);
@@ -57,5 +66,5 @@ int	main(int argc, char **argv, char **env)
 	main_loop(&mini);
 	free_env_list(mini.env_list);
 	work_history(CLOSE, NULL);
-	return (0);
+	exit (0);
 }

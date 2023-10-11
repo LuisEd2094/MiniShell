@@ -64,24 +64,41 @@ static char	*check_input(char *input, t_minishell *mini)
 	return (input);
 }
 
+
+
+
 void	handle_here_document(t_minishell *mini)
 {
 	int		fd;
 	char	*input;
+	pid_t	pid;
 
-	get_doc_name(mini);
-	fd = open(mini->here_doc_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
-	while (1)
-	{		
-		input = readline(">");
-		if (ft_strncmp(input, mini->here_doc_end, ft_strlen(mini->here_doc_end) + 1) == 0)
-			break ;
-		input = check_input(input, mini);
-		write (fd, input, ft_strlen(input));
-		write (fd, "\n", 1);
-		free(input);
+
+	pid = fork();
+	if (pid == 0)
+	{
+		child_action_signal();
+			rl_catch_signals = 0;
+
+		get_doc_name(mini);
+		fd = open(mini->here_doc_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
+		while (1)
+		{		
+			input = readline(">");
+			if (!input)
+				break ;
+			if (ft_strncmp(input, mini->here_doc_end, ft_strlen(mini->here_doc_end) + 1) == 0)
+				break ;
+			input = check_input(input, mini);
+			write (fd, input, ft_strlen(input));
+			write (fd, "\n", 1);
+			free(input);
+		}
+		close(fd);
 	}
-	close(fd);
+	else
+		wait(NULL);
+
 }
 
 void	create_here_doc(t_minishell *mini)

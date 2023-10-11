@@ -1,5 +1,5 @@
 NAME        = minishell
-CFLAGS      = -g -fsanitize=address #-Wall -Wextra  -Werror
+CFLAGS      = -g #-fsanitize=address #-Wall -Wextra  -Werror
 RM          = rm -f
 SRCS_PATH           = src/
 OBJS_PATH           = obj/
@@ -181,7 +181,7 @@ $(OBJS_PATH)%.o: $(SRCS_PATH)%.c | $(MAKE_OBJ_DIR) $(DEPS_PATH)
 			@mv $(basename $@).d $(DEPS_PATH)
 
 
-$(NAME): $(OBJS) $(LIB)
+$(NAME): $(OBJS) $(LIB) Makefile
 	@$(CC) $(CFLAGS) $(INCS) $(OBJS) $(LINEFLAGS) $(LIB) -ltermcap -o $(NAME) $(LDFLAGS)
 	@echo "$(LIGHT_GREEN)Created $(NAME) executable$(DEF_COLOR)"
 

@@ -77,7 +77,7 @@ int	no_path_name_found(char *cmd)
 		if (errno == ENOENT)
 			perror(NULL);
 		else
-			write(STDERR_FILENO, "command not found\n", ft_strlen( ": command not found\n"));
+			write(STDERR_FILENO, "command not found\n", ft_strlen("command not found\n"));
 		return (127);
 	}
 	
