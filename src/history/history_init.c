@@ -12,21 +12,11 @@
 
 #include "history_internal.h"
 
-t_list	*ft_read_history(int fd, t_list **head, int *size)
+void	read_from_file(int fd, t_list **head, int *size, char *line)
 {
 	t_list	*tmp;
 	t_list	*new;
-	char	*line;
 
-	if (fd <= 0)
-		return (NULL);
-	line = get_next_line(fd, 10);
-	if (!line)
-		return (NULL);
-	remove_new_line(line);
-	*(head) = ft_lstnew(line); // need to check line?
-	if (!*head)
-		exit(1);
 	*(size) += 1;
 	(*head)->last = *(head);
 	tmp = *(head);
@@ -45,6 +35,25 @@ t_list	*ft_read_history(int fd, t_list **head, int *size)
 			tmp = new;
 		}
 	}
+
+}
+
+t_list	*ft_read_history(int fd, t_list **head, int *size)
+{
+	t_list	*tmp;
+	t_list	*new;
+	char	*line;
+
+	if (fd <= 0)
+		return (NULL);
+	line = get_next_line(fd, 10);
+	if (!line)
+		return (NULL);
+	remove_new_line(line);
+	*(head) = ft_lstnew(line); // need to check line?
+	if (!*head)
+		exit(1);
+	read_from_file(fd, head, size, line);
 	close(fd);
 	return (NULL);
 }

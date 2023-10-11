@@ -99,5 +99,5 @@ char ***get_cmds_value(char *input)
     }
     free(split_input_pipe);
     cmds[i] = NULL;
-    return  (cmds);
+    return  (cmds);    
 }
