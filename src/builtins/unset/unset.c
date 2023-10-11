@@ -27,30 +27,33 @@ t_list	*get_env_before(t_list *env_list, t_list *node_to_search)
 	}
 }
 
-static	int remove_node(char *str, t_minishell *mini)
+static	void remove_head(t_minishell *mini, t_list *to_remove)
+{
+	if (!mini->env_list->next)
+	{
+		free_env_node(mini->env_list->content);
+		mini->env_list->content = NULL;
+	}
+	else
+	{
+		mini->env_list = to_remove->next;
+		free_node(to_remove);
+	}
+}
+
+static	void remove_node(char *str, t_minishell *mini)
 {
 	t_list	*to_remove;
 	t_list	*next;
 	t_list	*before;
 
 	if (!str)
-		return (0);
+		return ;
 	to_remove = get_env_node(mini->env_list, str);
 	if (!to_remove)
-		return (0);
+		return ;
 	if (mini->env_list == to_remove)
-	{
-		if (!mini->env_list->next)
-		{
-			free_env_node(mini->env_list->content);
-			mini->env_list->content = NULL;
-		}
-		else
-		{
-			mini->env_list = to_remove->next;
-			free_node(to_remove);
-		}
-	}
+		remove_head(mini, to_remove);
 	else
 	{
 		before = get_env_before(mini->env_list, to_remove);
@@ -60,7 +63,6 @@ static	int remove_node(char *str, t_minishell *mini)
 			mini->env_list->last = before;
 		free_node(to_remove);
 	}
-	return (0);
 }
 
 int	ft_unset(t_list *env_list, char **cmds, t_minishell *mini)
@@ -79,9 +81,7 @@ int	ft_unset(t_list *env_list, char **cmds, t_minishell *mini)
 			error = print_error("': not a valid identifier\n", 1);
 		}
 		else
-		{
 			remove_node(cmds[i], mini);
-		}
 		i++;
 	}
 	return (error);
