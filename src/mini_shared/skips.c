@@ -36,17 +36,17 @@ int	get_white_space_size(char *input)
 	return (i);
 }
 
-int	get_arg_size_skip_redirections(char *input)
+int get_arg_size_skip_redirections(char *input)
 {
-	int	i;
+    int i;
 
-	i = 0;
-	while (input[i] && is_ascii_no_space(input[i]) \
-	&& (input[i] != '<' && input[i] != '>'))
-		i++;
-	return (i);
+    i = 0;
+    while (input[i] && is_ascii_no_space(input[i]) \
+    && !(input [i] == '\"' || input[i] == '\'' || \
+	input[i] == '>' || input[i] == '<'))
+        i++;
+    return (i);
 }
-
 int	get_redirection_size(char *input)
 {
 	int		i;

@@ -43,7 +43,7 @@ MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), \
 
 DEPS_PATH	= deps/
 LIB_PATH	= 	./Libft
-LIB			=	$(LIB_PATH)/libft.a #./readline/libreadline.a ./readline/libhistory.a
+LIB			=	$(LIB_PATH)/libft.a ./readline/libreadline.a ./readline/libhistory.a
 LDFLAGS		= 	-L$(LIB_PATH) -lft 
 LINEFLAGS	=	-lreadline
 
