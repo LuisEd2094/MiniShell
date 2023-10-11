@@ -32,8 +32,8 @@ char    *replace_values(char *cmd, t_minishell *mini)
         exit_code = ft_itoa(mini->exit_code);
         temp = cmd;
         cmd = ft_replace(cmd, exit_code, 0, 0);
-        printf("new cmd [%s]\n", cmd);
         free(temp);
+        free(exit_code);
     }
     else if (cmd[0] == '$' && \
     is_ascii_no_space(cmd[1]) && \

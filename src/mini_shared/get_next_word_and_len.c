@@ -20,7 +20,8 @@ int	get_next_word_len(char *cmd)
 	if (cmd[len] == '?')
 		return (1);
 	while (cmd[len] && cmd[len] != '"' && !ft_isspace(cmd[len]) \
-		&& cmd[len] != '<' && cmd[len] != '>' && cmd[len] != '$')
+		&& cmd[len] != '<' && cmd[len] != '>' && cmd[len] != '$' && \
+		cmd[len] != '\'')
 		len++;
 	return (len);
 }

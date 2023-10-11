@@ -18,6 +18,8 @@ char	*get_env_str(char *input, t_list *env_list)
 	char	*env_value;
 	char	*temp;
 
+
+	printf("env name [%s]\n", input);
 	env_node = get_env_node(env_list, input);
 	if (!env_node)
 		env_value = (char *)malloc(sizeof(char) * 1);
@@ -33,5 +35,6 @@ char	*get_env_str(char *input, t_list *env_list)
 	else
 		ft_strlcpy(env_value, temp, \
 				ft_strlen(temp) + 1);
+	free(input);
 	return (env_value);
 }
