@@ -13,21 +13,26 @@
 #include <builtins.h>
 #include <shared.h>
 
+
+t_tree_node	* create_node(t_list *value)
+{
+	t_tree_node	*new_node;
+
+	new_node =(t_tree_node *)malloc(sizeof(t_tree_node));
+	if (!new_node)
+		return (NULL);
+	new_node->data = value;
+	new_node->left = NULL;
+	new_node->right = NULL;
+	return (new_node);
+}
 t_tree_node	*insert_to_tbs(t_tree_node *root, t_list *value)
 {
 	int			compare_result;
 	t_tree_node	*new_node;
 
 	if (!root)
-	{
-		new_node =(t_tree_node *)malloc(sizeof(t_tree_node));
-		if (!new_node)
-			return (NULL);
-		new_node->data = value;
-		new_node->left = NULL;
-		new_node->right = NULL;
-		return (new_node);
-	}
+		return(create_node(value));
 	compare_result = ft_strncmp(((t_env *)(value->content))->variable, \
 	((t_env *)(root->data->content))->variable, \
 	ft_strlen(((t_env *)(root->data->content))->variable) + 1);
