@@ -73,7 +73,7 @@ HISTORY		= 	add_to_history.c  close_history.c  history_init.c  \
 
 EXPORT		=	export.c bts_for_export.c
 
-ENV			= 	env.c
+ENV			= 	env.c env_aux.c
 
 UNSET		=	unset.c
 

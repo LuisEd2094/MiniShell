@@ -48,13 +48,18 @@ t_tree_node	*insert_to_tbs(t_tree_node *root, t_list *value)
 
 void	print_in_order(t_tree_node *root)
 {
+	t_env *node;
+
+	node = NULL;
 	if (root != NULL)
 	{
 		print_in_order(root->left);
+		node = ((t_env *)(root->data->content));
+		if (ft_strncmp(node->variable, "?", 1) != 0)
 		ft_printf("declare -x %s=%c%s%c\n", \
-				((t_env *)(root->data->content))->variable, \
+				node->variable, \
 				'"', \
-				((t_env *)(root->data->content))->value, \
+				node->value, \
 				'"');
 		print_in_order(root->right);
 	}

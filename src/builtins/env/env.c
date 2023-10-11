@@ -10,14 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <builtins.h>
-#include <shared.h>
-#include <minishell.h>
+#include "env_internal.h"
 
 int	ft_print_env(char **cmds, t_list *env_list)
 {
 	t_list	*temp;
+	t_env	*node;
 
+	node = NULL;
 	if (cmds[1])
 		return (print_error("minishell : env: invalid usage\n", 1));
 	if (!env_list->content)
@@ -25,9 +25,10 @@ int	ft_print_env(char **cmds, t_list *env_list)
 	temp = env_list;
 	while (temp)
 	{
-		if (((t_env *)(temp->content))->assigned)
-			ft_printf("%s=%s\n", ((t_env *)(temp->content))->variable, \
-		((t_env *)(temp->content))->value);
+		node = ((t_env *)(temp->content));
+		if (node->assigned &&  ft_strncmp("?", node->variable, 1) != 0)
+			ft_printf("%s=%s\n", node->variable, \
+		node->value);
 		temp = temp->next;
 	}
 	return (0);
@@ -67,55 +68,13 @@ t_env	*create_new_env_node(char *env)
 	return (env_node);
 }
 
-t_list	*iter_env(char *env)
-{
-	t_list	*new;
-	t_env	*env_node;
-	char	**tab;
-
-	env_node = create_new_env_node(env);
-	if (!env_node)
-		return (NULL);
-	new = ft_lstnew(env_node);
-	if (!new)
-	{
-		free_env_node(env_node);
-		return (print_perror());
-	}
-	return (new);
-}
-
-t_list	*fill_up_env_list(t_list *env_list, char **env)
-{
-	int		i;
-	t_list	*tmp;
-
-	tmp = env_list;
-	i = 1;
-	while (env[i])
-	{
-		tmp->next = iter_env(env[i]);
-		if (!tmp->next)
-			break ;
-		tmp = tmp->next;
-		env_list->last = tmp;
-		i++;
-	}
-	return (env_list);
-}
-
 t_list	*init_env(char **env)
 {
 	t_list	*env_list;
 	t_env	*env_node;
 
 	if (!env[0])
-	{
-		env_list = ft_lstnew(NULL);
-		if (!env_list)
-			exit(EXIT_FAILURE);
-		return (env_list);
-	}
+		return (create_empty_list());
 	env_node = create_new_env_node(env[0]);
 	if (!env_node)
 		return (print_perror());
