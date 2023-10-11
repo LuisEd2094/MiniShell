@@ -83,7 +83,7 @@ ECHO		=	ft_echo.c
 
 PWD			=	ft_pwd.c
 
-ARGUMENTS	=	get_cmd_value.c get_cmd_argument.c 
+ARGUMENTS	=	get_cmd_value.c get_cmd_argument.c  get_cmd_argument_aux.c
 
 EXEC_CMDS	=	execute_cmds.c check_quotes_and_env.c get_double_quote.c
 

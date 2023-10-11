@@ -31,33 +31,6 @@ char	*ft_get_arg(char *cmd, int arg_start)
 	return (ft_substr(cmd, arg_start, arg_len));
 }
 
-int	get_argument_count(char *cmd)
-{
-	int	i;
-	int	arg_count;
-
-	i = 0;
-	arg_count = 0;
-	while (cmd[i])
-	{
-		if (cmd[i] == '\"' || cmd[i] == '\'' || \
-			cmd[i] == '>' || cmd[i] == '<' || \
-			is_ascii_no_space(cmd[i]))
-		{
-			if (cmd[i] == '\"' || cmd[i] == '\'')
-				i += get_quotes_size(&cmd[i]);
-			else if (cmd[i] == '>' || cmd[i] == '<')
-				i += get_redirection_size(&cmd[i]);
-			else if (is_ascii_no_space(cmd[i]))
-				i += get_arg_size_skip_redirections(&cmd[i]);
-			arg_count++;
-		}
-		else
-			i++;
-	}
-	return (arg_count);
-}
-
 char	**ft_argument_split(char *cmd)
 {
 	char	**args;
