@@ -10,11 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <execve.h>
-#include <builtins.h>
 #include "execve_internal.h"
-#include <shared.h>
-
 
 char	**conver_env_list(t_list *env_list)
 {
@@ -22,13 +18,7 @@ char	**conver_env_list(t_list *env_list)
 	t_list	*temp;
 	char	**new;
 
-	temp = env_list;
-	i = 0;
-	while (temp)
-	{
-		i++;
-		temp = temp->next;
-	}
+	i = get_env_list_size(env_list);
 	new = (char **)malloc(sizeof(char *) * (i + 1));
 	if (!new)
 		return (NULL);
@@ -65,12 +55,7 @@ char	*get_path_name(char **cmd, char **path_list)
 	int		i;
 
 	if (!path_list)
-	{
-		if (errno != ENOMEM)
-			errno = ENOENT;
-		return (NULL);
-	}
-	path_name = NULL;
+		return (no_list());
 	i = 0;
 	while (path_list[i])
 	{
@@ -115,22 +100,5 @@ int	try_execve(char **cmd, t_list *env_list)
 		exit(EXIT_FAILURE);
 	}
 	else
-	{
-		if (errno == ENOMEM)
-		{
-			print_perror();
-			return (errno);
-		}
-		else
-		{
-			write(STDERR_FILENO, "minishell: ", ft_strlen("minishell: "));
-			write(STDERR_FILENO, cmd[0], ft_strlen(cmd[0]));
-			write(STDERR_FILENO, ": ", ft_strlen(": "));
-			if (errno == ENOENT)
-				perror(NULL);
-			else
-				write(STDERR_FILENO, "command not found\n", ft_strlen( ": command not found\n"));
-			return (127);
-		}
-	}
+		return (no_path_name_found(cmd[0]));
 }

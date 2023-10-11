@@ -1,6 +1,8 @@
 #ifndef SHARED_H
 # define SHARED_H
 
+# include <stdbool.h>
+
 int     get_next_word_len(char *cmd);
 int     get_quotes_size(char *input);
 int     get_arg_size_skip_redirections(char *input);

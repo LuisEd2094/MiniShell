@@ -39,3 +39,46 @@ char	*reconstruct_env(char	*variable, char	*value)
 		return (NULL);
 	return (new);
 }
+
+int get_env_list_size(t_list *env_list)
+{
+	int	i;
+	t_list	*temp;
+
+	temp = env_list;
+	i = 0;
+	while (temp)
+	{
+		i++;
+		temp = temp->next;
+	}
+	return (i);
+}
+
+void	*no_list(void)
+{
+	if (errno != ENOMEM)
+		errno = ENOENT;
+	return (NULL);
+}
+
+int	no_path_name_found(char *cmd)
+{
+	if (errno == ENOMEM)
+	{
+		print_perror();
+		return (errno);
+	}
+	else
+	{
+		write(STDERR_FILENO, "minishell: ", ft_strlen("minishell: "));
+		write(STDERR_FILENO, cmd, ft_strlen(cmd));
+		write(STDERR_FILENO, ": ", ft_strlen(": "));
+		if (errno == ENOENT)
+			perror(NULL);
+		else
+			write(STDERR_FILENO, "command not found\n", ft_strlen( ": command not found\n"));
+		return (127);
+	}
+	
+}
