@@ -58,7 +58,7 @@ void	*create_or_update_env_node(t_list *env_list, char *var, char *value)
 	int		has_plus;
 	char	*new;
 
-		has_plus = check_equal(var);
+	has_plus = check_equal(var);
 	if (has_plus)
 		var[ft_strlen(var) - 1] = '\0';
 	temp = get_env_node(env_list, var);

@@ -12,20 +12,18 @@
 
 #include <minishell.h>
 #include "../readline/readline.h"
+#include <signal.h>
+#include <sys/ioctl.h>
 
-static	void	action(int signal, siginfo_t *info, void *context)
+
+static	void	action(int signal)
 {
-	if (info || context)
-		info = info;
 	if (signal == SIGINT)
 	{
 		received_signal = SIGINT;
-		rl_catch_signals = 1;
-
-		ft_printf("I am sig int \n");
+		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 		rl_replace_line("", 0);
 		rl_on_new_line();
-		rl_redisplay();
 	}
 	else if (signal == SIGQUIT)
 	{
@@ -41,28 +39,20 @@ void	signal_action(void)
 	struct sigaction	act;
 ;
 	sigemptyset(&act.sa_mask); 
-	act.sa_sigaction = action;
+	act.sa_handler  = action;
 	act.sa_flags = SA_RESTART;
 	
 	sigaction(SIGINT, &act, NULL);
-	sigaction(SIGQUIT, &act, NULL);
+    signal(SIGQUIT, SIG_IGN);
 	//sigaction(SIGTSTP, &act, NULL);
 }
 
-
-static	void	child_action(int signal, siginfo_t *info, void *context)
+void	child_action(int signal)
 {
-	if (info || context)
-		info = info;
 	if (signal == SIGINT)
 	{
-		/*rl_replace_line("", 0);
-		write(1, "\n", 1);
-		rl_on_new_line();*/
-		//rl_redisplay();
-		rl_catch_signals = 1;
-
-		exit(SIGINT);
+		rl_on_new_line();
+		received_signal = SIGINT;
 	}
 	else if (signal == SIGQUIT)
 	{
@@ -78,13 +68,12 @@ void	child_action_signal(void)
 	struct sigaction	act;
 
 	sigemptyset(&act.sa_mask); 
-	act.sa_sigaction = child_action;
-
+	act.sa_handler  = child_action;
 	act.sa_flags = SA_RESTART;
 	received_signal = 0;
 	
 	sigaction(SIGINT, &act, NULL);
-	sigaction(SIGQUIT, &act, NULL);
+    signal(SIGQUIT, SIG_IGN);
 }
 
 

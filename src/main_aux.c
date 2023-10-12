@@ -40,6 +40,7 @@ void	free_cmds(char ***cmds)
 
 void	exit_mini(t_minishell *mini)
 {
+	//rl_catch_signals = 1;
 	work_history(CLOSE, NULL);
 	free_env_list(mini->env_list);
 	exit(0);
@@ -63,6 +64,8 @@ void	prep_mini(t_minishell *mini)
 	mini->here_doc_number = 0;
 	free_cmds(mini->cmds);
 	close_redirections(mini);
+	signal_action();
+	//ft_printf("exit_code [%i]\n", mini->exit_code);
 	create_or_update_env_node(mini->env_list, exit_code, ft_itoa(mini->exit_code));
 	delete_temp_files(mini);
 	received_signal = 0;
@@ -77,6 +80,8 @@ void	init_mini(t_minishell *mini, char **env)
 {
 	char *exit_code;
 
+    sigaction(SIGINT, NULL, &(mini->old_action));
+	signal_action();
 	mini->exit_code = 0;
 	mini->input_code = 0;
 	mini->env_list = init_env(env);
@@ -92,5 +97,4 @@ void	init_mini(t_minishell *mini, char **env)
 		exit(EXIT_FAILURE);
 	work_history(INIT, NULL);
 	mini->here_doc_number = 0;
-	signal_action();
 }

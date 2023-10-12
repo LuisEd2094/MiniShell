@@ -75,46 +75,24 @@ int	handle_here_document(t_minishell *mini)
 	int		status;
 	pid_t	pid;
 
-
-	pid = fork();
-	if (pid == 0)
-	{
-		child_action_signal();
-		get_doc_name(mini);
-		fd = open(mini->here_doc_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
-		while (1)
-		{		
-			rl_catch_signals = 0;
-			input = readline(">");
-			rl_catch_signals = 1;
-			if (!input)
-				break ;
-			if (ft_strncmp(input, mini->here_doc_end, ft_strlen(mini->here_doc_end) + 1) == 0)
-				break ;
-			input = check_input(input, mini);
-			write (fd, input, ft_strlen(input));
-			write (fd, "\n", 1);
-			free(input);
-		}
-		close(fd);
-		exit (0);
+	get_doc_name(mini);
+	fd = open(mini->here_doc_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	while (!received_signal)
+	{		
+		input = readline(">");
+		if (!input)
+			break ;
+		if (ft_strncmp(input, mini->here_doc_end, ft_strlen(mini->here_doc_end) + 1) == 0)
+			break ;
+		input = check_input(input, mini);
+		write (fd, input, ft_strlen(input));
+		write (fd, "\n", 1);
+		free(input);
 	}
-	else
-	{
-		waitpid(-1, &status, 0);
-		printf("status [%i]\n", status);
-		if (received_signal)
-			return (received_signal + 128);
-		else if (WIFEXITED(status))
-		{
-			printf("i am returning from EXIT\n");
-			return (WEXITSTATUS(status));
-
-		}
-		else if (WIFSIGNALED(status))
-			return (WTERMSIG(status) + 128);
-	}
-
+	close(fd);
+	if (received_signal)
+		return (received_signal);
+	return (0);
 }
 
 int	create_here_doc(t_minishell *mini)

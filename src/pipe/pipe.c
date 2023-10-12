@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <pipe.h>
+#include <minishell.h>
 
 int	make_pipe(int **pipes, int num_pipes)
 {
@@ -74,14 +75,19 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 	int		status;
 
 	pid = fork();
+	
 	if (pid == -1)
 	{
 		perror("Error en fork");
 		exit(EXIT_FAILURE);
 	}
+	//child_action_signal();
 	if (pid == 0)
 	{
-		//signal_action();
+
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		//child_action_signal();
 		setup_pipe(mini->pipes, num_pipes, i);
 		check_quotes_and_env(mini->cmds[i], mini);
 /*
@@ -105,6 +111,8 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 	{
 		mini->last_pid  = pid;
 	}
+	signal(SIGINT, child_action);
+
 	return (0);
 }
 

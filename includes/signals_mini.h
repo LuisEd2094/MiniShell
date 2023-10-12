@@ -8,5 +8,7 @@
 
 void    signal_action(void);
 void	child_action_signal(void);
+void	child_action(int signal);
+
 
 #endif

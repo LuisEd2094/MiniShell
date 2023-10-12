@@ -21,7 +21,7 @@ typedef struct s_minishell
 	char	here_doc_name[200];
 	char	*here_doc_end;
 	pid_t	last_pid;
-
+	struct sigaction old_action;
 }	t_minishell;
 
 # define TEMP_FILE_NAME "/tmp/mini_temp_"

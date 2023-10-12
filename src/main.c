@@ -18,21 +18,14 @@ void	main_loop(t_minishell *mini)
 {
 	while (1)
 	{
-		rl_catch_signals = 0;
+		//rl_catch_signals = 0;
 		mini->input = readline(">> ");
-		rl_catch_signals = 1;
 		//printf("[%s]\n", mini->input);
 		if (!mini->input)
 		{
 			ft_printf("exit\n");
 			exit_mini(mini);
 		}
-		/*
-		if (ft_strncmp(mini->input, "exit", ft_strlen("exit") + 1) == 0)
-		{
-			free(mini->input);
-			break ;
-		}*/
 		if (!mini->input)
 			exit (0);
 		if (mini->input[0] != '\0')
@@ -43,7 +36,6 @@ void	main_loop(t_minishell *mini)
 			{
 				mini->cmds = get_cmds_value(mini->input);
 				mini->exit_code = create_here_doc(mini);
-				printf("%i\n", mini->exit_code);
 				if (mini->exit_code == 0)
 					start_execute_cmds(mini);
 				prep_mini(mini);
@@ -51,7 +43,6 @@ void	main_loop(t_minishell *mini)
 			else
 				mini->exit_code = mini->input_code;
 		}
-
 		free(mini->input);
 	}
 }
