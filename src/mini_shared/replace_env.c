@@ -69,9 +69,9 @@ char	*get_env_str_from_quote(char *cmd, t_list *env_list)
 	if (!env_name)
 		return (NULL);
 	to_return = get_env_str(env_name, env_list);
-	free(env_name);
 	return (to_return);
 }
+
 
 char	*replace_env(char *cmd, t_list *env_list, int j)
 {

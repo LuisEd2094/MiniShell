@@ -20,11 +20,9 @@ void	main_loop(t_minishell *mini)
 	{
 		mini->input = readline(">> ");
 		if (!mini->input)
-			exit_mini(mini);
-		if (ft_strncmp(mini->input, "exit", ft_strlen("exit") + 1) == 0)
 		{
-			free(mini->input);
-			break ;
+			ft_printf("exit\n");
+			exit_mini(mini);
 		}
 		if (mini->input[0] != '\0')
 		{
@@ -33,14 +31,14 @@ void	main_loop(t_minishell *mini)
 			if	(mini->input_code == 0)
 			{
 				mini->cmds = get_cmds_value(mini->input);
-				create_here_doc(mini);
-				start_execute_cmds(mini);
+				mini->exit_code = create_here_doc(mini);
+				if (mini->exit_code == 0)
+					start_execute_cmds(mini);
 				prep_mini(mini);
 			}
 			else
 				mini->exit_code = mini->input_code;
 		}
-
 		free(mini->input);
 	}
 }
@@ -56,5 +54,5 @@ int	main(int argc, char **argv, char **env)
 	main_loop(&mini);
 	free_env_list(mini.env_list);
 	work_history(CLOSE, NULL);
-	return (0);
+	exit (0);
 }

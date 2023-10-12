@@ -12,6 +12,23 @@
 
 #include "history_internal.h"
 
+void	update_list(int *size, t_list **head, t_list *new)
+{
+	t_list *temp;
+
+	if (*(size) == 0)
+	{
+		*head = new;
+		(*head)->last = new;
+	}
+	else
+	{
+		temp = (*head)->last;
+		temp->next = new;
+		(*head)->last = new;
+	}
+}
+
 void	update_history(t_list **head, char *input, int *size)
 {
 	t_list	*new;
@@ -27,17 +44,7 @@ void	update_history(t_list **head, char *input, int *size)
 	new = ft_lstnew(content);
 	if (!new)
 		exit(1);
-	if (*(size) == 0)
-	{
-		*head = new;
-		(*head)->last = new;
-	}
-	else
-	{
-		temp = (*head)->last;
-		temp->next = new;
-		(*head)->last = new;
-	}
+	update_list(size, head, new);
 	*(size) += 1;
 	add_history(input);
 }

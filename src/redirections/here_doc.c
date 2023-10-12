@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <minishell.h>
+#include <sys/wait.h>
 
 void	get_doc_name(t_minishell *mini)
 {
@@ -64,16 +65,23 @@ static char	*check_input(char *input, t_minishell *mini)
 	return (input);
 }
 
-void	handle_here_document(t_minishell *mini)
+
+
+
+int	handle_here_document(t_minishell *mini)
 {
 	int		fd;
 	char	*input;
+	int		status;
+	pid_t	pid;
 
 	get_doc_name(mini);
 	fd = open(mini->here_doc_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
-	while (1)
+	while (!received_signal)
 	{		
 		input = readline(">");
+		if (!input)
+			break ;
 		if (ft_strncmp(input, mini->here_doc_end, ft_strlen(mini->here_doc_end) + 1) == 0)
 			break ;
 		input = check_input(input, mini);
@@ -82,14 +90,19 @@ void	handle_here_document(t_minishell *mini)
 		free(input);
 	}
 	close(fd);
+	if (received_signal)
+		return (received_signal);
+	return (0);
 }
 
-void	create_here_doc(t_minishell *mini)
+int	create_here_doc(t_minishell *mini)
 {
 	int	i;
 	int j;
+	int	status;
 
 	i = 0;
+	status = 0;
 	while (mini->cmds[i])
 	{
 		j = 0;
@@ -98,7 +111,9 @@ void	create_here_doc(t_minishell *mini)
 			if (mini->cmds[i][j][0] == '<' && mini->cmds[i][j][1] == '<')
 			{
 				mini->here_doc_end = mini->cmds[i][j + 1];
-				handle_here_document(mini);
+				status = handle_here_document(mini);
+				if (status)
+					return (status);
 				j++;
 			}
 			j++;
@@ -106,4 +121,5 @@ void	create_here_doc(t_minishell *mini)
 		i++;
 	}
 	mini->here_doc_number = 0;
+	return (status);
 }

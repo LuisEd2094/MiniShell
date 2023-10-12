@@ -1,8 +1,8 @@
 #ifndef HISTORY_H
 # define HISTORY_H
 # include <libft.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+# include "../readline/readline.h"
+# include "../readline/history.h"
 
 typedef enum s_order
 {

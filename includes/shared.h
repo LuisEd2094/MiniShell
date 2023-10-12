@@ -1,6 +1,8 @@
 #ifndef SHARED_H
 # define SHARED_H
 
+# include <stdbool.h>
+
 int     get_next_word_len(char *cmd);
 int     get_quotes_size(char *input);
 int     get_arg_size_skip_redirections(char *input);
@@ -14,5 +16,8 @@ void    *print_perror(void);
 int     print_error(char *err_description, int err_value);
 int     get_white_space_size(char *input);
 char    *get_next_word(char *cmd);
+char	*replace_env(char *cmd, t_list *env_list, int j);
+char    *get_env_str_from_quote(char *cmd, t_list *env_list);
+
 
 #endif

@@ -50,40 +50,49 @@ static void *work_on_print(t_list *env_list)
 	free_tbs(root);
 }
 
-int	ft_export(t_list *env_list, char **cmds)
+static int print_error_export(char *cmd)
 {
-	char **tab;
-	int	i;
-	int	error;
+	print_error("minishell: export: '", 1);
+	print_error(cmd, 1);
+	return (print_error("': not a valid identifier\n", 1));
+}
+
+int	work_cmds_export(t_list *env_list, char **cmds)
+{
+	int i;
+	char	**tab;
+	int error;
 
 	i = 1;
 	error = 0;
-	if (!cmds[i])
+	while (cmds[i])
+	{
+		if (cmds[i][0] == '=' || cmds[i][0] == '+')
+		{
+			error = print_error_export(cmds[i]);
+			i++;
+			continue;
+		}
+		tab = ft_single_split(cmds[i], '=');
+		if (!tab)
+			error = errno;
+		else if(!create_or_update_env_node(env_list, tab[0], tab[1]))
+			error = errno;
+		if (tab)
+			free(tab);
+		i++;
+	}
+	return (error);
+}
+
+int	ft_export(t_list *env_list, char **cmds)
+{
+	char **tab;
+
+	if (!cmds[1])
 	{
 		if (!work_on_print(env_list))
 			return (errno);
 	}
-	else
-	{
-		while (cmds[i])
-		{
-			if (cmds[i][0] == '=' || cmds[i][0] == '+')
-			{
-				error = print_error("minishell: export: '", 1);
-				error = print_error(cmds[i], 1);
-				error = print_error("': not a valid identifier\n", 1);
-				i++;
-				continue;
-			}
-			tab = ft_single_split(cmds[i], '=');
-			if (!tab)
-				error = errno;
-			if(!create_or_update_env_node(env_list, tab[0], tab[1]))
-				error = errno;
-			if (tab)
-				free(tab);
-			i++;
-		}
-	}
-	return (error);
+	return (work_cmds_export(env_list, cmds));
 }

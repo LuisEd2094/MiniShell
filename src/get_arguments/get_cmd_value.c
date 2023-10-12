@@ -12,46 +12,6 @@
 
 #include "get_arguments_internal.h"
 
-int get_cmd_count(char **cmds)
-{
-    int cmd_count;
-
-    cmd_count = 0;
-    while(cmds[cmd_count])
-        cmd_count++;
-    return (cmd_count);
-}
-
-int ft_commands_count(char *input)
-{
-    int i;
-    int count;
-
-    i = -1;
-    count = 1;
-    while(input[++i])
-    {
-        if (input[i] == '"' || input[i] == '\'')
-            i += get_quotes_size(&input[i]) - 1;
-        else if (input[i] == '|')
-            count++;
-    }
-    return (count);
-}
-
-
-void *free_cmds_error(char **cmds)
-{
-    int i;
-
-    i = 0;
-    while(cmds[i])
-        free(cmds[i++]);
-    free(cmds);
-    return (NULL); //retutrn errr number, perror
-}
-
-
 int get_cmd_size(char *input, int i)
 {
     int start;
@@ -67,7 +27,6 @@ int get_cmd_size(char *input, int i)
     }
     return (i - start);
 }
-
 
 char    *get_cmd(char *input, int *i)
 {
@@ -108,7 +67,7 @@ char    **ft_commands_split(char *input)
     {
         cmds[j] = get_cmd(input, &i);
         if (!cmds[j])
-            return (free_cmds_error(cmds));
+            return (free_2d_array(cmds));
         j++;
     }
     cmds[j] = NULL;
@@ -140,5 +99,5 @@ char ***get_cmds_value(char *input)
     }
     free(split_input_pipe);
     cmds[i] = NULL;
-    return  (cmds);
+    return  (cmds);    
 }

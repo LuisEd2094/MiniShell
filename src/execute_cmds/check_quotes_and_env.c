@@ -18,6 +18,19 @@ char *remove_single_quote(char *str)
     return (str);
 }
 
+char    *replace_exit_code(t_minishell *mini, char *cmd)
+{
+    char    *exit_code;
+    char    *temp;
+
+    exit_code = get_env_str_from_quote("?", mini->env_list);
+    temp = cmd;
+    cmd = ft_replace(cmd, exit_code, 0, 0);
+    free(temp);
+    free(exit_code);
+    return (cmd);
+}
+
 char    *replace_values(char *cmd, t_minishell *mini)
 {
     char    *exit_code;
@@ -28,21 +41,11 @@ char    *replace_values(char *cmd, t_minishell *mini)
     else if (cmd[0] == '\'')
         cmd = remove_single_quote(cmd);
     else if (cmd[0] == '$' && cmd[1] == '?')
-    {
-        exit_code = ft_itoa(mini->exit_code);
-        temp = cmd;
-        cmd = ft_replace(cmd, exit_code, 0, 0);
-        free(temp);
-        free(exit_code);
-    }
+        cmd = replace_exit_code(mini, cmd);
     else if (cmd[0] == '$' && \
     is_ascii_no_space(cmd[1]) && \
     cmd[1])
-    {
-        temp = cmd;
         cmd = replace_env(cmd, mini->env_list , 0);
-        free(temp);
-    }
     if (!cmd)
         return (NULL);
     return (cmd);

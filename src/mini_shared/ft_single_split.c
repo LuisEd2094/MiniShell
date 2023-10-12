@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <libft.h>
 
 char	**ft_single_split(char const *s, char c)
 {
@@ -25,10 +26,17 @@ char	**ft_single_split(char const *s, char c)
 	while (s[i] && s[i] != c)
 		i++;
 	tab[0] = (char *)malloc(sizeof(char) * (i + 1));
+	if (!tab[0])
+	{
+		free(tab);
+		return (NULL);
+	}
 	j = i;
 	while (s[i])
 		i++;
 	tab[1] = (char *)malloc(sizeof(char) * ((i - j) + 1));
+	if (!tab[1])
+		return (free_2d_array(tab));
 	i = 0;
 	while (i < j)
 	{

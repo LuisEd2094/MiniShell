@@ -1,5 +1,5 @@
 NAME        = minishell
-CFLAGS      = -g #-Wall -Wextra  -Werror
+CFLAGS      = -g -fsanitize=address #-Wall -Wextra  -Werror
 RM          = rm -f
 SRCS_PATH           = src/
 OBJS_PATH           = obj/
@@ -19,7 +19,8 @@ UNSET_PATH			= $(BUILTINTS)unset/
 CD_PATH				= $(BUILTINTS)cd/
 ECHO_PATH			= $(BUILTINTS)echo/
 PWD_PATH			= $(BUILTINTS)pwd/
-BUILTINTS_PATH		= $(EXPORT_PATH) $(ENV_PATH) $(UNSET_PATH) $(CD_PATH) $(ECHO_PATH) $(PWD_PATH)
+EXIT_PATH			= $(BUILTINTS)exit/
+BUILTINTS_PATH		= $(EXPORT_PATH) $(ENV_PATH) $(UNSET_PATH) $(CD_PATH) $(ECHO_PATH) $(PWD_PATH) $(EXIT_PATH)
 MINI_SHARED_PATH	= mini_shared/
 SIGNALS_PATH		= signals/
 PARSE_INPUT_PATH	= parse_input/
@@ -73,7 +74,7 @@ HISTORY		= 	add_to_history.c  close_history.c  history_init.c  \
 
 EXPORT		=	export.c bts_for_export.c
 
-ENV			= 	env.c
+ENV			= 	env.c env_aux.c
 
 UNSET		=	unset.c
 
@@ -83,7 +84,9 @@ ECHO		=	ft_echo.c
 
 PWD			=	ft_pwd.c
 
-ARGUMENTS	=	get_cmd_value.c get_cmd_argument.c 
+EXIT		=	ft_exit.c
+
+ARGUMENTS	=	get_cmd_value.c get_cmd_argument.c  get_cmd_argument_aux.c
 
 EXEC_CMDS	=	execute_cmds.c check_quotes_and_env.c get_double_quote.c
 
@@ -118,8 +121,9 @@ UNSET_FILES			=$(addprefix $(UNSET_PATH), $(UNSET))
 PWD_FILES			=$(addprefix $(PWD_PATH), $(PWD))
 CD_FILES			=$(addprefix $(CD_PATH), $(CD))
 ECHO_FILES			=$(addprefix $(ECHO_PATH), $(ECHO))
+EXIT_FILES			=$(addprefix $(EXIT_PATH), $(EXIT))
 
-BUILTINTS_FILES		=$(EXPORT_FILES) $(ENV_FILES) $(UNSET_FILES) $(PWD_FILES) $(CD_FILES) $(ECHO_FILES)
+BUILTINTS_FILES		=$(EXPORT_FILES) $(ENV_FILES) $(UNSET_FILES) $(PWD_FILES) $(CD_FILES) $(ECHO_FILES) $(EXIT_FILES)
 
 EXECVE_FILES		=$(addprefix $(EXECVE_PATH), $(EXECVE))
 
@@ -177,7 +181,7 @@ $(OBJS_PATH)%.o: $(SRCS_PATH)%.c | $(MAKE_OBJ_DIR) $(DEPS_PATH)
 			@mv $(basename $@).d $(DEPS_PATH)
 
 
-$(NAME): $(OBJS) $(LIB)
+$(NAME): $(OBJS) $(LIB) Makefile
 	@$(CC) $(CFLAGS) $(INCS) $(OBJS) $(LINEFLAGS) $(LIB) -ltermcap -o $(NAME) $(LDFLAGS)
 	@echo "$(LIGHT_GREEN)Created $(NAME) executable$(DEF_COLOR)"
 

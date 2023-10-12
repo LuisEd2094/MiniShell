@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "get_arguments_internal.h"
+
 int	get_argument_count(char *cmd)
 {
 	int	i;
@@ -35,4 +37,32 @@ int	get_argument_count(char *cmd)
 			i++;
 	}
 	return (arg_count);
+}
+
+
+int get_cmd_count(char **cmds)
+{
+    int cmd_count;
+
+    cmd_count = 0;
+    while(cmds[cmd_count])
+        cmd_count++;
+    return (cmd_count);
+}
+
+int ft_commands_count(char *input)
+{
+    int i;
+    int count;
+
+    i = -1;
+    count = 1;
+    while(input[++i])
+    {
+        if (input[i] == '"' || input[i] == '\'')
+            i += get_quotes_size(&input[i]) - 1;
+        else if (input[i] == '|')
+            count++;
+    }
+    return (count);
 }

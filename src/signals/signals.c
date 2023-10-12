@@ -10,37 +10,53 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <signals_mini.h>
+#include <minishell.h>
 #include "../readline/readline.h"
-//void rl_replace_line (const char *, int);
 
-
-static	void	action(int signal, siginfo_t *info, void *context)
+static	void	action(int signal)
 {
-	if (info || context)
-		info = info;
 	if (signal == SIGINT)
 	{
+		received_signal = SIGINT;
+		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 		rl_replace_line("", 0);
-		write(1, "\n", 1);
 		rl_on_new_line();
-		rl_redisplay();
-	}
-	else if (signal == SIGQUIT)
-	{
-		rl_on_new_line();
-		rl_redisplay();
 	}
 }
 
 void	signal_action(void)
 {
 	struct sigaction	act;
+;
+	sigemptyset(&act.sa_mask); 
+	act.sa_handler  = action;
+	act.sa_flags = SA_RESTART;
+	
+	sigaction(SIGINT, &act, NULL);
+    signal(SIGQUIT, SIG_IGN);
+}
+
+void	child_action(int signal)
+{
+	if (signal == SIGINT)
+	{
+		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+		rl_on_new_line();
+		received_signal = SIGINT;
+	}
+}
+
+void	child_action_signal(void)
+{
+	struct sigaction	act;
 
 	sigemptyset(&act.sa_mask); 
-	act.sa_sigaction = action;
+	act.sa_handler  = child_action;
 	act.sa_flags = SA_RESTART;
+	received_signal = 0;
+	
 	sigaction(SIGINT, &act, NULL);
-	sigaction(SIGQUIT, &act, NULL);
-	sigaction(SIGTERM, &act, NULL);
+    signal(SIGQUIT, SIG_IGN);
 }
+
+

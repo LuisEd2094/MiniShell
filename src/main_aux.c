@@ -49,7 +49,7 @@ int close_redirections(t_minishell *mini)
 {
     dup2(mini->og_in, STDIN_FILENO);
     dup2(mini->og_out, STDOUT_FILENO);
-    return (1);
+    return (0);
 }
 void	prep_mini(t_minishell *mini)
 {
@@ -63,19 +63,19 @@ void	prep_mini(t_minishell *mini)
 	mini->here_doc_number = 0;
 	free_cmds(mini->cmds);
 	close_redirections(mini);
+	signal_action();
 	create_or_update_env_node(mini->env_list, exit_code, ft_itoa(mini->exit_code));
 	delete_temp_files(mini);
+	received_signal = 0;
 	if (errno)
 		errno = 0;
 }
-
-
-
 
 void	init_mini(t_minishell *mini, char **env)
 {
 	char *exit_code;
 
+	signal_action();
 	mini->exit_code = 0;
 	mini->input_code = 0;
 	mini->env_list = init_env(env);
@@ -91,5 +91,4 @@ void	init_mini(t_minishell *mini, char **env)
 		exit(EXIT_FAILURE);
 	work_history(INIT, NULL);
 	mini->here_doc_number = 0;
-	signal_action();
 }
