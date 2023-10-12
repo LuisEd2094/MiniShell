@@ -10,32 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <builtins.h>
-#include <shared.h>
-<<<<<<< HEAD
-=======
-#include <minishell.h>
->>>>>>> lsoto-do
+#include "env_internal.h"
 
 int	ft_print_env(char **cmds, t_list *env_list)
 {
 	t_list	*temp;
+	t_env	*node;
 
-<<<<<<< HEAD
-	if (cmd_len(cmds) > 1)
-		return (print_error("env : invalid usage\n", 1));
-=======
+	node = NULL;
 	if (cmds[1])
 		return (print_error("minishell : env: invalid usage\n", 1));
->>>>>>> lsoto-do
 	if (!env_list->content)
 		return (0);
 	temp = env_list;
 	while (temp)
 	{
-		if (((t_env *)(temp->content))->assigned)
-			ft_printf("%s=%s\n", ((t_env *)(temp->content))->variable, \
-		((t_env *)(temp->content))->value);
+		node = ((t_env *)(temp->content));
+		if (node->assigned &&  ft_strncmp("?", node->variable, 1) != 0)
+			ft_printf("%s=%s\n", node->variable, \
+		node->value);
 		temp = temp->next;
 	}
 	return (0);
@@ -45,18 +38,6 @@ void	free_env_list(t_list *env_list)
 {
 	t_list	*next;
 	t_list	*cursor;
-<<<<<<< HEAD
-
-	cursor = env_list;
-	while (cursor)
-	{
-		next = cursor->next;
-		free(((t_env *)(cursor->content))->variable);
-		free(((t_env *)(cursor->content))->value);
-		free((cursor->content));
-		free(cursor);
-		cursor = next;
-=======
 
 	cursor = env_list;
 	while (cursor)
@@ -83,74 +64,8 @@ t_env	*create_new_env_node(char *env)
 		free(tab[0]);
 		free(tab[1]);
 		return (print_perror());
->>>>>>> lsoto-do
 	}
 	return (env_node);
-}
-
-t_list	*iter_env(char *env)
-{
-	t_list	*new;
-	t_env	*env_node;
-<<<<<<< HEAD
-
-	env_node = create_env_node(env);
-=======
-	char	**tab;
-
-	env_node = create_new_env_node(env);
->>>>>>> lsoto-do
-	if (!env_node)
-		return (NULL);
-	new = ft_lstnew(env_node);
-	if (!new)
-<<<<<<< HEAD
-		exit (1);
-=======
-	{
-		free_env_node(env_node);
-		return (print_perror());
-	}
->>>>>>> lsoto-do
-	return (new);
-}
-
-t_list	*fill_up_env_list(t_list *env_list, char **env)
-{
-	int		i;
-	t_list	*tmp;
-
-<<<<<<< HEAD
-	if (!env[0])
-		env_node = NULL;
-	else
-		env_node = create_env_node(env[0]);
-	env_list = ft_lstnew(env_node);
-	if (!env_list)
-		exit(1);
-	env_list->last = env_list;
-	if (!env[0])
-		return(env_list);
-=======
->>>>>>> lsoto-do
-	tmp = env_list;
-	i = 1;
-	while (env[i])
-	{
-		tmp->next = iter_env(env[i]);
-<<<<<<< HEAD
-=======
-		if (!tmp->next)
-			break ;
->>>>>>> lsoto-do
-		tmp = tmp->next;
-		env_list->last = tmp;
-		i++;
-	}
-	return (env_list);
-<<<<<<< HEAD
-}
-=======
 }
 
 t_list	*init_env(char **env)
@@ -159,12 +74,7 @@ t_list	*init_env(char **env)
 	t_env	*env_node;
 
 	if (!env[0])
-	{
-		env_list = ft_lstnew(NULL);
-		if (!env_list)
-			exit(EXIT_FAILURE);
-		return (env_list);
-	}
+		return (create_empty_list());
 	env_node = create_new_env_node(env[0]);
 	if (!env_node)
 		return (print_perror());
@@ -179,4 +89,3 @@ t_list	*init_env(char **env)
 		return(env_list);
 	return (fill_up_env_list(env_list, env));
 }
->>>>>>> lsoto-do
