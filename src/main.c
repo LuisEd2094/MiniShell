@@ -18,7 +18,9 @@ void	main_loop(t_minishell *mini)
 {
 	while (1)
 	{
+		rl_catch_signals = 0;
 		mini->input = readline(">> ");
+		rl_catch_signals = 1;
 		//printf("[%s]\n", mini->input);
 		if (!mini->input)
 		{
@@ -40,8 +42,10 @@ void	main_loop(t_minishell *mini)
 			if	(mini->input_code == 0)
 			{
 				mini->cmds = get_cmds_value(mini->input);
-				create_here_doc(mini);
-				start_execute_cmds(mini);
+				mini->exit_code = create_here_doc(mini);
+				printf("%i\n", mini->exit_code);
+				if (mini->exit_code == 0)
+					start_execute_cmds(mini);
 				prep_mini(mini);
 			}
 			else

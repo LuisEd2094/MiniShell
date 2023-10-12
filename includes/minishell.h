@@ -28,6 +28,9 @@ typedef struct s_minishell
 
 //mini auxs//
 
+int		received_signal;
+
+
 void	free_cmds(char ***cmds);
 void	exit_mini(t_minishell *mini);
 void	prep_mini(t_minishell *mini);
@@ -35,7 +38,7 @@ void	init_mini(t_minishell *mini, char **env);
 
 char	***get_cmds_value(char * input);
 int		execute_cmds(char **cmds, t_list *env_list, t_minishell *mini);
-void	create_here_doc(t_minishell *mini);
+int		create_here_doc(t_minishell *mini);
 void	delete_temp_files(t_minishell *mini);
 
 int		check_and_handle_redirections(char *redir, char *file, t_minishell *mini);

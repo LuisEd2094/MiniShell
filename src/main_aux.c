@@ -65,6 +65,7 @@ void	prep_mini(t_minishell *mini)
 	close_redirections(mini);
 	create_or_update_env_node(mini->env_list, exit_code, ft_itoa(mini->exit_code));
 	delete_temp_files(mini);
+	received_signal = 0;
 	if (errno)
 		errno = 0;
 }

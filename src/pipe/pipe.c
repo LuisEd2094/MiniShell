@@ -136,7 +136,6 @@ int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 	if (WIFEXITED(last_status))
 	{
 		return (WEXITSTATUS(last_status));
-
 	}
 	else if (WIFSIGNALED(last_status))
 		return (WTERMSIG(last_status) + 128);

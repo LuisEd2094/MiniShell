@@ -21,7 +21,7 @@ void    print_only_numeric_error(char *cmd)
 {
 
     write(STDERR_FILENO, "minishell: exit: ", ft_strlen("minishell: exit: "));
-    write(STDERR_FILENO, cmd[1], ft_strlen(cmd[1]));
+    write(STDERR_FILENO, cmd, ft_strlen(cmd));
     write(STDERR_FILENO, ": numeric argument required\n", ft_strlen(": numeric argument required\n"));
     exit (255);
 }
