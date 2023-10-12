@@ -23,7 +23,7 @@ char    *replace_exit_code(t_minishell *mini, char *cmd)
     char    *exit_code;
     char    *temp;
 
-    exit_code = ft_itoa(mini->exit_code);
+    exit_code = get_env_str_from_quote("?", mini->env_list);
     temp = cmd;
     cmd = ft_replace(cmd, exit_code, 0, 0);
     free(temp);
