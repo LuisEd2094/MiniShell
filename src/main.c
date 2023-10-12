@@ -18,16 +18,12 @@ void	main_loop(t_minishell *mini)
 {
 	while (1)
 	{
-		//rl_catch_signals = 0;
 		mini->input = readline(">> ");
-		//printf("[%s]\n", mini->input);
 		if (!mini->input)
 		{
 			ft_printf("exit\n");
 			exit_mini(mini);
 		}
-		if (!mini->input)
-			exit (0);
 		if (mini->input[0] != '\0')
 		{
 			work_history(UPDATE, mini->input);

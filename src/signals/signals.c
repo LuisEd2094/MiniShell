@@ -12,9 +12,6 @@
 
 #include <minishell.h>
 #include "../readline/readline.h"
-#include <signal.h>
-#include <sys/ioctl.h>
-
 
 static	void	action(int signal)
 {
@@ -24,13 +21,6 @@ static	void	action(int signal)
 		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 		rl_replace_line("", 0);
 		rl_on_new_line();
-	}
-	else if (signal == SIGQUIT)
-	{
-		ft_printf(" I am SIGTSTp");
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
 	}
 }
 
@@ -44,22 +34,15 @@ void	signal_action(void)
 	
 	sigaction(SIGINT, &act, NULL);
     signal(SIGQUIT, SIG_IGN);
-	//sigaction(SIGTSTP, &act, NULL);
 }
 
 void	child_action(int signal)
 {
 	if (signal == SIGINT)
 	{
+		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 		rl_on_new_line();
 		received_signal = SIGINT;
-	}
-	else if (signal == SIGQUIT)
-	{
-		ft_printf(" I am SIGTSTp");
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
 	}
 }
 

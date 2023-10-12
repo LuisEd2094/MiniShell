@@ -112,7 +112,6 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 		mini->last_pid  = pid;
 	}
 	signal(SIGINT, child_action);
-
 	return (0);
 }
 

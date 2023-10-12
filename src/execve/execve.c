@@ -61,7 +61,6 @@ char	*get_path_name(char **cmd, char **path_list)
 	{
 		if (path_list[i][ft_strlen(path_list[i])] != '/')
 			path_name = join_path(path_list[i], cmd[0]);
-
 		else
 			path_name = ft_strjoin(path_list[i], cmd[0]);
 		if (!path_name)
