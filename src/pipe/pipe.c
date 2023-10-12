@@ -90,27 +90,15 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 		//child_action_signal();
 		setup_pipe(mini->pipes, num_pipes, i);
 		check_quotes_and_env(mini->cmds[i], mini);
-/*
-
-		if (check_and_handle_redirections(commands[i], mini))
-		{
-			perror("Error en execute");
-			exit(EXIT_FAILURE);
-		}*/
 		status = execute_cmds(commands[i], mini->env_list, mini);
-
-		free_env_list(mini->env_list);
-		free_cmds(mini->cmds);
-		free(mini->input);
-		refinement(mini->pipes, num_pipes);
-		free_pipe(mini->pipes, num_pipes);
-		work_history(CLOSE, NULL);
+		//free_env_list(mini->env_list);
+		//free_cmds(mini->cmds);
+		//free(mini->input);
+		//work_history(CLOSE, NULL);
 		exit(status);
 	}
 	if (i == num_pipes)
-	{
 		mini->last_pid  = pid;
-	}
 	signal(SIGINT, child_action);
 	return (0);
 }
