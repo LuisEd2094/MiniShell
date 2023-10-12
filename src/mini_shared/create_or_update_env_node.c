@@ -32,7 +32,7 @@ void	*update_node(t_env *env_node, char *var, char *value, int plus)
 
 	if (plus)
 	{
-		new = (char *)malloc(sizeof(char) * size(env_node->value, value));
+		new = (char *)malloc(sizeof(char) * (ft_strlen(env_node->value) + ft_strlen(value) + 1));
 		if (!new)
 			return (print_perror);
 		ft_strlcpy(new, (env_node->value), ft_strlen((env_node->value)) + 1);
@@ -43,9 +43,12 @@ void	*update_node(t_env *env_node, char *var, char *value, int plus)
 	else
 	{
 		free(env_node->value);
-		env_node->value = value;
+		env_node->value = new = (char *)malloc(sizeof(value) *  ft_strlen(value) + 1);
+		if (!env_node->value)
+			return (print_error);
+		ft_strlcpy(env_node->value, value, ft_strlen(value));
 	}
-		free(var);
+	//free(env_node->variable);
 	if (value[0])
 		env_node->assigned = 1;
 	else

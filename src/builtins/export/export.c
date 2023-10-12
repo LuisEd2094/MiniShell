@@ -78,6 +78,8 @@ int	work_cmds_export(t_list *env_list, char **cmds)
 			error = errno;
 		else if(!create_or_update_env_node(env_list, tab[0], tab[1]))
 			error = errno;
+		free(tab[0]);
+		free(tab[1]);
 		if (tab)
 			free(tab);
 		i++;

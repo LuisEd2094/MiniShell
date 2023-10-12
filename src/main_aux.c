@@ -55,16 +55,15 @@ void	prep_mini(t_minishell *mini)
 {
 	char *exit_code;
 
-	exit_code = (char *)malloc(sizeof(char) * 2);
+	exit_code = ft_itoa(mini->exit_code);
 	if (!exit_code)
 		exit(EXIT_FAILURE);
-	exit_code[0] = '?';
-	exit_code[1] = '\0';
 	mini->here_doc_number = 0;
 	free_cmds(mini->cmds);
 	close_redirections(mini);
 	signal_action();
-	create_or_update_env_node(mini->env_list, exit_code, ft_itoa(mini->exit_code));
+	create_or_update_env_node(mini->env_list, "?", exit_code);
+	free(exit_code);
 	delete_temp_files(mini);
 	received_signal = 0;
 	if (errno)
@@ -75,16 +74,15 @@ void	init_mini(t_minishell *mini, char **env)
 {
 	char *exit_code;
 
+	exit_code = ft_itoa(0);
+	if (!exit_code)
+		exit(EXIT_FAILURE);
 	signal_action();
 	mini->exit_code = 0;
 	mini->input_code = 0;
 	mini->env_list = init_env(env);
-	exit_code = (char *)malloc(sizeof(char) * 2);
-	if (!exit_code)
-		exit(EXIT_FAILURE);
-	exit_code[0] = '?';
-	exit_code[1] = '\0';
-	create_or_update_env_node(mini->env_list, exit_code, ft_itoa(0));
+	create_or_update_env_node(mini->env_list, "?" , exit_code);
+	free(exit_code);
     mini->og_in = dup(STDIN_FILENO);
     mini->og_out = dup(STDOUT_FILENO);
 	if (!mini->env_list)

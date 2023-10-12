@@ -58,6 +58,8 @@ t_env	*create_new_env_node(char *env)
 	if (!tab)
 		return (print_perror());
 	env_node = create_env_node(tab[0], tab[1]);
+	free(tab[0]);
+	free(tab[1]);
 	free(tab);
 	if (!env_node)
 	{

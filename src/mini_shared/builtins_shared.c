@@ -36,8 +36,21 @@ t_env	*create_env_node(char *variable, char *value)
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
 		return (NULL);
-	new->variable = variable;
-	new->value = value;
+	new->variable = (char *)malloc(sizeof(char) * ft_strlen(variable) + 1);
+	if (!new->variable)
+	{
+		free(new);
+		return (NULL);
+	}
+	new->value = (char *)malloc(sizeof(char) * ft_strlen(value) + 1);
+	if (!new->value)
+	{
+		free(new->variable);
+		free(new);
+		return (NULL);
+	}
+	ft_strlcpy(new->variable, variable, ft_strlen(variable) + 1);
+	ft_strlcpy(new->value, value, ft_strlen(value) + 1);
 	if (value && value[0])
 		new->assigned = 1;
 	else
