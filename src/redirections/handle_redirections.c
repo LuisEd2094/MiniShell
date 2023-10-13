@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:06:05 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 13:09:29 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/13 13:58:56 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@
 
 int	open_file(char *file_name, int redir_type)
 {
-	int	fd=0;
+	int	fd;
 
+	fd = 0;
 	if (redir_type == INPUT_REDIRECT)
 	{
 		if (access(file_name, R_OK) != 0)

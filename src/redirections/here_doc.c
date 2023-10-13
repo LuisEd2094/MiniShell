@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:09:41 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 13:14:50 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/13 13:59:51 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	get_doc_name(t_minishell *mini)
 
 void	delete_temp_files(t_minishell *mini)
 {
-	int i;
+	int	i;
 
 	while (1)
 	{
@@ -65,9 +65,6 @@ static char	*check_input(char *input, t_minishell *mini)
 	return (input);
 }
 
-
-
-
 int	handle_here_document(t_minishell *mini)
 {
 	int		fd;
@@ -76,7 +73,7 @@ int	handle_here_document(t_minishell *mini)
 	get_doc_name(mini);
 	fd = open(mini->here_doc_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	while (!g_received_signal)
-	{		
+	{
 		input = readline(">");
 		if (!input)
 			break ;
@@ -96,7 +93,7 @@ int	handle_here_document(t_minishell *mini)
 int	create_here_doc(t_minishell *mini)
 {
 	int	i;
-	int j;
+	int	j;
 	int	status;
 
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:04:13 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 13:08:53 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/13 13:58:33 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,7 @@ int	read_here_document(t_minishell *mini)
 int	check_and_handle_redirections(char *redir, char *file, t_minishell *mini)
 {
 	if (redir[0] == '<' && redir[1] == '<')
-	{
 		read_here_document(mini);
-
-	}	
 	else
 		handle_redirection(redir, file);
 	return (0);
