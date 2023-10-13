@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 12:45:27 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 12:45:59 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/13 13:22:17 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	update_list(int *size, t_list **head, t_list *new)
 {
-	t_list *temp;
+	t_list	*temp;
 
 	if (*(size) == 0)
 	{

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_close_history.c                                    :+:      :+:    :+:   */
+/*   close_history.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/02 12:26:33 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 12:26:43 by lsoto-do         ###   ########.fr       */
+/*   Created: 2023/10/13 13:19:52 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/13 13:20:01 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,4 @@ void	ft_close_history(t_list *head, int size, int fd)
 	}
 	close(fd);
 	ft_lstclear(&(head), free);
-	// rl_clear_history();
 }

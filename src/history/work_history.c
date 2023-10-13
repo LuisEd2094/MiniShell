@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 12:46:04 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 12:47:03 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/13 13:22:27 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,6 @@ void	work_history(int order, char *input)
 	else if (order == UPDATE)
 		update_history(&(head), input, &(size));
 	else if (order == CLOSE)
-		ft_close_history(head, size, open(HISTORY_FILE, O_WRONLY | O_CREAT, 0644));
+		ft_close_history(head, size, open(HISTORY_FILE, O_WRONLY \
+					| O_CREAT, 0644));
 }

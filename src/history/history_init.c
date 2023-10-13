@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 12:26:55 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 12:49:07 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/13 13:22:01 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	read_from_file(int fd, t_list **head, int *size, char *line)
 			tmp = new;
 		}
 	}
-
 }
 
 t_list	*ft_read_history(int fd, t_list **head, int *size)
@@ -48,7 +47,7 @@ t_list	*ft_read_history(int fd, t_list **head, int *size)
 	if (!line)
 		return (NULL);
 	remove_new_line(line);
-	*(head) = ft_lstnew(line); // need to check line?
+	*(head) = ft_lstnew(line);
 	if (!*head)
 		exit(1);
 	read_from_file(fd, head, size, line);
