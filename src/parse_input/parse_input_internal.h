@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 13:45:50 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/13 13:52:44 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/13 14:36:09 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,13 @@ typedef struct s_input
 	bool	pipe;
 	bool	left_of_pipe;
 	bool	redirections;
+	int		return_val;
 }	t_input;
+
+void	check_quotes(t_input *checker, int i, char *input);
+void	checker_redirections(t_input *checker, int i, char *input);
+int		check_pipes(t_input *checker, char *input, int i);
+int		print_input_error(char *str, char *error, int code);
+int		check_vals(t_input *checker);
 
 #endif

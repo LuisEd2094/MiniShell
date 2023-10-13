@@ -1,0 +1,105 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_input_aux.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/13 14:32:20 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/13 14:35:57 by lsoto-do         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "parse_input_internal.h"
+
+void	check_quotes(t_input *checker, int i, char *input)
+{
+	if (!checker->quote && (input[i] == '\'' || input[i] == '"'))
+		checker->quote = input[i];
+	else if (checker->quote)
+	{
+		if (input[i] == checker->quote)
+			checker->quote = 0;
+	}
+}
+
+void	checker_redirections(t_input *checker, int i, char *input)
+{
+	if (input[checker->redir_pos + 1] && input[checker->redir_pos] == \
+			input[checker->redir_pos + 1] && \
+	((input[i] == '>' || input[i] == '<') && i != checker->redir_pos + 1))
+		checker->return_val = print_input_error(UNEXPECTED, &input[i], 258);
+	if (i == checker->redir_pos + 1 && (input[i] == '|' || \
+				(input[i] == '>' || input[i] == '<')))
+	{
+		if (checker->redir_token == '>' && input[i] == '<')
+			checker->return_val = print_input_error(UNEXPECTED, \
+					&input[i], 258);
+		return (-1);
+	}
+	else
+	{
+		if (input[i] == '>' || input[i] == '<')
+			checker->return_val = print_input_error(UNEXPECTED, &input[i], 258);
+	}
+	if (input[i] != '|')
+		checker->redirections = 0;
+	checker->return_val = 0;
+}
+
+int	check_pipes(t_input *checker, char *input, int i)
+{
+	if (!checker->pipe && input[i] == '|')
+	{
+		if (!checker->left_of_pipe)
+			checker->return_val = print_input_error(UNEXPECTED, &input[i], 258);
+		checker->pipe = 1;
+	}
+	else if (checker->pipe)
+	{
+		if (input[i] == '|')
+			checker->return_val = print_input_error(UNEXPECTED, &input[i], 258);
+		checker->pipe = 0;
+	}
+	checker->return_val = 0;
+}
+
+int	print_input_error(char *str, char *error, int code)
+{
+	print_error(str, code);
+	if (error)
+	{
+		if (error[1])
+		{
+			if (error[0] == '|' && error[1] == '|')
+				print_error("||", code);
+			else if (error[0] == '|')
+				print_error("|", code);
+			else if (error[0] == '>' && error[1] == '>')
+				print_error(">>", code);
+			else if (error[0] == '>')
+				print_error(">", code);
+			else if (error[0] == '<')
+			{
+				if (error[2] && error[1] == '<' && error[2] == '<' )
+					print_error("<<<", code);
+				else if (error[0] == '<' && error[1] == '<')
+					print_error("<<", code);
+			}
+		}
+		else
+			print_error(error, code);
+	}
+	return (print_error("\n", code));
+}
+
+int	check_vals(t_input *checker)
+{
+	if (checker->quote)
+		return (print_input_error(QUOTES, NULL, 1));
+	if (checker->pipe)
+		return (print_input_error(PIPES, NULL, 1));
+	if (checker->redirections)
+		return (print_input_error(UNEXPECTED, "'newline'", 258));
+	return (0);
+}

@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 13:37:14 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/13 13:45:40 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/13 14:34:29 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,46 +19,22 @@ void	init_checker(t_input *checker)
 	checker->pipe = 0;
 	checker->redirections = 0;
 	checker->redir_token = 0;
+	checker->return_val = 0;
 }
 
-int	print_input_error(char *str, char *error, int code)
+static void	check_redirections(t_input *checker, char *input, int i)
 {
-	print_error(str, code);
-	if (error)
-	{
-		if (error[1])
-		{
-			if (error[0] == '|' && error[1] == '|')
-				print_error("||", code);
-			else if (error[0] == '|')
-				print_error("|", code);
-			else if (error[0] == '>' && error[1] == '>')
-				print_error(">>", code);
-			else if (error[0] == '>')
-				print_error(">", code);
-			else if (error[0] == '<')
-			{
-				if (error[2] && error[1] == '<' && error[2] == '<' )
-					print_error("<<<", code);
-				else if (error[0] == '<' && error[1] == '<')
-					print_error("<<", code);
-			}
-		}
-		else
-			print_error(error, code);
-	}
-	return (print_error("\n", code));
+	checker->redirections = 1;
+	checker->redir_token = input[i];
+	checker->redir_pos = i;
 }
 
-int	check_vals(t_input *checker)
+static void	parse_2(t_input *checker, char *input, int i)
 {
-	if (checker->quote)
-		return (print_input_error(QUOTES, NULL, 1));
-	if (checker->pipe)
-		return (print_input_error(PIPES, NULL, 1));
-	if (checker->redirections)
-		return (print_input_error(UNEXPECTED, "'newline'", 258));
-	return (0);
+	if (!checker->left_of_pipe && input[i] != '|')
+		checker->left_of_pipe = 1;
+	check_quotes(checker, i, input);
+	check_pipes(checker, input, i);
 }
 
 int	parse_input(char *input)
@@ -71,53 +47,21 @@ int	parse_input(char *input)
 	while (input[++i])
 	{
 		if (ft_isspace(input[i]))
-			   continue;
-		if (!checker.redirections && !checker.quote && (input[i] == '>' || input[i] == '<'))
-		{
-			checker.redirections = 1;
-			checker.redir_token = input[i];
-			checker.redir_pos = i;
-		}
+			continue ;
+		if (!checker.redirections && !checker.quote && \
+		(input[i] == '>' || input[i] == '<'))
+			check_redirections(&checker, input, i);
 		else if (checker.redirections)
 		{
-			if (input[checker.redir_pos + 1] && input[checker.redir_pos] == input[checker.redir_pos + 1] && \
-			((input[i] == '>' || input[i] == '<') && i != checker.redir_pos + 1))
-				return(print_input_error(UNEXPECTED, &input[i], 258));
-			if (i == checker.redir_pos + 1 && (input[i] == '|' || (input[i] == '>' || input[i] == '<')))
-			{
-				if (checker.redir_token == '>' && input[i] == '<')
-					return(print_input_error(UNEXPECTED, &input[i], 258));
-				continue;
-			}
-			else
-			{
-				if (input[i] == '>' || input[i] == '<')
-					return(print_input_error(UNEXPECTED, &input[i], 258));
-			}
-			if (input[i] !=  '|')
-				checker.redirections = 0;
+			checker_redirections(&checker, i, input);
+			if (checker.return_val == -1)
+				continue ;
+			else if (checker.return_val == 258)
+				return (checker.return_val);
 		}
-		if (!checker.left_of_pipe && input[i] != '|')
-			checker.left_of_pipe = 1;
-		if (!checker.quote && (input [i] == '\'' || input[i] == '"'))
-			checker.quote = input[i];
-		else if (checker.quote)
-		{
-			if (input[i] == checker.quote)
-				checker.quote = 0;
-		}
-		if (!checker.pipe && input[i] == '|')
-		{
-			if (!checker.left_of_pipe)
-				return(print_input_error(UNEXPECTED, &input[i], 258));
-			checker.pipe = 1;
-		}
-		else if (checker.pipe)
-		{
-			if (input[i] == '|')
-				return(print_input_error(UNEXPECTED, &input[i], 258));
-			checker.pipe = 0;
-		}
+		parse_2(&checker, input, i);
+		if (checker.return_val == 258)
+			return (checker.return_val);
 	}
-	return check_vals(&checker);
+	return (check_vals(&checker));
 }
