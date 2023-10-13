@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:38:14 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 10:48:27 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/13 11:15:38 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	ft_print_env(char **cmds, t_list *env_list)
 	t_env	*node;
 
 	node = NULL;
+	printf("i am using my env\n");
 	if (cmds[1])
 		return (print_error("minishell : env: invalid usage\n", 1));
 	if (!env_list->content)
@@ -26,7 +27,7 @@ int	ft_print_env(char **cmds, t_list *env_list)
 	while (temp)
 	{
 		node = ((t_env *)(temp->content));
-		if (node->assigned &&  ft_strncmp("?", node->variable, 1) != 0)
+		if (node->assigned &&  ft_strcmp("?", node->variable) != 0)
 			ft_printf("%s=%s\n", node->variable, \
 		node->value);
 		temp = temp->next;

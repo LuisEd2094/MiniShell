@@ -14,7 +14,7 @@
 
 bool	compare_cmds(char *cmd, char *to_compare)
 {
-	if (ft_strncmp(cmd, to_compare, ft_strlen(to_compare) + 1) \
+	if (ft_strcmp(cmd, to_compare) \
 		== 0)
 		return (1);
 	return (0);

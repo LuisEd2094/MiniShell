@@ -39,7 +39,7 @@ typedef struct s_minishell
 
 # define TEMP_FILE_NAME "/tmp/mini_temp_"
 
-extern int	g_received_signal;
+int		g_received_signal;
 
 void	free_cmds(char ***cmds);
 int		exit_mini(t_minishell *mini);

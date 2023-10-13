@@ -32,9 +32,8 @@ t_tree_node	*insert_to_tbs(t_tree_node *root, t_list *value)
 	
 	if (!root)
 		return(create_node(value));
-	compare_result = ft_strncmp(((t_env *)(value->content))->variable, \
-	((t_env *)(root->data->content))->variable, \
-	ft_strlen(((t_env *)(root->data->content))->variable) + 1);
+	compare_result = ft_strcmp(((t_env *)(value->content))->variable, \
+	((t_env *)(root->data->content))->variable);
 	if (compare_result < 0)
 	{
 		root->left = insert_to_tbs(root->left, value);
@@ -59,7 +58,7 @@ void	print_in_order(t_tree_node *root)
 	{
 		print_in_order(root->left);
 		node = ((t_env *)(root->data->content));
-		if (ft_strncmp(node->variable, "?", 1) != 0 &&
+		if (ft_strcmp(node->variable, "?") != 0 &&
 		node->assigned)
 		ft_printf("declare -x %s=%c%s%c\n", \
 				node->variable, \

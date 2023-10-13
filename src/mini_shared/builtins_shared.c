@@ -22,7 +22,7 @@ t_list	*get_env_node(t_list *env_list, char *str)
 	temp = env_list;
 	while (temp && (t_env *)(temp->content))
 	{
-		if (ft_strncmp(((t_env *)(temp->content))->variable, str, ft_strlen(str) + 1) == 0)
+		if (ft_strcmp(((t_env *)(temp->content))->variable, str) == 0)
 			return (temp);
 		temp = temp->next;
 	}
