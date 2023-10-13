@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/02 10:35:26 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 10:37:30 by lsoto-do         ###   ########.fr       */
+/*   Created: 2023/10/13 13:23:44 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/13 13:24:19 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,16 @@ int	exit_mini(t_minishell *mini)
 	exit(0);
 }
 
-int close_redirections(t_minishell *mini)
+int	close_redirections(t_minishell *mini)
 {
-    dup2(mini->og_in, STDIN_FILENO);
-    dup2(mini->og_out, STDOUT_FILENO);
-    return (0);
+	dup2 (mini->og_in, STDIN_FILENO);
+	dup2 (mini->og_out, STDOUT_FILENO);
+	return (0);
 }
+
 void	prep_mini(t_minishell *mini)
 {
-	char *exit_code;
+	char	*exit_code;
 
 	exit_code = ft_itoa(mini->exit_code);
 	if (!exit_code)
@@ -72,7 +73,7 @@ void	prep_mini(t_minishell *mini)
 
 void	init_mini(t_minishell *mini, char **env)
 {
-	char *exit_code;
+	char	*exit_code;
 
 	exit_code = ft_itoa(0);
 	if (!exit_code)
@@ -81,10 +82,10 @@ void	init_mini(t_minishell *mini, char **env)
 	mini->exit_code = 0;
 	mini->input_code = 0;
 	mini->env_list = init_env(env);
-	create_or_update_env_node(mini->env_list, "?" , exit_code);
+	create_or_update_env_node(mini->env_list, "?", exit_code);
 	free(exit_code);
-    mini->og_in = dup(STDIN_FILENO);
-    mini->og_out = dup(STDOUT_FILENO);
+	mini->og_in = dup(STDIN_FILENO);
+	mini->og_out = dup(STDOUT_FILENO);
 	if (!mini->env_list)
 		exit(EXIT_FAILURE);
 	work_history(INIT, NULL);

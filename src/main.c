@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:22:44 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 10:35:08 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/13 13:23:09 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	main_loop(t_minishell *mini)
 		{
 			work_history(UPDATE, mini->input);
 			mini->input_code = parse_input(mini->input);
-			if	(mini->input_code == 0)
+			if (mini->input_code == 0)
 			{
 				mini->cmds = get_cmds_value(mini->input);
 				mini->exit_code = create_here_doc(mini);
@@ -42,7 +42,6 @@ void	main_loop(t_minishell *mini)
 		free(mini->input);
 	}
 }
-
 
 int	main(int argc, char **argv, char **env)
 {
