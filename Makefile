@@ -5,6 +5,7 @@ SRCS_PATH           = src/
 OBJS_PATH           = obj/
 HISTORY_PATH			= history/
 EXECVE_PATH			= execve/
+CC = cc
 
 #BUILT INS variables
 PIPE_PATH			= pipe/
