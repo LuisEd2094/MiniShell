@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 14:32:20 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/13 14:35:57 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/13 14:39:39 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	checker_redirections(t_input *checker, int i, char *input)
 		if (checker->redir_token == '>' && input[i] == '<')
 			checker->return_val = print_input_error(UNEXPECTED, \
 					&input[i], 258);
-		return (-1);
+		checker->return_val = -1;
 	}
 	else
 	{
@@ -47,7 +47,7 @@ void	checker_redirections(t_input *checker, int i, char *input)
 	checker->return_val = 0;
 }
 
-int	check_pipes(t_input *checker, char *input, int i)
+void	check_pipes(t_input *checker, char *input, int i)
 {
 	if (!checker->pipe && input[i] == '|')
 	{

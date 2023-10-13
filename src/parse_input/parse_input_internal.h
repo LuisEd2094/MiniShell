@@ -33,7 +33,7 @@ typedef struct s_input
 
 void	check_quotes(t_input *checker, int i, char *input);
 void	checker_redirections(t_input *checker, int i, char *input);
-int		check_pipes(t_input *checker, char *input, int i);
+void	check_pipes(t_input *checker, char *input, int i);
 int		print_input_error(char *str, char *error, int code);
 int		check_vals(t_input *checker);
 
