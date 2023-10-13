@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/02 13:15:12 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 13:15:58 by lsoto-do         ###   ########.fr       */
+/*   Created: 2023/10/13 14:00:49 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/13 14:03:21 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,12 @@ static	void	action(int signal)
 void	signal_action(void)
 {
 	struct sigaction	act;
-;
-	sigemptyset(&act.sa_mask); 
-	act.sa_handler  = action;
+
+	sigemptyset(&act.sa_mask);
+	act.sa_handler = action;
 	act.sa_flags = SA_RESTART;
-	
 	sigaction(SIGINT, &act, NULL);
-    signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	child_action(int signal)
@@ -50,13 +49,10 @@ void	child_action_signal(void)
 {
 	struct sigaction	act;
 
-	sigemptyset(&act.sa_mask); 
-	act.sa_handler  = child_action;
+	sigemptyset(&act.sa_mask);
+	act.sa_handler = child_action;
 	act.sa_flags = SA_RESTART;
 	g_received_signal = 0;
-	
 	sigaction(SIGINT, &act, NULL);
-    signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 }
-
-
