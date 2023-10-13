@@ -6,13 +6,12 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:49:00 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 10:49:01 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/13 12:08:09 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <builtins.h>
 #include <shared.h>
-
 
 static void	free_tbs(t_tree_node *root)
 {
@@ -27,7 +26,7 @@ static void	free_tbs(t_tree_node *root)
 	}
 }
 
-static void *work_on_print(t_list *env_list)
+static void	*work_on_print(t_list *env_list)
 {
 	t_list		*temp;
 	t_tree_node	*root;
@@ -40,7 +39,7 @@ static void *work_on_print(t_list *env_list)
 	{
 		root = insert_to_tbs(root, temp);
 		if (errno == ENOMEM)
-		{			
+		{
 			free_tbs(root);
 			return (print_perror());
 		}
@@ -51,7 +50,7 @@ static void *work_on_print(t_list *env_list)
 	return ((void *) 1);
 }
 
-static int print_error_export(char *cmd)
+static int	print_error_export(char *cmd)
 {
 	print_error("minishell: export: '", 1);
 	print_error(cmd, 1);
@@ -60,9 +59,9 @@ static int print_error_export(char *cmd)
 
 int	work_cmds_export(t_list *env_list, char **cmds)
 {
-	int i;
+	int		i;
 	char	**tab;
-	int error;
+	int		error;
 
 	i = 1;
 	error = 0;
@@ -72,17 +71,14 @@ int	work_cmds_export(t_list *env_list, char **cmds)
 		{
 			error = print_error_export(cmds[i]);
 			i++;
-			continue;
+			continue ;
 		}
 		tab = ft_single_split(cmds[i], '=');
 		if (!tab)
 			error = errno;
-		else if(!create_or_update_env_node(env_list, tab[0], tab[1]))
+		else if (!create_or_update_env_node(env_list, tab[0], tab[1]))
 			error = errno;
-		free(tab[0]);
-		free(tab[1]);
-		if (tab)
-			free(tab);
+		free_2d_array(tab);
 		i++;
 	}
 	return (error);

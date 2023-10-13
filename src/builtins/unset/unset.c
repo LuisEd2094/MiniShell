@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 10:49:15 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 10:50:39 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/13 12:08:26 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_list	*get_env_before(t_list *env_list, t_list *node_to_search)
 	return (NULL);
 }
 
-static	void remove_head(t_minishell *mini, t_list *to_remove)
+static	void	remove_head(t_minishell *mini, t_list *to_remove)
 {
 	if (!mini->env_list->next)
 	{
@@ -42,7 +42,7 @@ static	void remove_head(t_minishell *mini, t_list *to_remove)
 	}
 }
 
-static	void remove_node(char *str, t_minishell *mini)
+static	void	remove_node(char *str, t_minishell *mini)
 {
 	t_list	*to_remove;
 	t_list	*next;
@@ -68,8 +68,8 @@ static	void remove_node(char *str, t_minishell *mini)
 
 int	ft_unset(char **cmds, t_minishell *mini)
 {
-	int i;
-	int error;
+	int	i;
+	int	error;
 
 	i = 1;
 	error = 0;

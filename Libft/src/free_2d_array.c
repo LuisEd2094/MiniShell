@@ -10,7 +10,10 @@ void    *free_2d_array(char **array)
         free(array[i]);
         array[i++] = NULL;
     }
-    free(array);
-    array = NULL;
+    if (array)
+    {
+        free(array);
+        array = NULL;
+    }
     return  (NULL);
 }
