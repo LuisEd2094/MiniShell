@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 11:57:28 by lsoto-do          #+#    #+#             */
-/*   Updated: 2022/10/17 12:25:01 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/13 12:10:08 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,8 @@ int		ft_strcmp(const char *s1, const char *s2);
 int		check_if_int(char *str);
 int		ft_isspace(char chr);
 int		check_if_white_right_left(char *argv);
-void    remove_white_space(char *argv);
+void	remove_white_space(char *argv);
 int		get_sign(char *argv);
-
 void	*free_2d_array(char **array);
-
-
 
 #endif

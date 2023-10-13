@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_check_if_int.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/13 12:11:44 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/13 12:12:09 by lsoto-do         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 static int	check_last_digit(int sign, char *argv, int i)
 {
 	if (argv[i + 1] != '\0')
@@ -9,7 +21,7 @@ static int	check_last_digit(int sign, char *argv, int i)
 		return (0);
 	}
 	else
-	{	
+	{
 		if ('7' - argv[i] >= 0)
 			return (1);
 		return (0);
@@ -26,7 +38,7 @@ static int	ft_isdigit(int c)
 static int	get_sign(char *argv)
 {
 	int	sign;
-	int i;
+	int	i;
 
 	sign = 0;
 	i = 0;
