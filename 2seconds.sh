@@ -3,4 +3,5 @@
 for i in {1..2}; do
     sleep 1
     echo "$i second(s) passed"
+    exit 0
 done

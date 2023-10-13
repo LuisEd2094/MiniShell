@@ -60,12 +60,19 @@ void	print_in_order(t_tree_node *root)
 	{
 		print_in_order(root->left);
 		node = ((t_env *)(root->data->content));
-		if (ft_strncmp(node->variable, "?", 1) != 0)
+		if (ft_strncmp(node->variable, "?", 1) != 0 &&
+		node->assigned)
 		ft_printf("declare -x %s=%c%s%c\n", \
 				node->variable, \
 				'"', \
 				node->value, \
 				'"');
+		else if (!node->assigned)
+		{
+			ft_printf("declare -x %s\n", \
+				node->variable);
+
+		}
 		print_in_order(root->right);
 	}
 }

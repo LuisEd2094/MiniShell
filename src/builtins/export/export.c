@@ -48,6 +48,7 @@ static void *work_on_print(t_list *env_list)
 	}
 	print_in_order(root);
 	free_tbs(root);
+	return ((void *) 1);
 }
 
 static int print_error_export(char *cmd)
@@ -89,8 +90,6 @@ int	work_cmds_export(t_list *env_list, char **cmds)
 
 int	ft_export(t_list *env_list, char **cmds)
 {
-	char **tab;
-
 	if (!cmds[1])
 	{
 		if (!work_on_print(env_list))

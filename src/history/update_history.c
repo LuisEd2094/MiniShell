@@ -32,7 +32,6 @@ void	update_list(int *size, t_list **head, t_list *new)
 void	update_history(t_list **head, char *input, int *size)
 {
 	t_list	*new;
-	t_list	*temp;
 	char	*content;
 
 	if ((*head) && ft_strncmp((*head)->last->content, input, ft_strlen(input) + 1) == 0)

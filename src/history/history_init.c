@@ -40,8 +40,6 @@ void	read_from_file(int fd, t_list **head, int *size, char *line)
 
 t_list	*ft_read_history(int fd, t_list **head, int *size)
 {
-	t_list	*tmp;
-	t_list	*new;
 	char	*line;
 
 	if (fd <= 0)

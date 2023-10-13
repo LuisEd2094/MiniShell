@@ -46,5 +46,5 @@ int ft_exit(char **cmd, t_minishell *mini)
         print_only_numeric_error(cmd[1]);
     if (cmd[1])
         exit(ft_atoi(cmd[1]));
-    exit(EXIT_SUCCESS);
+    exit_mini(mini);
 }
