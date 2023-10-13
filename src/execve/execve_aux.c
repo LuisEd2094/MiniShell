@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 11:56:04 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 11:56:32 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/13 14:05:09 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ char	*reconstruct_env(char	*variable, char	*value)
 	return (new);
 }
 
-int get_env_list_size(t_list *env_list)
+int	get_env_list_size(t_list *env_list)
 {
-	int	i;
+	int		i;
 	t_list	*temp;
 
 	temp = env_list;
@@ -77,8 +77,8 @@ int	no_path_name_found(char *cmd)
 		if (errno == ENOENT)
 			perror(NULL);
 		else
-			write(STDERR_FILENO, "command not found\n", ft_strlen("command not found\n"));
+			write(STDERR_FILENO, "command not found\n", \
+					ft_strlen("command not found\n"));
 		return (127);
 	}
-	
 }

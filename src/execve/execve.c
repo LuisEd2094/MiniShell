@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 11:48:24 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 11:53:40 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/13 14:04:35 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	**conver_env_list(t_list *env_list)
 		new[i] = reconstruct_env(((t_env *)(temp->content))->variable, \
 				((t_env *)(temp->content))->value);
 		if (!new[i])
-			return(free_2d_array(new));
+			return (free_2d_array(new));
 		temp = temp->next;
 		i++;
 	}
@@ -81,11 +81,11 @@ int	try_execve(char **cmd, t_list *env_list)
 	char	**converted_env_list;
 	char	*path_name;
 
-
 	if (access(cmd[0], F_OK) != -1 && access(cmd[0], X_OK) != -1)
 		path_name = cmd[0];
 	else
-		path_name = get_path_name(cmd, get_paths(get_env_node(env_list, "PATH")));
+		path_name = get_path_name(cmd, \
+				get_paths(get_env_node(env_list, "PATH")));
 	if (path_name)
 	{
 		converted_env_list = conver_env_list(env_list);
