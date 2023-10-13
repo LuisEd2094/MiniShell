@@ -6,12 +6,12 @@
 /*   By: gmacias- <gmacias-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 08:30:42 by gmacias-          #+#    #+#             */
-/*   Updated: 2023/10/02 08:33:19 by gmacias-         ###   ########.fr       */
+/*   Updated: 2023/10/13 11:09:32 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MS_FUNCTIONS_H
-# define MS_FUNCTIONS_H
+#ifndef PIPE_H
+# define PIPE_H
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -26,6 +26,6 @@ void	free_pipe(int **pipes, int num_pipes);
 
 /*  ---  Pipe  ---  */
 int		ft_pipe(char ***commands, int num_pipes, t_minishell *mini);
-int     get_exit_code(int status);
+int		get_exit_code(int status);
 
 #endif

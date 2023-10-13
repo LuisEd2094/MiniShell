@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/13 11:06:03 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/13 11:08:25 by lsoto-do         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include <builtins.h>
@@ -26,18 +38,21 @@ typedef struct s_minishell
 }	t_minishell;
 
 # define TEMP_FILE_NAME "/tmp/mini_temp_"
-int		received_signal;
+
+extern int	g_received_signal;
 
 void	free_cmds(char ***cmds);
 int		exit_mini(t_minishell *mini);
 void	prep_mini(t_minishell *mini);
 void	init_mini(t_minishell *mini, char **env);
-char	***get_cmds_value(char * input);
-int		execute_cmds(char **cmds, t_list *env_list, t_minishell *mini);
+char	***get_cmds_value(char *input);
+int		execute_cmds(char **cmds, t_list *env_list, \
+		t_minishell *mini);
 int		create_here_doc(t_minishell *mini);
 void	delete_temp_files(t_minishell *mini);
 
-int		check_and_handle_redirections(char *redir, char *file, t_minishell *mini);
+int		check_and_handle_redirections(char *redir, char *file, \
+		t_minishell *mini);
 int		handle_redirection(char *redirection, char *file_name);
 
 int		close_redirections(t_minishell *mini);

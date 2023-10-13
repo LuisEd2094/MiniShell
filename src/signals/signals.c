@@ -17,7 +17,7 @@ static	void	action(int signal)
 {
 	if (signal == SIGINT)
 	{
-		received_signal = SIGINT;
+		g_received_signal = SIGINT;
 		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 		rl_replace_line("", 0);
 		rl_on_new_line();
@@ -42,7 +42,7 @@ void	child_action(int signal)
 	{
 		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 		rl_on_new_line();
-		received_signal = SIGINT;
+		g_received_signal = SIGINT;
 	}
 }
 
@@ -53,7 +53,7 @@ void	child_action_signal(void)
 	sigemptyset(&act.sa_mask); 
 	act.sa_handler  = child_action;
 	act.sa_flags = SA_RESTART;
-	received_signal = 0;
+	g_received_signal = 0;
 	
 	sigaction(SIGINT, &act, NULL);
     signal(SIGQUIT, SIG_IGN);

@@ -75,7 +75,7 @@ int	handle_here_document(t_minishell *mini)
 
 	get_doc_name(mini);
 	fd = open(mini->here_doc_name, O_RDWR | O_CREAT | O_TRUNC, 0644);
-	while (!received_signal)
+	while (!g_received_signal)
 	{		
 		input = readline(">");
 		if (!input)
@@ -88,8 +88,8 @@ int	handle_here_document(t_minishell *mini)
 		free(input);
 	}
 	close(fd);
-	if (received_signal)
-		return (received_signal);
+	if (g_received_signal)
+		return (g_received_signal);
 	return (0);
 }
 
