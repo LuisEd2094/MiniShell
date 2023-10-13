@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 12:55:10 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 12:56:50 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/13 13:35:31 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ char	*get_env_str_from_quote(char *cmd, t_list *env_list)
 	to_return = get_env_str(env_name, env_list);
 	return (to_return);
 }
-
 
 char	*replace_env(char *cmd, t_list *env_list, int j)
 {

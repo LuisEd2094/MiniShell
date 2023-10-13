@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/02 12:57:01 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 12:57:48 by lsoto-do         ###   ########.fr       */
+/*   Created: 2023/10/13 13:35:49 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/13 13:36:16 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,18 @@ int	get_white_space_size(char *input)
 	return (i);
 }
 
-int get_arg_size_skip_redirections(char *input)
+int	get_arg_size_skip_redirections(char *input)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (input[i] && is_ascii_no_space(input[i]) \
-    && !(input [i] == '\"' || input[i] == '\'' || \
+	i = 0;
+	while (input[i] && is_ascii_no_space(input[i]) \
+	&& !(input [i] == '\"' || input[i] == '\'' || \
 	input[i] == '>' || input[i] == '<'))
-        i++;
-    return (i);
+		i++;
+	return (i);
 }
+
 int	get_redirection_size(char *input)
 {
 	int		i;

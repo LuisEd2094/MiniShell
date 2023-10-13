@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/02 12:50:07 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 12:51:14 by lsoto-do         ###   ########.fr       */
+/*   Created: 2023/10/13 13:25:00 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/13 13:26:04 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_env	*create_env_node(char *variable, char *value)
 void	*add_new_env(t_list *env_list, char *variable, char *value)
 {
 	t_env	*env_node;
-	t_list *temp;
+	t_list	*temp;
 
 	env_node = create_env_node(variable, value);
 	if (!env_node)
@@ -71,7 +71,7 @@ void	*add_new_env(t_list *env_list, char *variable, char *value)
 	else
 	{
 		temp = env_list;
-		while(temp->next)
+		while (temp->next)
 			temp = temp->next;
 		temp->next = ft_lstnew(env_node);
 		if (!temp->next)
@@ -80,16 +80,16 @@ void	*add_new_env(t_list *env_list, char *variable, char *value)
 	return ((void *) 1);
 }
 
-bool has_equal(char *str)
+bool	has_equal(char *str)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while(str[i])
-    {
-        if (str[i] == '=')
-            return (1);
-        i++;
-    }
-    return (0);
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '=')
+			return (1);
+		i++;
+	}
+	return (0);
 }

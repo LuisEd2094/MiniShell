@@ -18,7 +18,6 @@ int	ft_print_env(char **cmds, t_list *env_list)
 	t_env	*node;
 
 	node = NULL;
-	printf("i am using my env\n");
 	if (cmds[1])
 		return (print_error("minishell : env: invalid usage\n", 1));
 	if (!env_list->content)
