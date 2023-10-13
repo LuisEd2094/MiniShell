@@ -44,7 +44,6 @@ void	checker_redirections(t_input *checker, int i, char *input)
 	}
 	if (input[i] != '|')
 		checker->redirections = 0;
-	checker->return_val = 0;
 }
 
 void	check_pipes(t_input *checker, char *input, int i)
@@ -61,7 +60,6 @@ void	check_pipes(t_input *checker, char *input, int i)
 			checker->return_val = print_input_error(UNEXPECTED, &input[i], 258);
 		checker->pipe = 0;
 	}
-	checker->return_val = 0;
 }
 
 int	print_input_error(char *str, char *error, int code)
