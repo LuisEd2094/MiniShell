@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_aux.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/13 11:56:28 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/13 11:57:03 by lsoto-do         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "env_internal.h"
 
 t_list	*iter_env(char *env)
@@ -36,12 +48,12 @@ t_list	*fill_up_env_list(t_list *env_list, char **env)
 	return (env_list);
 }
 
+t_list	*create_empty_list(void)
+{
+	t_list	*env_list;
 
-t_list  *create_empty_list(void)
-{	
-    t_list	*env_list;
-    env_list = ft_lstnew(NULL);
-    if (!env_list)
-        exit(EXIT_FAILURE);
-    return (env_list);
+	env_list = ft_lstnew(NULL);
+	if (!env_list)
+		exit (EXIT_FAILURE);
+	return (env_list);
 }
