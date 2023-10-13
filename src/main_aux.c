@@ -38,7 +38,7 @@ void	free_cmds(char ***cmds)
 	cmds = NULL;
 }
 
-void	exit_mini(t_minishell *mini)
+int	exit_mini(t_minishell *mini)
 {
 	work_history(CLOSE, NULL);
 	free_env_list(mini->env_list);

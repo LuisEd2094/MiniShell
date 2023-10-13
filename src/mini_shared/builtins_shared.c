@@ -74,7 +74,10 @@ void	*add_new_env(t_list *env_list, char *variable, char *value)
 		while(temp->next)
 			temp = temp->next;
 		temp->next = ft_lstnew(env_node);
+		if (!temp->next)
+			return (print_perror());
 	}
+	return ((void *) 1);
 }
 
 bool has_equal(char *str)

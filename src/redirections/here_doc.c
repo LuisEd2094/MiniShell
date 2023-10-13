@@ -72,8 +72,6 @@ int	handle_here_document(t_minishell *mini)
 {
 	int		fd;
 	char	*input;
-	int		status;
-	pid_t	pid;
 
 	get_doc_name(mini);
 	fd = open(mini->here_doc_name, O_RDWR | O_CREAT | O_TRUNC, 0644);

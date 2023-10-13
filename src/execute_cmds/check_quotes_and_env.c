@@ -33,9 +33,6 @@ char    *replace_exit_code(t_minishell *mini, char *cmd)
 
 char    *replace_values(char *cmd, t_minishell *mini)
 {
-    char    *exit_code;
-    char    *temp;
-
     if (cmd[0] == '"')
         cmd = get_double_quote(&cmd[1], mini->env_list);
     else if (cmd[0] == '\'')
@@ -70,10 +67,9 @@ void    ft_redirections(char **cmd, t_minishell *mini, int i)
     cmd[j - 2] = NULL;
 }
 
-int check_quotes_and_env(char **cmd, t_minishell *mini)
+void    check_quotes_and_env(char **cmd, t_minishell *mini)
 {
     int i;
-    int j;
 
     i = 0;
     while(cmd[i])

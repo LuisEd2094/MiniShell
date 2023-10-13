@@ -17,7 +17,7 @@ int is_only_num(char    *cmd)
 
 }
 
-void    print_only_numeric_error(char *cmd)
+int    print_only_numeric_error(char *cmd)
 {
 
     write(STDERR_FILENO, "minishell: exit: ", ft_strlen("minishell: exit: "));
@@ -38,7 +38,7 @@ int ft_exit(char **cmd, t_minishell *mini)
     if (len > 2)
     { 
         if (!is_only_num(cmd[1]))
-            print_only_numeric_error(cmd[1]);
+            return (print_only_numeric_error(cmd[1]));
         else
             return (print_error("minishell: exit: too many arguments\n", 1));
     }
@@ -46,5 +46,5 @@ int ft_exit(char **cmd, t_minishell *mini)
         print_only_numeric_error(cmd[1]);
     if (cmd[1])
         exit(ft_atoi(cmd[1]));
-    exit_mini(mini);
+    return (exit_mini(mini));
 }

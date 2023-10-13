@@ -20,7 +20,7 @@ static int check_plus(char *var)
 	else
 		return (0);
 }
-
+/*
 static int check_equal(char *var)
 {
 
@@ -28,20 +28,20 @@ static int check_equal(char *var)
 		return (1);
 	else
 		return (0);
-}
+}*/
 
 static int size(char *og_val, char *new_val)
 {
 	return (ft_strlen(og_val) + ft_strlen(new_val) + 1);
 }
 
-void	*update_node(t_env *env_node, char *var, char *value, int plus)
+void	*update_node(t_env *env_node, char *value, int plus)
 {
 	char *new;
 
 	if (plus)
 	{
-		new = (char *)malloc(sizeof(char) * (ft_strlen(env_node->value) + ft_strlen(value) + 1));
+		new = (char *)malloc(sizeof(char) *  size(env_node->value, value));
 		if (!new)
 			return (print_perror);
 		ft_strlcpy(new, (env_node->value), ft_strlen(env_node->value) + 1);
@@ -67,7 +67,6 @@ void	*create_or_update_env_node(t_list *env_list, char *var, char *value)
 {
 	t_list	*temp;
 	int		has_plus;
-	char	*new;
 
 	has_plus = check_plus(var);
 	if (has_plus)
@@ -79,6 +78,9 @@ void	*create_or_update_env_node(t_list *env_list, char *var, char *value)
 			return (NULL);
 	}
 	else
-		update_node(temp->content, var, value, has_plus);
+	{
+		if (!update_node(temp->content, value, has_plus))
+			return (NULL);
+	}
 	return ((void *) 1);
 }

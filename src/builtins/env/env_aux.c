@@ -4,7 +4,6 @@ t_list	*iter_env(char *env)
 {
 	t_list	*new;
 	t_env	*env_node;
-	char	**tab;
 
 	env_node = create_new_env_node(env);
 	if (!env_node)

@@ -25,6 +25,7 @@ t_list	*get_env_before(t_list *env_list, t_list *node_to_search)
 			return (temp);
 		temp = temp->next;
 	}
+	return (NULL);
 }
 
 static	void remove_head(t_minishell *mini, t_list *to_remove)
@@ -65,7 +66,7 @@ static	void remove_node(char *str, t_minishell *mini)
 	}
 }
 
-int	ft_unset(t_list *env_list, char **cmds, t_minishell *mini)
+int	ft_unset(char **cmds, t_minishell *mini)
 {
 	int i;
 	int error;

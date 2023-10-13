@@ -29,8 +29,7 @@ t_tree_node	* create_node(t_list *value)
 t_tree_node	*insert_to_tbs(t_tree_node *root, t_list *value)
 {
 	int			compare_result;
-	t_tree_node	*new_node;
-
+	
 	if (!root)
 		return(create_node(value));
 	compare_result = ft_strncmp(((t_env *)(value->content))->variable, \

@@ -29,7 +29,7 @@ typedef struct s_minishell
 int		received_signal;
 
 void	free_cmds(char ***cmds);
-void	exit_mini(t_minishell *mini);
+int		exit_mini(t_minishell *mini);
 void	prep_mini(t_minishell *mini);
 void	init_mini(t_minishell *mini, char **env);
 char	***get_cmds_value(char * input);
@@ -48,11 +48,11 @@ void	signal_action(void);
 
 void	start_execute_cmds(t_minishell *mini);
 
-int		ft_unset(t_list *env_list, char **cmds, t_minishell *mini);
+int		ft_unset(char **cmds, t_minishell *mini);
 int		ft_exit(char **cmd, t_minishell	*mini);
 
 int		parse_input(char *input);
 void	free_env_node(t_env *env_node);
 
-int		check_quotes_and_env(char **cmd, t_minishell *mini);
+void	check_quotes_and_env(char **cmd, t_minishell *mini);
 #endif
