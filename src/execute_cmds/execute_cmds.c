@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 11:46:01 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 11:47:25 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/13 13:01:16 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	execute_cmds(char **cmds, t_list *env_list, t_minishell *mini)
 	else if (compare_cmds(cmds[0], "exit"))
 		return (ft_exit(cmds, mini));
 	else
-		return(try_execve(cmds, env_list));
+		return (try_execve(cmds, env_list));
 }
 
 int	handle_single_builtin(t_minishell *mini)
