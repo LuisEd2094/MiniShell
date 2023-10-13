@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/02 12:10:41 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/02 12:14:12 by lsoto-do         ###   ########.fr       */
+/*   Created: 2023/10/13 13:04:00 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/13 13:04:33 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,30 +39,29 @@ int	get_argument_count(char *cmd)
 	return (arg_count);
 }
 
-
-int get_cmd_count(char **cmds)
+int	get_cmd_count(char **cmds)
 {
-    int cmd_count;
+	int	cmd_count;
 
-    cmd_count = 0;
-    while(cmds[cmd_count])
-        cmd_count++;
-    return (cmd_count);
+	cmd_count = 0;
+	while (cmds[cmd_count])
+		cmd_count++;
+	return (cmd_count);
 }
 
-int ft_commands_count(char *input)
+int	ft_commands_count(char *input)
 {
-    int i;
-    int count;
+	int	i;
+	int	count;
 
-    i = -1;
-    count = 1;
-    while(input[++i])
-    {
-        if (input[i] == '"' || input[i] == '\'')
-            i += get_quotes_size(&input[i]) - 1;
-        else if (input[i] == '|')
-            count++;
-    }
-    return (count);
+	i = -1;
+	count = 1;
+	while (input[++i])
+	{
+		if (input[i] == '"' || input[i] == '\'')
+			i += get_quotes_size(&input[i]) - 1;
+		else if (input[i] == '|')
+			count++;
+	}
+	return (count);
 }
