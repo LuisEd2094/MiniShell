@@ -42,7 +42,7 @@ static	void	remove_head(t_minishell *mini, t_list *to_remove)
 	}
 }
 
-static	void	remove_node(char *str, t_minishell *mini)
+void	remove_node(char *str, t_minishell *mini)
 {
 	t_list	*to_remove;
 	t_list	*next;

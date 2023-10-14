@@ -46,4 +46,5 @@ int			ft_echo(char **arguments);
 int			ft_print_env(char **cmds, t_list *env_list);
 int			ft_export(t_list *env_list, char **cmds);
 int			ft_pwd(char **arguments);
+
 #endif
