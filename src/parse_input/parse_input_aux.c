@@ -42,8 +42,10 @@ void	checker_redirections(t_input *checker, int i, char *input)
 		if (input[i] == '>' || input[i] == '<')
 			checker->return_val = print_input_error(UNEXPECTED, &input[i], 258);
 	}
-	if (input[i] != '|')
+	if (input[i] != '|' && !ft_isspace(input[i]))
 		checker->redirections = 0;
+    	else if (input[i] == '|')
+		checker->return_val = 258;
 }
 
 void	check_pipes(t_input *checker, char *input, int i)
