@@ -48,6 +48,8 @@ int	parse_input(char *input)
 	{
 		if (ft_isspace(input[i]))
 			continue ;
+		if (input[i] == ';')
+			return (1);
 		if (!checker.redirections && !checker.quote && \
 		(input[i] == '>' || input[i] == '<'))
 			check_redirections(&checker, input, i);

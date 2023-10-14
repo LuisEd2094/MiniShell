@@ -34,11 +34,11 @@ void	main_loop(t_minishell *mini)
 				mini->exit_code = create_here_doc(mini);
 				if (mini->exit_code == 0)
 					start_execute_cmds(mini);
-				prep_mini(mini);
 			}
 			else
 				mini->exit_code = mini->input_code;
 		}
+		prep_mini(mini);
 		free(mini->input);
 	}
 }
