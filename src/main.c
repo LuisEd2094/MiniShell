@@ -56,7 +56,5 @@ int	main(int argc, char **argv, char **env)
 		exit(1);
 	init_mini(&mini, env);
 	main_loop(&mini);
-	free_env_list(mini.env_list);
-	work_history(CLOSE, NULL);
-	exit(mini.exit_code);
+	exit_mini(&mini);
 }
