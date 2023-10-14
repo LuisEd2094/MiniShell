@@ -39,11 +39,9 @@ int	print_only_numeric_error(char *cmd)
 
 int	ft_exit(char **cmd, t_minishell *mini)
 {
-	int	i;
 	int	len;
 
 	len = 0;
-	i = 0;
 	while (cmd[len])
 		len++;
 	if (len > 2)

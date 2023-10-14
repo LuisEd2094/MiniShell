@@ -41,8 +41,9 @@ void	*update_node(t_env *env_node, char *value, int plus)
 	}
 	else
 	{
-		new = (char *)malloc(sizeof(char ) * ft_strlen(value) + 1);
-		if (!env_node->value)
+		free(env_node->value);
+		env_node->value = (char *)malloc(sizeof(char ) * ft_strlen(value) + 1);
+		if (!env_node)
 			return (print_error);
 		ft_strlcpy(env_node->value, value, ft_strlen(value) + 1);
 	}

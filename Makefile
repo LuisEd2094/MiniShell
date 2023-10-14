@@ -45,9 +45,9 @@ MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), \
 
 DEPS_PATH	= deps/
 LIB_PATH	= 	./Libft
-LIB			=	$(LIB_PATH)/libft.a ./readline/libreadline.a ./readline/libhistory.a
+LIB			=	$(LIB_PATH)/libft.a #./readline/libreadline.a ./readline/libhistory.a
 LDFLAGS		= 	-L$(LIB_PATH) -lft 
-#LINEFLAGS	=	-lreadline
+LINEFLAGS	=	-lreadline
 
 INCS        = -I./includes/ \
 -I./readline/ 
@@ -171,10 +171,11 @@ OBJS        =	$(addprefix $(OBJS_PATH), $(SRC:.c=.o))
 all: conf make_lib $(NAME)
 
 conf:
-	@if [ ! -f $(READL)config.status ]; then\
+##
+##	@if [ ! -f $(READL)config.status ]; then\
 		cd $(READL) && ./configure &> /dev/null; \
-		echo "✅ ==== $(G)$(ligth)Create config.status$(E)==== ✅"; \
-	fi
+#		echo "✅ ==== $(G)$(ligth)Create config.status$(E)==== ✅"; \
+##	fi
 
 $(OBJS_PATH)%.o: $(SRCS_PATH)%.c | $(MAKE_OBJ_DIR) $(DEPS_PATH)
 			@echo "$(CYAN)Compiling $< $(DEF_COLOR)"
