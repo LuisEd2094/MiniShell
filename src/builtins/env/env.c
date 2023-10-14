@@ -74,9 +74,6 @@ t_list	*init_env(char **env)
 	env_node = create_new_env_node(env[0]);
 	if (!env_node)
 		return (print_perror());
-	env_node = check_shlvl(env_node);
-	if (!env_node)
-		return (print_perror());
 	env_list = ft_lstnew(env_node);
 	if (!env_list)
 	{

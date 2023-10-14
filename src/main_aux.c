@@ -75,15 +75,18 @@ void	init_mini(t_minishell *mini, char **env)
 {
 	char	*exit_code;
 
-	exit_code = ft_itoa(0);
-	if (!exit_code)
-		exit(EXIT_FAILURE);
 	signal_action();
 	mini->exit_code = 0;
 	mini->input_code = 0;
 	mini->env_list = init_env(env);
+	exit_code = ft_itoa(0);
+	if (!exit_code)
+		exit(EXIT_FAILURE);
 	create_or_update_env_node(mini->env_list, "?", exit_code);
 	free(exit_code);
+	//remove_node("OLDPWD", mini);
+	if (!check_shlvl(mini->env_list))
+		exit(EXIT_FAILURE);
 	mini->og_in = dup(STDIN_FILENO);
 	mini->og_out = dup(STDOUT_FILENO);
 	if (!mini->env_list)

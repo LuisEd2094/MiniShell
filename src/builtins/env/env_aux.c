@@ -21,15 +21,21 @@ void	print_shlvl_high(char *lvl)
 	ft_strlen(") too high, resetting to 1\n"));
 }
 
-t_env	*check_shlvl(t_env	*node)
+t_env	*check_shlvl(t_list	*env_list)
 {
-	int		level;
+	t_list	*list_node;
+	t_env	*env_node;
 	char	*str;
+	int		level;
 
-	if (ft_strcmp(node->variable, "SHLVL") == 0)
+	list_node = get_env_node(env_list, "SHLVL");
+	if (!list_node)
+		return (create_or_update_env_node(env_list, "SHLVL", "0"));
+	else
 	{
-		level = ft_atoi(node->value);
-		free(node->value);
+		env_node = ((t_env	*)(list_node->content));
+		level = ft_atoi(env_node->value);
+		free(env_node->value);
 		level++;
 		if (level >= 1000)
 		{
@@ -38,11 +44,11 @@ t_env	*check_shlvl(t_env	*node)
 			free(str);
 			level = 0;
 		}
-		node->value = ft_itoa(level);
-		if (!node->value)
+		env_node->value = ft_itoa(level);
+		if (!env_node->value)
 			return (NULL);
 	}
-	return (node);
+	return ((void *) 1);
 }
 
 t_list	*iter_env(char *env)
@@ -51,9 +57,6 @@ t_list	*iter_env(char *env)
 	t_env	*env_node;
 
 	env_node = create_new_env_node(env);
-	if (!env_node)
-		return (NULL);
-	env_node = check_shlvl(env_node);
 	if (!env_node)
 		return (NULL);
 	new = ft_lstnew(env_node);
