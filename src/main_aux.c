@@ -24,18 +24,13 @@ void	free_cmds(char ***cmds)
 		while (cmds[i][j])
 		{
 			if (cmds[i][j])
-			{
 				free(cmds[i][j]);
-				cmds[i][j] = NULL;
-			}
 			j++;
 		}
 		free(cmds[i]);
-		cmds[i] = NULL;
 		i++;
 	}
 	free(cmds);
-	cmds = NULL;
 }
 
 int	exit_mini(t_minishell *mini)
@@ -60,7 +55,12 @@ void	prep_mini(t_minishell *mini)
 	if (!exit_code)
 		exit(EXIT_FAILURE);
 	mini->here_doc_number = 0;
-	free_cmds(mini->cmds);
+	if (mini->cmds)
+	{
+		free_cmds(mini->cmds);
+		mini->cmds = NULL;
+
+	}
 	close_redirections(mini);
 	signal_action();
 	create_or_update_env_node(mini->env_list, "?", exit_code);
@@ -93,4 +93,5 @@ void	init_mini(t_minishell *mini, char **env)
 		exit(EXIT_FAILURE);
 	work_history(INIT, NULL);
 	mini->here_doc_number = 0;
+	mini->cmds = NULL;
 }
