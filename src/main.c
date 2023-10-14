@@ -14,6 +14,23 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+void	execute_loop(t_minishell *mini)
+{
+	work_history(UPDATE, mini->input);
+	mini->input_code = parse_input(mini->input);
+	if (mini->input_code == 0)
+	{
+		mini->cmds = get_cmds_value(mini->input);
+		mini->code_here_doc = create_here_doc(mini);
+		if (mini->code_here_doc == 0)
+			start_execute_cmds(mini);
+		else
+			mini->exit_code = mini->code_here_doc;
+	}
+	else
+		mini->exit_code = mini->input_code;
+}
+
 void	main_loop(t_minishell *mini)
 {
 	while (1)
@@ -25,19 +42,7 @@ void	main_loop(t_minishell *mini)
 			exit_mini(mini);
 		}
 		if (mini->input[0] != '\0')
-		{
-			work_history(UPDATE, mini->input);
-			mini->input_code = parse_input(mini->input);
-			if (mini->input_code == 0)
-			{
-				mini->cmds = get_cmds_value(mini->input);
-				mini->exit_code = create_here_doc(mini);
-				if (mini->exit_code == 0)
-					start_execute_cmds(mini);
-			}
-			else
-				mini->exit_code = mini->input_code;
-		}
+			execute_loop(mini);
 		prep_mini(mini);
 		free(mini->input);
 	}
@@ -53,5 +58,5 @@ int	main(int argc, char **argv, char **env)
 	main_loop(&mini);
 	free_env_list(mini.env_list);
 	work_history(CLOSE, NULL);
-	exit (0);
+	exit(mini.exit_code);
 }

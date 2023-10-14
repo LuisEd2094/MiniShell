@@ -72,7 +72,7 @@ int	handle_single_builtin(t_minishell *mini)
 void	start_execute_cmds(t_minishell *mini)
 {
 	int	num_commands;
-
+	
 	num_commands = 0;
 	while (mini->cmds[num_commands])
 		num_commands++;
