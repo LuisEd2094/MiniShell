@@ -58,15 +58,9 @@ t_env	*create_new_env_node(char *env)
 	if (!tab)
 		return (print_perror());
 	env_node = create_env_node(tab[0], tab[1]);
-	free(tab[0]);
-	free(tab[1]);
-	free(tab);
+	free_2d_array(tab);
 	if (!env_node)
-	{
-		free(tab[0]);
-		free(tab[1]);
 		return (print_perror());
-	}
 	return (env_node);
 }
 
@@ -78,6 +72,9 @@ t_list	*init_env(char **env)
 	if (!env[0])
 		return (create_empty_list());
 	env_node = create_new_env_node(env[0]);
+	if (!env_node)
+		return (print_perror());
+	env_node = check_shlvl(env_node);
 	if (!env_node)
 		return (print_perror());
 	env_list = ft_lstnew(env_node);
