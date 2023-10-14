@@ -1,0 +1,8 @@
+export "hola= hola" valido
+export "hola = hola" invalido
+
+export 1hola invalido
+
+export hola1 valido
+
+export hola@hola
