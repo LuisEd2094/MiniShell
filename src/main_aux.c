@@ -37,7 +37,7 @@ int	exit_mini(t_minishell *mini)
 {
 	work_history(CLOSE, NULL);
 	free_env_list(mini->env_list);
-	exit(0);
+	exit(mini->exit_code);
 }
 
 int	close_redirections(t_minishell *mini)
@@ -59,7 +59,6 @@ void	prep_mini(t_minishell *mini)
 	{
 		free_cmds(mini->cmds);
 		mini->cmds = NULL;
-
 	}
 	close_redirections(mini);
 	signal_action();
@@ -76,6 +75,7 @@ void	init_mini(t_minishell *mini, char **env)
 	char	*exit_code;
 
 	signal_action();
+	mini->code_here_doc = 0;
 	mini->exit_code = 0;
 	mini->input_code = 0;
 	mini->env_list = init_env(env);

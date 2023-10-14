@@ -26,6 +26,7 @@ typedef struct s_minishell
 	t_list	*env_list;
 	char	***cmds;
 	char	*input;
+	int		code_here_doc;
 	int		**pipes;
 	int		og_in;
 	int		og_out;
