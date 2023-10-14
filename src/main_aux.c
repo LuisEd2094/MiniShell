@@ -37,6 +37,13 @@ int	exit_mini(t_minishell *mini)
 {
 	work_history(CLOSE, NULL);
 	free_env_list(mini->env_list);
+	if (mini->cmds)
+	{
+		free_cmds(mini->cmds);
+		mini->cmds = NULL;
+	}
+	if (mini->input)
+		free(mini->input);
 	exit(mini->exit_code);
 }
 
