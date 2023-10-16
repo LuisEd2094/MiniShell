@@ -34,25 +34,3 @@ void	signal_action(void)
 	sigaction(SIGINT, &act, NULL);
 	signal(SIGQUIT, SIG_IGN);
 }
-
-void	child_action(int signal)
-{
-	if (signal == SIGINT)
-	{
-		ioctl(STDIN_FILENO, TIOCSTI, "\n");
-		rl_on_new_line();
-		g_received_signal = SIGINT;
-	}
-}
-
-void	child_action_signal(void)
-{
-	struct sigaction	act;
-
-	sigemptyset(&act.sa_mask);
-	act.sa_handler = child_action;
-	act.sa_flags = SA_RESTART;
-	g_received_signal = 0;
-	sigaction(SIGINT, &act, NULL);
-	signal(SIGQUIT, SIG_IGN);
-}
