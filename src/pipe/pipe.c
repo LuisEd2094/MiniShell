@@ -62,6 +62,7 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 {
 	pid_t	pid;
 	int		status;
+	char	*last_cmd;
 
 	pid = fork();
 	if (pid == -1)
@@ -79,7 +80,12 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 		exit(status);
 	}
 	if (i == num_pipes)
+	{
 		mini->last_pid = pid;
+		last_cmd = malloc((ft_strlen("_") + 1) * sizeof(char));
+		ft_strlcpy(last_cmd, "_", ft_strlen("_"));
+		create_or_update_env_node(env_list, last_cmd, sol);
+	}
 	signal(SIGINT, child_action);
 	return (0);
 }
