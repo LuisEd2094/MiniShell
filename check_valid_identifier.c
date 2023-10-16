@@ -20,9 +20,21 @@ bool check_unset(char *arg)
     return (0);
 }
 
-int check_export(char *arg)
+bool check_export(char *arg)
 {
-    return 1;
+    int i;
+
+    i = -1;
+    while(arg[++i])
+    {
+        if (ft_isdigit(arg[i]) && i == 0)
+            return (1);
+        else if (!ft_isalnum(arg[i]) && arg[i] != '_' && arg[i] != '+')
+            return (1);
+        else if (arg[i] == '+' && arg[i + 1])
+            return (1);
+    }
+    return (0);
 }
 
 
