@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+ /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
@@ -77,6 +77,8 @@ int	ft_cd(char **arguments, t_list *env_list)
 	save_old_directory = getcwd(NULL, 0);
 	if (arguments[1] == NULL)
 		error = change_directory(home_directory);
+	else if (arguments[1][0] != '\0' && arguments[1][0] == '-' && arguments[1][1] == '\0')
+		error = change_directory(save_old_directory);
 	else if (arguments[1][0] == '~')
 	{
 		tilde_directory = expand_tilde(arguments[1]);
