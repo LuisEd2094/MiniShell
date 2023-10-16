@@ -33,6 +33,26 @@ int	send_old_directory(t_list *env_list, char *sol)
 	return (0);
 }
 
+int	change_old_directory(t_list *env_list)
+{
+	char	*old_dir;
+
+	old_dir = get_env_str("OLDPWD", env_list);
+	if (old_dir == NULL)
+	{
+		perror("No se pudo obtener el antiguo directorio");
+		return (-1);
+	}
+	if (chdir(old_dir) == -1)
+	{
+		free(old_dir);
+		perror("Error al cambiar al antiguo directorio");
+		return (-1);
+	}
+	free(old_dir);
+	return (0);
+}
+
 int	change_directory(char *directory)
 {
 	if (directory == NULL)
@@ -78,7 +98,7 @@ int	ft_cd(char **arguments, t_list *env_list)
 	if (arguments[1] == NULL)
 		error = change_directory(home_directory);
 	else if (arguments[1][0] != '\0' && arguments[1][0] == '-' && arguments[1][1] == '\0')
-		error = change_directory(save_old_directory);
+		error = change_old_directory(env_list);
 	else if (arguments[1][0] == '~')
 	{
 		tilde_directory = expand_tilde(arguments[1]);
