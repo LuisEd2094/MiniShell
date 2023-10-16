@@ -84,7 +84,7 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 		mini->last_pid = pid;
 		last_cmd = malloc((ft_strlen("_") + 1) * sizeof(char));
 		ft_strlcpy(last_cmd, "_", ft_strlen("_"));
-		create_or_update_env_node(env_list, last_cmd, sol);
+		create_or_update_env_node(env_list, last_cmd, commands[i]);
 	}
 	signal(SIGINT, child_action);
 	return (0);
