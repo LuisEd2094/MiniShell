@@ -78,9 +78,10 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 		status = execute_cmds(commands[i], mini->env_list, mini);
 		exit(status);
 	}
+	else
+		signal(SIGINT, SIG_IGN);
 	if (i == num_pipes)
 		mini->last_pid = pid;
-	signal(SIGINT, child_action);
 	return (0);
 }
 
