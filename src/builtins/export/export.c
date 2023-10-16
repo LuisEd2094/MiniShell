@@ -67,12 +67,6 @@ int	work_cmds_export(t_list *env_list, char **cmds)
 	error = 0;
 	while (cmds[i])
 	{
-		if (cmds[i][0] == '=' || cmds[i][0] == '+')
-		{
-			error = print_error_export(cmds[i]);
-			i++;
-			continue ;
-		}
 		tab = ft_single_split(cmds[i], '=');
 		if (!tab)
 			error = errno;
