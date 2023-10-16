@@ -76,6 +76,8 @@ int	work_cmds_export(t_list *env_list, char **cmds)
 		tab = ft_single_split(cmds[i], '=');
 		if (!tab)
 			error = errno;
+		if (check_valid_identifier(tab[0], EXPORT) != 0)
+			error = print_invalid_identifier("export:'", cmds[i]);
 		else if (!create_or_update_env_node(env_list, tab[0], tab[1]))
 			error = errno;
 		free_2d_array(tab);

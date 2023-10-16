@@ -75,12 +75,8 @@ int	ft_unset(char **cmds, t_minishell *mini)
 	error = 0;
 	while (cmds[i])
 	{
-		if (has_equal(cmds[i]))
-		{
-			error = print_error("minishell: unset: '", 1);
-			error = print_error(cmds[i], 1);
-			error = print_error("': not a valid identifier\n", 1);
-		}
+		if (check_valid_identifier(cmds[i], UNSET) != 0)
+			error = print_invalid_identifier("unset:'", cmds[i]);
 		else
 			remove_node(cmds[i], mini);
 		i++;
