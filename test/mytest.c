@@ -15,133 +15,49 @@ void tearDown(void) {
 }
 
 int    parse_input(char *input);
+bool     check_unset(char *arg);
 
-void check_basic_input(void)
+
+void    check_unset_test(void)
 {
-    TEST_ASSERT_EQUAL(0, parse_input("Hola\n"));
-    TEST_ASSERT_EQUAL(0, parse_input("asdsdaasdajhdagjhdaghjsghajdghdaghadsghjadghjadshjgadsghjdaghjghjasdjhasjdh ajhgdasjhg a sdjhg dasjhd sahjgd jahgsdjg asdjgh ajhdga jhga jhg dajsgd ajg dashjg asjhd ahj\n"));
-    TEST_ASSERT_EQUAL(0, parse_input("[[AS[D[AD[DAS[D[AD[A[DAS[DA[SD[AS[D]]]]]]]]]]]]]\n"));
-    TEST_ASSERT_EQUAL(0, parse_input("adadadasdasdsadasdas\n"));
-}
+    char *str;
 
-void check_quotestest(void)
-{
-    TEST_ASSERT_EQUAL(0, parse_input("\"Hola\""));
-    TEST_ASSERT_EQUAL(0, parse_input("\'Hola \' \' \'"));
-    TEST_ASSERT_EQUAL(0, parse_input("\'\'\'\'"));
-    TEST_ASSERT_EQUAL(0, parse_input("\"Hola \" \" \""));
-    TEST_ASSERT_EQUAL(0, parse_input("\"\"\"\""));
-    TEST_ASSERT_EQUAL(0, parse_input("\'Hola\'"));
+    str = "hola";
+    TEST_ASSERT_EQUAL(0, check_unset(str));
+    str = "h1ola";
+    TEST_ASSERT_EQUAL(0, check_unset(str));
+    str = "hol1a";
+    TEST_ASSERT_EQUAL(0, check_unset(str));
+    str = "hol_a";
+    TEST_ASSERT_EQUAL(0, check_unset(str));
+    str = "hola";
+    TEST_ASSERT_EQUAL(0, check_unset(str));
+    str = "h1ol_a";
+    TEST_ASSERT_EQUAL(0, check_unset(str));
+    str = "_hola";
+    TEST_ASSERT_EQUAL(0, check_unset(str));
 
-
-    TEST_ASSERT_EQUAL(1, parse_input("\"Hola"));
-    TEST_ASSERT_EQUAL(1, parse_input("\"Hola \" \" "));
-    TEST_ASSERT_EQUAL(1, parse_input("\'Hola"));
-    TEST_ASSERT_EQUAL(1, parse_input("\'Hola \' \' "));
-
-}
-
-void check_pipestest(void)
-{
-    
-    TEST_ASSERT_EQUAL(0, parse_input("hola | hola"));
-    TEST_ASSERT_EQUAL(0, parse_input("hola | hola| hola"));
-
-    TEST_ASSERT_EQUAL(1, parse_input("hola | "));
-    TEST_ASSERT_EQUAL(258, parse_input(" | hola"));
-    TEST_ASSERT_EQUAL(1, parse_input("hola | hola| "));
-    TEST_ASSERT_EQUAL(258, parse_input("hola | | hola"));
-    TEST_ASSERT_EQUAL(258, parse_input("hola | |  "));
-}
-
-void check_redirectionstest(void)
-{
-    TEST_ASSERT_EQUAL(0, parse_input("hola > hola"));
-    TEST_ASSERT_EQUAL(0, parse_input("hola >hola"));
-    TEST_ASSERT_EQUAL(0, parse_input("hola >>hola"));
-    TEST_ASSERT_EQUAL(0, parse_input("hola>hola"));
-    TEST_ASSERT_EQUAL(0, parse_input("hola>>hola"));
-
-
-    TEST_ASSERT_EQUAL(0, parse_input("hola <hola"));
-    TEST_ASSERT_EQUAL(0, parse_input("hola <<hola"));
-    TEST_ASSERT_EQUAL(0, parse_input("hola<hola"));
-    TEST_ASSERT_EQUAL(0, parse_input("hola<<hola"));
-    TEST_ASSERT_EQUAL(0, parse_input("hola<>hola"));
-
-    TEST_ASSERT_EQUAL(0, parse_input("ls >$out"));
-    TEST_ASSERT_EQUAL(0, parse_input("ls >$ out"));
-
-
-
-
-    TEST_ASSERT_EQUAL(0, parse_input("hola > hola > hola > hola"));
-    TEST_ASSERT_EQUAL(0, parse_input("hola > hola > hola < hoolaa   a"));
-    TEST_ASSERT_EQUAL(0, parse_input("ls | >#outfile")); 
-    TEST_ASSERT_EQUAL(0, parse_input("ls >$out")); //bash: $out: ambiguous redirect
-
-
-    TEST_ASSERT_EQUAL(258, parse_input("cat hola.test > |"));
-
-    TEST_ASSERT_EQUAL(258, parse_input("cat hola.test >"));
-    TEST_ASSERT_EQUAL(258, parse_input("hola > "));
-    TEST_ASSERT_EQUAL(258, parse_input("hola <<>hola "));
-    TEST_ASSERT_EQUAL(258, parse_input("hola >><hola "));
-        TEST_ASSERT_EQUAL(258, parse_input("hola >|infile"));
-
-
-    TEST_ASSERT_EQUAL(258, parse_input("hola < >hola "));
-    TEST_ASSERT_EQUAL(258, parse_input("hola ><hola "));
-
-//hola >>$hola if env not set it gives an error too
-
-}
-
-
-
-void check_all(void)
-{
-    TEST_ASSERT_EQUAL(0, parse_input("hola > \"hola\""));
-    TEST_ASSERT_EQUAL(0, parse_input("hola > \"\""));
-    TEST_ASSERT_EQUAL(0, parse_input("hola \" hola > hola \""));
-    TEST_ASSERT_EQUAL(0, parse_input("hola \"> hola \""));
-    TEST_ASSERT_EQUAL(0, parse_input("hola \" hola >\""));
-
-    TEST_ASSERT_EQUAL(0, parse_input("hola > \"hola\" | cat"));
-    TEST_ASSERT_EQUAL(0, parse_input("hola > \"hola\" | cat < infile"));
-    TEST_ASSERT_EQUAL(0, parse_input("hola > \"hola\" | cat < infile | ls"));
-    TEST_ASSERT_EQUAL(0, parse_input("hola > \"hola\" | cat < infile | ls >> outfile"));
-    TEST_ASSERT_EQUAL(0, parse_input("ls | > outfile"));
-    TEST_ASSERT_EQUAL(0, parse_input("ls | > asda #outfile"));
-    TEST_ASSERT_EQUAL(0, parse_input("ls | > #outfile")); //newline
-    TEST_ASSERT_EQUAL(0, parse_input("ls|>outfile")); //newline
-    TEST_ASSERT_EQUAL(0, parse_input("ls|cat -e")); //newline
-
-    
-
-
-
-    TEST_ASSERT_EQUAL(258, parse_input("cat hola.test > | echo hola > p")); //newline
-
-    TEST_ASSERT_EQUAL(1, parse_input("hola > \"hola"));
-    TEST_ASSERT_EQUAL(1, parse_input("hola > \""));
-    TEST_ASSERT_EQUAL(258, parse_input("hola > "));
-    TEST_ASSERT_EQUAL(258, parse_input("ls>|cat")); //newline
-    TEST_ASSERT_EQUAL(258, parse_input("ls>|cat -e")); //newline
-
-
-
+    str = "1_hola";
+    TEST_ASSERT_EQUAL(1, check_unset(str));
+    str = "?hola";
+    TEST_ASSERT_EQUAL(1, check_unset(str));
+    str = "$hola";
+    TEST_ASSERT_EQUAL(1, check_unset(str));
+    str = "_h?la";
+    TEST_ASSERT_EQUAL(1, check_unset(str));
+    str = "/hola";
+    TEST_ASSERT_EQUAL(1, check_unset(str));
+    str = "+hola";
+    TEST_ASSERT_EQUAL(1, check_unset(str));
+    str = "hola+";
+    TEST_ASSERT_EQUAL(1, check_unset(str));
 }
 
 int main(int argc, char **argv, char **env)
 {  
     UNITY_BEGIN();
     
-    //RUN_TEST(check_basic_input);
-    //RUN_TEST(check_quotestest);
-    //RUN_TEST(check_pipestest);
-    RUN_TEST(check_redirectionstest);
-    RUN_TEST(check_all);
+    RUN_TEST(check_unset_test);
 
 
     return UNITY_END();
