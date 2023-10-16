@@ -56,7 +56,6 @@ static char	*check_input(char *input, t_minishell *mini)
 	{
 		if (input[i] == '$' && input[i + 1] && input[i + 1] != '$' && ft_isprint(input[i + 1])  && !ft_isspace(input[i + 1]))
 		{
-			printf("I am about to replace");
 			env = get_env_str(get_next_word(&input[i + 1]), mini->env_list);
 			input = ft_replace(input, env, i, 1);
 			free(env);
