@@ -62,21 +62,9 @@ char	*replace_values(char *cmd, t_minishell *mini)
 
 void	ft_redirections(char **cmd, t_minishell *mini, int i)
 {
-	int	j;
-
 	cmd[i + 1] = replace_values(cmd[i + 1], mini);
 	check_and_handle_redirections(cmd[i], cmd[i + 1], mini);
-	free(cmd[i]);
-	free(cmd[i + 1]);
-	j = i + 2;
-	while (cmd[j])
-	{
-		cmd[i] = cmd[j];
-		i++;
-		j++;
-	}
-	cmd[j - 1] = NULL;
-	cmd[j - 2] = NULL;
+	remove_cmds_from_cmds(cmd, i, 2);
 }
 
 void	check_quotes_and_env(char **cmd, t_minishell *mini)

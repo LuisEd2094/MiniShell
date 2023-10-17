@@ -1,6 +1,5 @@
 #include <stdlib.h>
 
-
 void	remove_cmds_from_cmds(char **cmds, int i, int next_valid)
 {
 	int		j;

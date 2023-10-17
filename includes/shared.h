@@ -35,6 +35,8 @@ char	*replace_env(char *cmd, t_list *env_list, int j);
 char	*get_env_str_from_quote(char *cmd, t_list *env_list);
 int     check_valid_identifier(char *arg, int order);
 int     print_invalid_identifier(char *cmd, char* arg);
+void    remove_cmds_from_cmds(char **cmds, int i, int next_valid);
+void    prep_unset_export_commands(char **cmds);
 
 
 #endif

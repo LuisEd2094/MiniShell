@@ -73,6 +73,7 @@ int	ft_unset(char **cmds, t_minishell *mini)
 
 	i = 1;
 	error = 0;
+	prep_unset_export_commands(cmds);
 	while (cmds[i])
 	{
 		if (check_valid_identifier(cmds[i], UNSET) != 0)
