@@ -65,7 +65,11 @@ int	execute_cmds(char **cmds, t_list *env_list, t_minishell *mini)
 
 int	handle_single_builtin(t_minishell *mini)
 {
-	check_quotes_and_env(mini->cmds[0], mini);
+	int status;
+	
+	status = check_quotes_and_env(mini->cmds[0], mini);
+	if (status)
+		return (status);
 	return (execute_cmds(mini->cmds[0], mini->env_list, mini));
 }
 
