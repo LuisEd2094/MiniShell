@@ -6,6 +6,8 @@ static bool check_unset(char *arg)
 {
     int i;
 
+    if (!arg || !arg[0])
+        return (1);
     i = -1;
     while(arg[++i])
     {
@@ -21,6 +23,8 @@ static bool check_export(char *arg)
 {
     int i;
 
+    if (!arg || !arg[0])
+        return (1);
     i = -1;
     while(arg[++i])
     {

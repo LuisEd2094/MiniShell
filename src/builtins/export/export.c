@@ -50,6 +50,22 @@ static void	*work_on_print(t_list *env_list)
 	return ((void *) 1);
 }
 
+void	verify_if_equal(t_list *env_list, char *variable, char *cmd)
+{
+	t_list	*temp;
+	t_env	*env_node;
+
+	if (has_equal(cmd))
+	{
+		temp = get_env_node(env_list, variable);
+		if (temp)
+		{
+			env_node = temp->content;
+			env_node->assigned = 1;
+		}
+	}
+}
+
 int	work_cmds_export(t_list *env_list, char **cmds)
 {
 	int		i;
@@ -67,6 +83,8 @@ int	work_cmds_export(t_list *env_list, char **cmds)
 			error = print_invalid_identifier("export:'", cmds[i]);
 		else if (!create_or_update_env_node(env_list, tab[0], tab[1]))
 			error = errno;
+		if (tab[0] && tab[0][0])
+			verify_if_equal(env_list, tab[0], cmds[i]);
 		free_2d_array(tab);
 		i++;
 	}
