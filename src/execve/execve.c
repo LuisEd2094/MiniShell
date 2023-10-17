@@ -81,7 +81,7 @@ int	try_execve(char **cmd, t_list *env_list)
 	char	**converted_env_list;
 	char	*path_name;
 
-	if(!cmd || cmd[0] ||!cmd[0][0])
+	if(!cmd || !cmd[0] ||!cmd[0][0])
 		return (0);
 	if (access(cmd[0], F_OK) != -1 && access(cmd[0], X_OK) != -1)
 		path_name = cmd[0];

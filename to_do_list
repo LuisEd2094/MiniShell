@@ -2,6 +2,9 @@ Input
 
 cat hola.test > | echo hola > p
 
+"ls >$out" //bash: $out: ambiguous redirect
+
+
 Export / unset
 
 unset 1 //bash: unset: `1': not a valid identifier
