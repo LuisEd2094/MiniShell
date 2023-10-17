@@ -30,8 +30,9 @@ int	send_old_directory(t_list *env_list, char *sol)
 		perror("Error OLDPWD: Fallo en malloc");
 		return (3);
 	}
-	ft_strlcpy(old_directory, "OLDPWD", ft_strlen("OLDPWD"));
+	ft_strlcpy(old_directory, "OLDPWD", ft_strlen("OLDPWD") + 1);
 	create_or_update_env_node(env_list, old_directory, sol);
+	free(old_directory);
 	return (0);
 }
 
@@ -46,7 +47,7 @@ int	change_old_directory(t_list *env_list)
 		perror("Error OLDPWD: Fallo en malloc");
 		return (3);
 	}
-	ft_strlcpy(word_OD, "OLDPWD", ft_strlen("OLDPWD"));
+	ft_strlcpy(word_OD, "OLDPWD", ft_strlen("OLDPWD") + 1);
 	old_dir = get_env_str(word_OD, env_list);
 	if (!old_dir)//malloc fallo
 	{
@@ -124,5 +125,6 @@ int	ft_cd(char **arguments, t_list *env_list)
 		error = change_directory(arguments[1]);
 	if (error == 0)
 		error = send_old_directory(env_list, save_old_directory);
+	free(save_old_directory);
 	return (error);
 }
