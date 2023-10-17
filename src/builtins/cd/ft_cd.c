@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <minishell.h>
 #include <builtins.h>
+#include <shared.h>
 
 int	send_old_directory(t_list *env_list, char *sol)
 {
@@ -36,9 +38,17 @@ int	send_old_directory(t_list *env_list, char *sol)
 int	change_old_directory(t_list *env_list)
 {
 	char	*old_dir;
+	char	*word_OD;
 
-	old_dir = get_env_str("OLDPWD", env_list);
-	if (old_dir == NULL)
+	word_OD = malloc((ft_strlen("OLDPWD") + 1) * sizeof(char));	
+	if (word_OD == NULL)
+	{
+		perror("Error OLDPWD: Fallo en malloc");
+		return (3);
+	}
+	ft_strlcpy(word_OD, "OLDPWD", ft_strlen("OLDPWD"));
+	old_dir = get_env_str(word_OD, env_list);
+	if (!old_dir[0])
 	{
 		perror("No se pudo obtener el antiguo directorio");
 		return (-1);
@@ -97,7 +107,7 @@ int	ft_cd(char **arguments, t_list *env_list)
 	save_old_directory = getcwd(NULL, 0);
 	if (arguments[1] == NULL)
 		error = change_directory(home_directory);
-	else if (arguments[1][0] != '\0' && arguments[1][0] == '-' && arguments[1][1] == '\0')
+	else if (arguments[1][0] == '-' && arguments[1][1] == '\0')
 		error = change_old_directory(env_list);
 	else if (arguments[1][0] == '~')
 	{
