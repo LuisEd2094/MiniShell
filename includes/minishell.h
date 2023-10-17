@@ -20,6 +20,9 @@
 # include <shared.h>
 # include <signal.h>
 # include <sys/ioctl.h>
+# include <termios.h>
+# include <termios.h>
+
 
 typedef struct s_minishell
 {
@@ -36,6 +39,8 @@ typedef struct s_minishell
 	char	here_doc_name[200];
 	char	*here_doc_end;
 	pid_t	last_pid;
+	struct termios	old;
+	struct termios	new;
 }	t_minishell;
 
 # define TEMP_FILE_NAME "/tmp/mini_temp_"
@@ -73,6 +78,12 @@ void	free_env_node(t_env *env_node);
 void	check_quotes_and_env(char **cmd, t_minishell *mini);
 t_env	*check_shlvl(t_list	*env_list);
 void	remove_node(char *str, t_minishell *mini);
+
+
+void	reset_terminal(t_minishell *mini);
+void	prep_terminal(t_minishell *mini);
+
+
 
 
 #endif

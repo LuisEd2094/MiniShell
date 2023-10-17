@@ -33,8 +33,13 @@ void	free_cmds(char ***cmds)
 	free(cmds);
 }
 
+void	reset_terminal(t_minishell *mini)
+{
+	tcsetattr(STDIN_FILENO, TCSANOW, &(mini->old));
+}
 int	exit_mini(t_minishell *mini)
 {
+	reset_terminal(mini);
 	work_history(CLOSE, NULL);
 	free_env_list(mini->env_list);
 	if (mini->cmds)
@@ -53,6 +58,8 @@ int	close_redirections(t_minishell *mini)
 	dup2 (mini->og_out, STDOUT_FILENO);
 	return (0);
 }
+
+
 
 void	prep_mini(t_minishell *mini)
 {
@@ -77,20 +84,25 @@ void	prep_mini(t_minishell *mini)
 		errno = 0;
 }
 
+void	prep_terminal(t_minishell *mini)
+{
+	tcgetattr(STDIN_FILENO, &(mini->old));
+	mini->new = mini->old;
+	mini->new.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &(mini->new));
+}
+
+
+
 void	init_mini(t_minishell *mini, char **env)
 {
-	char	*exit_code;
-
+	prep_terminal(mini);
 	signal_action();
 	mini->code_here_doc = 0;
 	mini->exit_code = 0;
 	mini->input_code = 0;
 	mini->env_list = init_env(env);
-	exit_code = ft_itoa(0);
-	if (!exit_code)
-		exit(EXIT_FAILURE);
-	create_or_update_env_node(mini->env_list, "?", exit_code);
-	free(exit_code);
+	create_or_update_env_node(mini->env_list, "?", "0");
 	//remove_node("OLDPWD", mini);
 	if (!check_shlvl(mini->env_list))
 		exit(EXIT_FAILURE);
