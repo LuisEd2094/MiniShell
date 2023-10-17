@@ -67,7 +67,7 @@ int	handle_single_builtin(t_minishell *mini)
 {
 	int status;
 	
-	status = check_quotes_and_env(mini->cmds[0], mini);
+	status = check_quotes_and_env_and_redirections(mini->cmds[0], mini);
 	if (status)
 		return (status);
 	return (execute_cmds(mini->cmds[0], mini->env_list, mini));

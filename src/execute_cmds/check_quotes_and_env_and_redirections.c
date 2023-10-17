@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_quotes_and_env.c                             :+:      :+:    :+:   */
+/*   check_quotes_and_env_and_redirections.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -80,7 +80,7 @@ int	ft_redirections(char **cmd, t_minishell *mini, int i)
 	return (0);
 }
 
-int	check_quotes_and_env(char **cmd, t_minishell *mini)
+int	check_quotes_and_env_and_redirections(char **cmd, t_minishell *mini)
 {
 	int	i;
 	int	status;

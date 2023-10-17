@@ -75,7 +75,7 @@ int		ft_exit(char **cmd, t_minishell	*mini);
 int		parse_input(char *input);
 void	free_env_node(t_env *env_node);
 
-int		check_quotes_and_env(char **cmd, t_minishell *mini);
+int		check_quotes_and_env_and_redirections(char **cmd, t_minishell *mini);
 t_env	*check_shlvl(t_list	*env_list);
 void	remove_node(char *str, t_minishell *mini);
 
