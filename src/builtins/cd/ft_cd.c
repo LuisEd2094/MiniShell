@@ -1,4 +1,4 @@
- /* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
@@ -6,7 +6,7 @@
 /*   By: gmacias- <gmacias-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 08:50:32 by gmacias-          #+#    #+#             */
-/*   Updated: 2023/10/18 10:08:11 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/18 12:08:17 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	send_old_directory(t_list *env_list, char *sol)
 {
 	char	*old_directory;
-	
+
 	old_directory = malloc((ft_strlen("OLDPWD") + 1) * sizeof(char));
 	if (old_directory == NULL)
 	{
@@ -37,16 +37,16 @@ int	send_old_directory(t_list *env_list, char *sol)
 int	change_old_directory(t_list *env_list)
 {
 	char	*old_dir;
-	char	*word_OD;
+	char	*word_od;
 
-	word_OD = malloc((ft_strlen("OLDPWD") + 1) * sizeof(char));	
-	if (word_OD == NULL)
+	word_od = malloc((ft_strlen("OLDPWD") + 1) * sizeof(char));
+	if (word_od == NULL)
 	{
 		perror("Error OLDPWD: Fallo en malloc");
 		return (3);
 	}
-	ft_strlcpy(word_OD, "OLDPWD", ft_strlen("OLDPWD") + 1);
-	old_dir = get_env_str(word_OD, env_list);
+	ft_strlcpy(word_od, "OLDPWD", ft_strlen("OLDPWD") + 1);
+	old_dir = get_env_str(word_od, env_list);
 	if (!old_dir[0])
 	{
 		perror("No se pudo obtener el antiguo directorio");
