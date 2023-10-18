@@ -19,8 +19,8 @@ char	*get_double_quote(char *cmd, t_list *env_list)
 	int		i;
 	bool	found_env;
 
-	i = 0;
 	found_env = 0;
+	i = 0;
 	new = cmd;
 	while (new[i] && new[i] != '"')
 	{

@@ -46,6 +46,7 @@ char	*replace_exit_code(t_minishell *mini, char *cmd)
 char	*replace_values(char *cmd, t_minishell *mini)
 {
 	int i;
+	char	*temp;
 
 	i = -1;
 	while (cmd[++i])
@@ -53,7 +54,11 @@ char	*replace_values(char *cmd, t_minishell *mini)
 		if (cmd[i] == '"' || cmd[i] == '\'' || cmd[i] == '$')
 		{
 			if (cmd[i] == '"')
+			{
+				temp = cmd;
 				cmd = get_double_quote(&cmd[i + 1], mini->env_list);
+				free(temp);
+			}
 			else if (cmd[i] == '\'')
 				cmd = remove_single_quote(cmd);
 			else if (cmd[i] == '$' && cmd[i + 1] == '?')
@@ -106,6 +111,7 @@ int	check_quotes_and_env_and_redirections(char **cmd, t_minishell *mini)
 				return (status);
 			i--;
 		}
+
 		else
 			cmd[i] = replace_values(cmd[i], mini);
 		i++;
