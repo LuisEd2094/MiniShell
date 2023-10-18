@@ -34,7 +34,8 @@ void	checker_redirections(t_input *checker, int i, char *input)
 	{
 		if (checker->redir_token == '>' && input[i] == '<')
 			checker->return_val = (258);
-		checker->return_val = -1;
+		else
+			checker->return_val = -1;
 	}
 	else
 	{
