@@ -1,4 +1,5 @@
-readline/config.log
+./readline/config.log
+./readline/Makefile
 *.swp
 *.d
 *.o

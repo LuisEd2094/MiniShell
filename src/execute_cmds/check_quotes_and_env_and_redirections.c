@@ -45,18 +45,28 @@ char	*replace_exit_code(t_minishell *mini, char *cmd)
 
 char	*replace_values(char *cmd, t_minishell *mini)
 {
-	if (cmd[0] == '"')
-		cmd = get_double_quote(&cmd[1], mini->env_list);
-	else if (cmd[0] == '\'')
-		cmd = remove_single_quote(cmd);
-	else if (cmd[0] == '$' && cmd[1] == '?')
-		cmd = replace_exit_code(mini, cmd);
-	else if (cmd[0] == '$' && \
-	is_ascii_no_space(cmd[1]) && \
-	cmd[1])
-		cmd = replace_env(cmd, mini->env_list, 0);
-	if (!cmd)
-		return (NULL);
+	int i;
+
+	i = -1;
+	while (cmd[++i])
+	{
+		if (cmd[i] == '"' || cmd[i] == '\'' || cmd[i] == '$')
+		{
+			if (cmd[i] == '"')
+				cmd = get_double_quote(&cmd[i + 1], mini->env_list);
+			else if (cmd[i] == '\'')
+				cmd = remove_single_quote(cmd);
+			else if (cmd[i] == '$' && cmd[i + 1] == '?')
+				cmd = replace_exit_code(mini, cmd);
+			else if (cmd[i] == '$' && \
+			cmd[i + 1] && \
+			is_ascii_no_space(cmd[i + 1]))
+				cmd = replace_env(cmd, mini->env_list, i);
+			if (!cmd)
+				return (NULL);
+			i -= 1;
+		}
+	}
 	return (cmd);
 }
 
