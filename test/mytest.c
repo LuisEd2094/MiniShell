@@ -138,9 +138,9 @@ int main(int argc, char **argv, char **env)
 {  
     UNITY_BEGIN();
     
-    //RUN_TEST(check_basic_input);
-    //RUN_TEST(check_quotestest);
-    //RUN_TEST(check_pipestest);
+    RUN_TEST(check_basic_input);
+    RUN_TEST(check_quotestest);
+    RUN_TEST(check_pipestest);
     RUN_TEST(check_redirectionstest);
     RUN_TEST(check_all);
 
