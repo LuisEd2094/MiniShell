@@ -49,7 +49,6 @@ char	*ft_replace(char *cmd, char *env, int i, bool found)
 
  	env_name_size = get_next_word_len(&cmd [i  + 1]) + 1;
 	str_first_half = ft_substr(cmd, 0, i);
-	printf("First half [%s]\n", str_first_half);
 	str_second_half = ft_substr(cmd, i + env_name_size, ft_strlen(cmd) - (i  + env_name_size));
 	new = (char *)malloc(sizeof(char) * (ft_strlen(str_first_half) + \
 				ft_strlen(str_second_half) + ft_strlen(env)) + 1);
@@ -76,14 +75,11 @@ char	*get_env_str_from_quote(char *cmd, t_list *env_list)
 	return (to_return);
 }
 
-char	*replace_env(char *cmd, t_list *env_list, int j)
+char	*replace_env(char *cmd, char *env, int i)
 {
 	char	*temp;
-	char	*env;
 
-	env = get_env_str_from_quote(&cmd[j + 1], env_list);
-	temp = ft_replace(cmd, env, j, 0);
-	free(env);
+	temp = ft_replace(cmd, env, i, 0);
 	if (!temp)
 		return (NULL);
 	free(cmd);

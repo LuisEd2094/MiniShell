@@ -55,7 +55,7 @@ char	*replace_exit_code(t_minishell *mini, char *cmd)
 char	*replace_values(char *cmd, t_minishell *mini)
 {
 	int i;
-	//char	*env;
+	char	*env;
 
 	i = -1;
 	while (cmd[++i])
@@ -69,12 +69,18 @@ char	*replace_values(char *cmd, t_minishell *mini)
 			}
 			else if (cmd[i] == '\'')
 				i += remove_quote(cmd, i, '\'');		
-			else if (cmd[i] == '$' && cmd[i + 1] == '?')
-				cmd = replace_exit_code(mini, cmd);
 			else if (cmd[i] == '$' && \
 			cmd[i + 1] && \
 			is_ascii_no_space(cmd[i + 1]))
-				cmd = replace_env(cmd, mini->env_list, i);
+			{
+				if (cmd[i + 1] == '?')
+					env = get_env_str(ft_substr(cmd, i + 1, 1), mini->env_list);
+				else
+					env = get_env_str_from_quote(&cmd[i + 1], mini->env_list);
+				cmd = replace_env(cmd, env, i);
+				i += ft_strlen(env) - 1;
+				free(env);
+			}
 			if (!cmd)
 				return (NULL);
 		}
