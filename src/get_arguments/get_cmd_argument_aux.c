@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 13:04:00 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/13 13:04:33 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/18 13:02:40 by gmacias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	get_argument_count(char *cmd)
 	}
 	return (arg_count);
 }
-
 
 int	get_cmd_count(char **cmds)
 {
