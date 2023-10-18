@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 14:32:20 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/13 14:39:39 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/18 13:04:36 by gmacias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,15 @@ void	checker_redirections(t_input *checker, int i, char *input)
 	else
 	{
 		if (input[i] == '>' || input[i] == '<')
-			checker->return_val = ( 258);
+			checker->return_val = (258);
 	}
-	if (input[i] != '|' && !ft_isspace(input[i]) && input[i] != checker->redir_token)
+	if (input[i] != '|' && !ft_isspace(input[i]) && \
+			input[i] != checker->redir_token)
 		checker->redirections = 0;
-    else if (input[i] == '|')
-        checker->return_val = 258;
-	if ((input[i] == '>' || input[i] == '<') && input[i] != checker->redir_token)
+	else if (input[i] == '|')
+		checker->return_val = 258;
+	if ((input[i] == '>' || input[i] == '<') && \
+			input[i] != checker->redir_token)
 		checker->return_val = (258);
 }
 
