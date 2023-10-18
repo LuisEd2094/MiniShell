@@ -67,7 +67,6 @@ void check_redirectionstest(void)
     TEST_ASSERT_EQUAL(0, parse_input("hola <<hola"));
     TEST_ASSERT_EQUAL(0, parse_input("hola<hola"));
     TEST_ASSERT_EQUAL(0, parse_input("hola<<hola"));
-    TEST_ASSERT_EQUAL(0, parse_input("hola<>hola"));
 
     TEST_ASSERT_EQUAL(0, parse_input("ls >$out"));
     TEST_ASSERT_EQUAL(0, parse_input("ls >$ out"));
@@ -82,16 +81,18 @@ void check_redirectionstest(void)
 
 
     TEST_ASSERT_EQUAL(258, parse_input("cat hola.test > |"));
-
+    TEST_ASSERT_EQUAL(258, parse_input("hola<>hola"));
     TEST_ASSERT_EQUAL(258, parse_input("cat hola.test >"));
     TEST_ASSERT_EQUAL(258, parse_input("hola > "));
     TEST_ASSERT_EQUAL(258, parse_input("hola <<>hola "));
     TEST_ASSERT_EQUAL(258, parse_input("hola >><hola "));
-        TEST_ASSERT_EQUAL(258, parse_input("hola >|infile"));
+    TEST_ASSERT_EQUAL(258, parse_input("hola >|infile"));
 
 
     TEST_ASSERT_EQUAL(258, parse_input("hola < >hola "));
     TEST_ASSERT_EQUAL(258, parse_input("hola ><hola "));
+    TEST_ASSERT_EQUAL(258, parse_input(">>"));
+
 
 //hola >>$hola if env not set it gives an error too
 
