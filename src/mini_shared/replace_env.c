@@ -45,9 +45,11 @@ char	*ft_replace(char *cmd, char *env, int i, bool found)
 	char	*str_first_half;
 	char	*str_second_half;
 	char	*new;
+	int		env_name_size;
 
-	int env_name_size = get_next_word_len(&cmd [i  + 1]) + 1;
-	str_first_half = get_first_half(cmd, i);
+ 	env_name_size = get_next_word_len(&cmd [i  + 1]) + 1;
+	str_first_half = ft_substr(cmd, 0, i);
+	printf("First half [%s]\n", str_first_half);
 	str_second_half = ft_substr(cmd, i + env_name_size, ft_strlen(cmd) - (i  + env_name_size));
 	new = (char *)malloc(sizeof(char) * (ft_strlen(str_first_half) + \
 				ft_strlen(str_second_half) + ft_strlen(env)) + 1);

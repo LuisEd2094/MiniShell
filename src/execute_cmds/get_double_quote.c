@@ -20,19 +20,17 @@ char	*get_double_quote(char *cmd, t_list *env_list, int i)
 	new = "";
 	new = ft_strjoin(new, cmd);
 	free(cmd);
-	printf("[%s]\n", &new[i]);
 	while (new[i] && new[i] != '"')
 	{
 		if (new[i] == '$' && new[i + 1] && is_ascii_no_space(new[i + 1]) \
 		&& (new[i + 1] != '"' && new[i + 1] != '\''))
 		{
-			printf("i am about to replace\n");
 			env = get_env_str(get_next_word(&new[i + 1]), env_list);
 			new = ft_replace(new, env, i, 1);
+			i += ft_strlen(env);
 			free(env);
 		}
 		i++;
 	}
-	printf("after cycle [%s]\n", new);
 	return (new);
 }
