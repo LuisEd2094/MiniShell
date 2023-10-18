@@ -65,7 +65,7 @@ char	*replace_values(char *cmd, t_minishell *mini)
 			if (cmd[i] == '"')
 			{
 				cmd = get_double_quote(cmd, mini->env_list, i);
-				printf("{%s}\n", cmd);
+				i += remove_quote(cmd, i, '"');
 			}
 			else if (cmd[i] == '\'')
 				i += remove_quote(cmd, i, '\'');		

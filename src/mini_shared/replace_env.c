@@ -12,33 +12,6 @@
 
 #include <minishell.h>
 
-char	*get_second_half(char *cmd, int start)
-{
-	int	j;
-	int	k;
-
-	j = 0;
-	printf("start second hañf [%s]\n", &cmd[start + 1]);
-	while (cmd[j] && cmd[j] != '$')
-		j++;
-	j++;
-	j += get_next_word_len(&cmd[j]);
-	k = j;
-	while (cmd[k] && cmd[k] != '"')
-		k++;
-	if (k == j)
-		return (ft_calloc(1, sizeof(char)));
-	else
-		return (ft_substr(cmd, j, k));
-}
-
-char	*get_first_half(char *cmd, int i)
-{
-	if (i > 0)
-		return (ft_substr(cmd, 0, i));
-	else
-		return (ft_calloc(1, sizeof(char)));
-}
 
 char	*ft_replace(char *cmd, char *env, int i, bool found)
 {
