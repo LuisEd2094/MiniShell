@@ -12,22 +12,20 @@
 
 #include "execute_cmds_internal.h"
 
-char	*remove_single_quote(char *str, int i)
+char	*remove_quote(char *str, int i, char quote)
 {
 	int	j;
 
 	j = i + 1;
-	while (str[j] != '\'')
+	while (str[j] != quote)
 	{
-		j = i + 1;
 		str[i] = str[j];
 		i++;
 		j++;
 	}
-	j = i + 1;
+	j += 1;
 	while (str[j])
 	{
-		j = i + 1;
 		str[i] = str[j];
 		i++;
 		j++;
@@ -53,7 +51,7 @@ char	*replace_exit_code(t_minishell *mini, char *cmd)
 char	*replace_values(char *cmd, t_minishell *mini)
 {
 	int i;
-	char	*temp;
+	//char	*temp;
 
 	i = -1;
 	while (cmd[++i])
@@ -62,16 +60,14 @@ char	*replace_values(char *cmd, t_minishell *mini)
 		{
 			if (cmd[i] == '"')
 			{
-				temp = cmd;
-				cmd = get_double_quote(&cmd[i + 1], mini->env_list);
-				free(temp);
-				ft_printf("double [%s]\n", cmd);
+				cmd = get_double_quote(cmd, mini->env_list, i + 1);
+				printf("after double\n");
+				cmd = remove_quote(cmd, i, '"');
 			}
 			else if (cmd[i] == '\'')
 			{				
-				cmd = remove_single_quote(cmd, i);
+				cmd = remove_quote(cmd, i, '\'');
 				ft_printf("single [%s]\n", cmd);
-
 			}
 			else if (cmd[i] == '$' && cmd[i + 1] == '?')
 				cmd = replace_exit_code(mini, cmd);
@@ -82,6 +78,8 @@ char	*replace_values(char *cmd, t_minishell *mini)
 			if (!cmd)
 				return (NULL);
 			i -= 1;
+			printf("[%s]cmd\n", cmd);
+
 		}
 	}
 	return (cmd);

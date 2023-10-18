@@ -50,7 +50,6 @@ char	**ft_argument_split(char *cmd)
 	{
 		arg_start += get_white_space_size(&cmd[arg_start]);
 		args[i] = ft_get_arg(cmd, arg_start);
-		printf("el argumento: %s\n", args[i]);
 		if (!args[i])
 			exit (1);
 		arg_start += ft_strlen(args[i]);
