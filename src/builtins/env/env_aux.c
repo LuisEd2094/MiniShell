@@ -32,6 +32,8 @@ int	check_level(int level)
 		free(str);
 		level = 0;
 	}
+	if (level < 0)
+		level = 0;
 	return (level);
 }
 
