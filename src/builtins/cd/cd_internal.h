@@ -12,6 +12,9 @@
 
 #ifndef CD_INTERNAL_H
 # define CD_INTERNAL_H
+#   include <minishell.h>
+#   include <builtins.h>
+#   include <shared.h>
 
 int	execute_change_old_dir(char *old_dir);
 

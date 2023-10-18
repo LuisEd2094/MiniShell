@@ -79,7 +79,7 @@ ENV			= 	env.c env_aux.c
 
 UNSET		=	unset.c
 
-CD			=	ft_cd.c
+CD			=	ft_cd.c cd_aux.c
 
 ECHO		=	ft_echo.c
 

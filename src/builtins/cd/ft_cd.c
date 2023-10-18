@@ -10,9 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
-#include <builtins.h>
-#include <shared.h>
 #include "cd_internal.h"
 
 int	send_old_directory(t_list *env_list, char *sol)

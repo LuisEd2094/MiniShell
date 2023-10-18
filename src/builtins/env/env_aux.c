@@ -21,8 +21,10 @@ void	print_shlvl_high(char *lvl)
 	ft_strlen(") too high, resetting to 1\n"));
 }
 
-int	check_level(int level, char *str)
+int	check_level(int level)
 {
+	char	*str;
+
 	if (level >= 1000)
 	{
 		str = ft_itoa(level);
@@ -37,7 +39,6 @@ t_env	*check_shlvl(t_list	*env_list)
 {
 	t_list	*list_node;
 	t_env	*env_node;
-	char	*str;
 	int		level;
 
 	list_node = get_env_node(env_list, "SHLVL");
@@ -49,7 +50,7 @@ t_env	*check_shlvl(t_list	*env_list)
 		level = ft_atoi(env_node->value);
 		free(env_node->value);
 		level++;
-		level = check_level(level, str);
+		level = check_level(level);
 		env_node->value = ft_itoa(level);
 		if (!env_node->value)
 			return (NULL);

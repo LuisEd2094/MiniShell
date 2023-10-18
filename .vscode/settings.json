@@ -3,6 +3,7 @@
         "get_arg_size_skip_redirections"
     ],
     "files.associations": {
-        "readline.h": "c"
+        "readline.h": "c",
+        "sstream": "c"
     }
 }

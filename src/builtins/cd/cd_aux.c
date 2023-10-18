@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "cd_internal.h"
+
 int	execute_change_old_dir(char *old_dir)
 {
 	if (!old_dir)

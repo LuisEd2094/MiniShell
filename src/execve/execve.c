@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 11:48:24 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/13 14:04:35 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/18 10:27:18 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	try_execve(char **cmd, t_list *env_list)
 	char	**converted_env_list;
 	char	*path_name;
 
-	if(!cmd || !cmd[0] ||!cmd[0][0])
+	if (!cmd || !cmd[0] ||!cmd[0][0])
 		return (0);
 	if (access(cmd[0], F_OK) != -1 && access(cmd[0], X_OK) != -1)
 		path_name = cmd[0];
