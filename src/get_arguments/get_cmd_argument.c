@@ -40,7 +40,6 @@ char	**ft_argument_split(char *cmd)
 	int		arg_start;
 
 	arg_count = get_argument_count(cmd);
-	printf("%d\n", get_argument_count(cmd));
 	args = (char **)malloc(sizeof(char *) * (arg_count + 1));
 	if (!args)
 		exit (1);
