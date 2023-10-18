@@ -34,6 +34,23 @@ int	ft_print_env(char **cmds, t_list *env_list)
 	return (0);
 }
 
+t_list	*iter_env(char *env)
+{
+	t_list	*new;
+	t_env	*env_node;
+
+	env_node = create_new_env_node(env);
+	if (!env_node)
+		return (NULL);
+	new = ft_lstnew(env_node);
+	if (!new)
+	{
+		free_env_node(env_node);
+		return (print_perror());
+	}
+	return (new);
+}
+
 void	free_env_list(t_list *env_list)
 {
 	t_list	*next;
