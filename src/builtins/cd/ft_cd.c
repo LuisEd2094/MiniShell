@@ -13,6 +13,7 @@
 #include <minishell.h>
 #include <builtins.h>
 #include <shared.h>
+#include "cd_internal.h"
 
 int	send_old_directory(t_list *env_list, char *sol)
 {
@@ -39,33 +40,22 @@ int	send_old_directory(t_list *env_list, char *sol)
 int	change_old_directory(t_list *env_list)
 {
 	char	*old_dir;
-	char	*word_OD;
-	word_OD = malloc((ft_strlen("OLDPWD") + 1) * sizeof(char));	
-	if (word_OD == NULL)
+	char	*word_od;
+	int		status;
+
+	word_od = malloc((ft_strlen("OLDPWD") + 1) * sizeof(char));
+	if (word_od == NULL)
 	{
 		perror("Error OLDPWD: Fallo en malloc");
 		return (3);
 	}
-	ft_strlcpy(word_OD, "OLDPWD", ft_strlen("OLDPWD") + 1);
-	old_dir = get_env_str(word_OD, env_list);
-	if (!old_dir)
-	{
-		perror("minishell ");
-		return (-1);
-	}
-	if (!old_dir[0])
-	{
-		free(old_dir);
-		return (print_error("minishell: cd: OLDPWD not set\n", 1));
-	}
-	if (chdir(old_dir) == -1)
-	{
-		free(old_dir);
-		perror("Error al cambiar al antiguo directorio");
-		return (-1);
-	}
+	ft_strlcpy(word_od, "OLDPWD", ft_strlen("OLDPWD") + 1);
+	old_dir = get_env_str(word_od, env_list);
+	status = execute_change_old_dir(old_dir);
+	if (status == -1)
+		return (status);
 	free(old_dir);
-	return (0);
+	return (status);
 }
 
 int	change_directory(char *directory)
@@ -83,7 +73,7 @@ int	change_directory(char *directory)
 	return (0);
 }
 
-char	*expand_tilde(char *path) 
+char	*expand_tilde(char *path)
 {
 	char	*expanded_path;
 	size_t	expanded_size;
