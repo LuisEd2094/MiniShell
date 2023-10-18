@@ -190,10 +190,10 @@ $(NAME): $(OBJS) $(LIB) Makefile
 	@echo "$(LIGHT_GREEN)Created $(NAME) executable$(DEF_COLOR)"
 
 make_lib:
+	@echo "$(GREEN)Checking Readline: $(DEF_COLOR)"
 	@make -C ./readline/ --no-print-directory &> /dev/null
-	@echo "$(GREEN)Checking Libft$(DEF_COLOR)"
 	@$(MAKE) -s -C $(LIB_PATH)
-	@echo "$(BLUE)Done checking Libft$(DEF_COLOR)"
+	@echo "$(BLUE)Done checking Readline and Libft! $(DEF_COLOR)"
 
 
 $(MAKE_OBJ_DIR):
