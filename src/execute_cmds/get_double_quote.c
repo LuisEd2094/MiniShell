@@ -27,8 +27,10 @@ char	*get_double_quote(char *cmd, t_list *env_list, int i)
 		&& (new[i + 1] != '"' && new[i + 1] != '\''))
 		{
 			env = get_env_str(get_next_word(&new[i + 1]), env_list);
+			printf("env [%s]\n", env);
 			new = ft_replace(new, env, i, 1);
 			i += ft_strlen(env);
+			printf("after replacer[%s] [%s] \n", new,env );
 			free(env);
 		}
 		else
