@@ -38,7 +38,9 @@ int	change_old_directory(t_list *env_list)
 {
 	char	*old_dir;
 	char	*word_od;
+	int		status;
 
+	status = 0;
 	word_od = malloc((ft_strlen("OLDPWD") + 1) * sizeof(char));
 	if (word_od == NULL)
 	{
@@ -47,19 +49,8 @@ int	change_old_directory(t_list *env_list)
 	}
 	ft_strlcpy(word_od, "OLDPWD", ft_strlen("OLDPWD") + 1);
 	old_dir = get_env_str(word_od, env_list);
-	if (!old_dir[0])
-	{
-		perror("No se pudo obtener el antiguo directorio");
-		return (-1);
-	}
-	if (chdir(old_dir) == -1)
-	{
-		free(old_dir);
-		perror("Error al cambiar al antiguo directorio");
-		return (-1);
-	}
-	free(old_dir);
-	return (0);
+	status = execute_change_old_dir(old_dir);
+	return (status);
 }
 
 int	change_directory(char *directory)

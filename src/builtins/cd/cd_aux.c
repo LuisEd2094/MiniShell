@@ -17,7 +17,7 @@ int	execute_change_old_dir(char *old_dir)
 	if (!old_dir)
 	{
 		perror("minishell ");
-		return (-1);
+		return (errno);
 	}
 	if (!old_dir[0])
 	{
@@ -28,7 +28,9 @@ int	execute_change_old_dir(char *old_dir)
 	{
 		free(old_dir);
 		perror("Error al cambiar al antiguo directorio");
-		return (-1);
+		return (errno);
 	}
+	ft_printf("%s\n", old_dir);
+	free(old_dir);
 	return (0);
 }
