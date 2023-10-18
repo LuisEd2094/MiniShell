@@ -12,30 +12,32 @@
 
 #include "execute_cmds_internal.h"
 
-int	remove_quote(char *str, int i, char quote)
+int	remove_quote(char *str, char quote)
 {
 	int	j;
+	int	k;
 	int	size;
+	int	quote_counter;
+	int	str_len;
 
-	j = i + 1;
+	quote_counter = 0;
+	j = -1;
+	k = 0;
 	size = 0;
-	while (str[j] != quote)
+	while(str[++j])
 	{
-		str[i] = str[j];
-		i++;
-		j++;
-		size++;
+		if (str[j] == quote && quote_counter < 2)
+			quote_counter++;
+		else
+		{
+			str[k++] = str[j];
+			if (quote_counter < 2)
+				size++;
+		}
 	}
-	j += 1;
-	while (str[j])
-	{
-		str[i] = str[j];
-		i++;
-		j++;
-	}
-	str[j - 1] = '\0';
-	str[j - 2] = '\0';
-	size--;
+	str_len = ft_strlen(str);
+	str[str_len - 1] = '\0';
+	str[str_len - 2] = '\0';
 	return (size);
 }
 
@@ -57,19 +59,19 @@ char	*replace_values(char *cmd, t_minishell *mini)
 	int i;
 	char	*env;
 
-	i = -1;
-	while (cmd[++i])
+	i = 0;
+	printf("cmd [%s]\n", cmd);
+	while (cmd[i])
 	{
 		if (cmd[i] == '"' || cmd[i] == '\'' || (cmd[i] == '$' && cmd[i + 1] && is_ascii_no_space(cmd[i + 1])))
 		{
 			if (cmd[i] == '"')
 			{
 				cmd = get_double_quote(cmd, mini->env_list, i);
-				printf("After get double quotes [%s]\n", cmd);
-				i += remove_quote(cmd, i, '"');
+				i += remove_quote(cmd,  '"');
 			}
 			else if (cmd[i] == '\'')
-				i += remove_quote(cmd, i, '\'');		
+				i += remove_quote(cmd,  '\'');		
 			else if (cmd[i] == '$' && \
 			cmd[i + 1] && \
 			is_ascii_no_space(cmd[i + 1]))
@@ -79,12 +81,14 @@ char	*replace_values(char *cmd, t_minishell *mini)
 				else
 					env = get_env_str_from_quote(&cmd[i + 1], mini->env_list);
 				cmd = replace_env(cmd, env, i);
-				i += ft_strlen(env) - 1;
+				i += ft_strlen(env);
 				free(env);
 			}
 			if (!cmd)
 				return (NULL);
 		}
+		else
+			i++;
 	}
 	return (cmd);
 }
