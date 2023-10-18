@@ -59,10 +59,11 @@ static char	*check_input(char *input, t_minishell *mini)
 		{
 			env = get_env_str(get_next_word(&input[i + 1]), mini->env_list);
 			input = ft_replace(input, env, i, 1);
+			i += ft_strlen(env);
 			free(env);
-			i--;
 		}
-		i++;
+		else
+			i++;
 	}
 	return (input);
 }
