@@ -174,6 +174,7 @@ OBJS        =	$(addprefix $(OBJS_PATH), $(SRC:.c=.o))
 all: conf make_lib $(NAME)
 
 conf:
+	@echo "$(GREEN)Checking $(BLUE)CONFIGURE $(GREEN)Readline: $(DEF_COLOR)"
 	@if [ ! -f $(READL)config.status ]; then\
 		cd $(READL) && ./configure &> /dev/null; \
 		echo "✅ ==== $(G)$(ligth)Create config.status$(E)==== ✅"; \
