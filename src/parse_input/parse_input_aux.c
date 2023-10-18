@@ -29,22 +29,21 @@ void	checker_redirections(t_input *checker, int i, char *input)
 				(input[i] == '>' || input[i] == '<')))
 	{
 		if (checker->redir_token == '>' && input[i] == '<')
-			checker->return_val = print_input_error(UNEXPECTED, \
-					&input[i], 258);
-		checker->return_val = -1;
+			checker->return_val = (258);
+		else
+			checker->return_val = -1;
 	}
 	else
 	{
 		if (input[i] == '>' || input[i] == '<')
-			checker->return_val = print_input_error(UNEXPECTED, &input[i], 258);
+			checker->return_val = ( 258);
 	}
 	if (input[i] != '|' && !ft_isspace(input[i]) && input[i] != checker->redir_token)
 		checker->redirections = 0;
-    	else if (input[i] == '|')
-		checker->return_val = print_input_error(UNEXPECTED, \
-					&input[i], 258);
+    else if (input[i] == '|')
+        checker->return_val = 258;
 	if ((input[i] == '>' || input[i] == '<') && input[i] != checker->redir_token)
-		checker->return_val = print_input_error(UNEXPECTED, &input[i], 258);
+		checker->return_val = (258);
 }
 
 void	check_pipes(t_input *checker, char *input, int i)
