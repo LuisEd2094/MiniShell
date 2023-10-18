@@ -12,6 +12,25 @@
 
 #include "shared_internal.h"
 
+static	int is_quote(char c)
+{
+	if (c == '"' || c == '\'')
+		return (1);
+	return (0);
+}
+
+static int is_valid_char(char *cmd, int len)
+{
+
+	if (ft_isdigit(cmd[len]) && len == 0)
+		return (0);
+	else if (is_quote(cmd[len]))
+		return (0);
+	else if (!ft_isalnum(cmd[len]) && cmd[len] != '_')
+		return (0);
+	return (1);
+}
+
 int	get_next_word_len(char *cmd)
 {
 	int	len;
@@ -19,12 +38,8 @@ int	get_next_word_len(char *cmd)
 	len = 0;
 	if (cmd[len] == '?')
 		return (1);
-	while (cmd[len] && cmd[len] != '"' && !ft_isspace(cmd[len]) \
-		&& cmd[len] != '<' && cmd[len] != '>' && cmd[len] != '$' && \
-		cmd[len] != '\'')
-		{
-			len++;
-		}
+	while (cmd[len] && is_valid_char(cmd, len))
+		len++;
 	return (len);
 }
 

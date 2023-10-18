@@ -21,6 +21,11 @@ void	execute_loop(t_minishell *mini)
 	if (mini->input_code == 0)
 	{
 		mini->cmds = get_cmds_value(mini->input);
+		for (int i = 0; mini->cmds[i];i++)
+		{
+			for (int j = 0; mini->cmds[i][j]; j++)
+				ft_printf("[%s]\n", mini->cmds[i][j]);
+		}
 		mini->code_here_doc = create_here_doc(mini);
 		if (mini->code_here_doc == 0)
 			start_execute_cmds(mini);
@@ -38,7 +43,8 @@ void	main_loop(t_minishell *mini)
 		mini->input = readline(">> ");
 		if (!mini->input)
 		{
-			ft_printf("exit\n");
+			if (isatty(STDIN_FILENO))
+				write(2, "exit\n", 6);
 			exit_mini(mini);
 		}
 		if (mini->input[0] != '\0')
