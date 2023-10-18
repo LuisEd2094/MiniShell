@@ -32,7 +32,9 @@ void check_quotestest(void)
     TEST_ASSERT_EQUAL(0, parse_input("\"Hola \" \" \""));
     TEST_ASSERT_EQUAL(0, parse_input("\"\"\"\""));
     TEST_ASSERT_EQUAL(0, parse_input("\'Hola\'"));
+    TEST_ASSERT_EQUAL(0, parse_input("\"||\""));
 
+   
 
     TEST_ASSERT_EQUAL(1, parse_input("\"Hola"));
     TEST_ASSERT_EQUAL(1, parse_input("\"Hola \" \" "));
