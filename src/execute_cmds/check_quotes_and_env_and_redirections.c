@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_quotes_and_env_and_redirections.c                             :+:      :+:    :+:   */
+/*   check_quotes_and_env_and_redirections.c            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/13 12:52:47 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/13 12:57:31 by lsoto-do         ###   ########.fr       */
+/*   Created: 2023/10/18 10:25:49 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/18 10:26:06 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*replace_values(char *cmd, t_minishell *mini)
 
 int	ft_redirections(char **cmd, t_minishell *mini, int i)
 {
-	char *og_command;
+	char	*og_command;
 
 	og_command = "";
 	og_command = ft_strjoin(og_command, cmd[i + 1]);

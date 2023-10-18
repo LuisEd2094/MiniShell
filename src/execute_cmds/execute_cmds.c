@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 11:46:01 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/13 13:01:16 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/18 10:26:27 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ int	execute_cmds(char **cmds, t_list *env_list, t_minishell *mini)
 
 int	handle_single_builtin(t_minishell *mini)
 {
-	int status;
-	
+	int	status;
+
 	status = check_quotes_and_env_and_redirections(mini->cmds[0], mini);
 	if (status)
 		return (status);
@@ -76,7 +76,7 @@ int	handle_single_builtin(t_minishell *mini)
 void	start_execute_cmds(t_minishell *mini)
 {
 	int	num_commands;
-	
+
 	num_commands = 0;
 	while (mini->cmds[num_commands])
 		num_commands++;
