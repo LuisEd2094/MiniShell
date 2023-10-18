@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_quotes_and_env.c                             :+:      :+:    :+:   */
+/*   check_quotes_and_env_and_redirections.c            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/13 12:52:47 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/13 12:57:31 by lsoto-do         ###   ########.fr       */
+/*   Created: 2023/10/18 10:25:49 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/18 10:26:06 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,27 +60,45 @@ char	*replace_values(char *cmd, t_minishell *mini)
 	return (cmd);
 }
 
-void	ft_redirections(char **cmd, t_minishell *mini, int i)
+int	ft_redirections(char **cmd, t_minishell *mini, int i)
 {
+	char	*og_command;
+
+	og_command = "";
+	og_command = ft_strjoin(og_command, cmd[i + 1]);
 	cmd[i + 1] = replace_values(cmd[i + 1], mini);
+	if (!cmd[i + 1][0])
+	{
+		print_error("minishell: ", 1);
+		print_error(og_command, 1);
+		free(og_command);
+		return (print_error(": ambiguous redirect\n", 1));
+	}
 	check_and_handle_redirections(cmd[i], cmd[i + 1], mini);
+	free(og_command);
 	remove_cmds_from_cmds(cmd, i, 2);
+	return (0);
 }
 
-void	check_quotes_and_env(char **cmd, t_minishell *mini)
+int	check_quotes_and_env_and_redirections(char **cmd, t_minishell *mini)
 {
 	int	i;
+	int	status;
 
 	i = 0;
+	status = 0;
 	while (cmd[i])
 	{
 		if (cmd[i][0] == '>' || cmd[i][0] == '<')
 		{
-			ft_redirections(cmd, mini, i);
+			status = ft_redirections(cmd, mini, i);
+			if (status)
+				return (status);
 			i--;
 		}
 		else
 			cmd[i] = replace_values(cmd[i], mini);
 		i++;
 	}
+	return (status);
 }

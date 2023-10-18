@@ -25,10 +25,6 @@ void	check_quotes(t_input *checker, int i, char *input)
 
 void	checker_redirections(t_input *checker, int i, char *input)
 {
-	if (input[checker->redir_pos + 1] && input[checker->redir_pos] == \
-			input[checker->redir_pos + 1] && \
-	((input[i] == '>' || input[i] == '<') && i != checker->redir_pos + 1))
-		checker->return_val = print_input_error(UNEXPECTED, &input[i], 258);
 	if (i == checker->redir_pos + 1 && (input[i] == '|' || \
 				(input[i] == '>' || input[i] == '<')))
 	{
@@ -42,11 +38,13 @@ void	checker_redirections(t_input *checker, int i, char *input)
 		if (input[i] == '>' || input[i] == '<')
 			checker->return_val = print_input_error(UNEXPECTED, &input[i], 258);
 	}
-	if (input[i] != '|' && !ft_isspace(input[i]))
+	if (input[i] != '|' && !ft_isspace(input[i]) && input[i] != checker->redir_token)
 		checker->redirections = 0;
     	else if (input[i] == '|')
 		checker->return_val = print_input_error(UNEXPECTED, \
 					&input[i], 258);
+	if ((input[i] == '>' || input[i] == '<') && input[i] != checker->redir_token)
+		checker->return_val = print_input_error(UNEXPECTED, &input[i], 258);
 }
 
 void	check_pipes(t_input *checker, char *input, int i)

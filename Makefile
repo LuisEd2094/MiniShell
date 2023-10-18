@@ -45,9 +45,9 @@ MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), \
 
 DEPS_PATH	= deps/
 LIB_PATH	= 	./Libft
-LIB			=	$(LIB_PATH)/libft.a #./readline/libreadline.a ./readline/libhistory.a
+LIB			=	$(LIB_PATH)/libft.a ./readline/libreadline.a ./readline/libhistory.a
 LDFLAGS		= 	-L$(LIB_PATH) -lft 
-LINEFLAGS	=	-lreadline
+#LINEFLAGS	=	-lreadline
 
 INCS        = -I./includes/ \
 -I./readline/ 
@@ -79,7 +79,7 @@ ENV			= 	env.c env_aux.c
 
 UNSET		=	unset.c
 
-CD			=	ft_cd.c
+CD			=	ft_cd.c cd_aux.c
 
 ECHO		=	ft_echo.c
 
@@ -89,7 +89,7 @@ EXIT		=	ft_exit.c
 
 ARGUMENTS	=	get_cmd_value.c get_cmd_argument.c  get_cmd_argument_aux.c
 
-EXEC_CMDS	=	execute_cmds.c check_quotes_and_env.c get_double_quote.c
+EXEC_CMDS	=	execute_cmds.c check_quotes_and_env_and_redirections.c get_double_quote.c
 
 EXECVE		=	execve.c execve_aux.c
 
@@ -99,7 +99,7 @@ MINI_SHARED	=	get_next_word_and_len.c is_ascii_no_space.c skips.c \
 				replace_env.c create_or_update_env_node.c \
 				print_error.c free_node.c env_variable_checker.c \
 				check_valid_identifier.c remove_cmds_from_cmds.c \
-				prep_unset_export_cmds.c
+				prep_unset_export_cmds.c handle_terminal.c
 
 
 REDIRECTIONS	= aux_handle_redirections.c  handle_redirections.c  here_doc.c

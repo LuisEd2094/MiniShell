@@ -6,13 +6,54 @@
 /*   By: gmacias- <gmacias-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 08:50:32 by gmacias-          #+#    #+#             */
-/*   Updated: 2023/10/05 14:51:47 by galo             ###   ########.fr       */
+/*   Updated: 2023/10/18 10:08:11 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
-#include <builtins.h>
-#include <shared.h>
+#include "cd_internal.h"
+
+int	send_old_directory(t_list *env_list, char *sol)
+{
+	char	*old_directory;
+
+	old_directory = malloc((ft_strlen("OLDPWD") + 1) * sizeof(char));
+	if (old_directory == NULL)
+	{
+		perror("Error OLDPWD: Fallo en malloc");
+		return (3);
+	}
+	if (sol == NULL)
+	{
+		free(old_directory);
+		perror("Error OLDPWD: Fallo en malloc");
+		return (3);
+	}
+	ft_strlcpy(old_directory, "OLDPWD", ft_strlen("OLDPWD") + 1);
+	create_or_update_env_node(env_list, old_directory, sol);
+	free(old_directory);
+	return (0);
+}
+
+int	change_old_directory(t_list *env_list)
+{
+	char	*old_dir;
+	char	*word_od;
+	int		status;
+
+	word_od = malloc((ft_strlen("OLDPWD") + 1) * sizeof(char));
+	if (word_od == NULL)
+	{
+		perror("Error OLDPWD: Fallo en malloc");
+		return (3);
+	}
+	ft_strlcpy(word_od, "OLDPWD", ft_strlen("OLDPWD") + 1);
+	old_dir = get_env_str(word_od, env_list);
+	status = execute_change_old_dir(old_dir);
+	if (status == -1)
+		return (status);
+	free(old_dir);
+	return (status);
+}
 
 int	send_old_directory(t_list *env_list, char *sol)
 {
@@ -79,7 +120,7 @@ int	change_directory(char *directory)
 	return (0);
 }
 
-char	*expand_tilde(char *path) 
+char	*expand_tilde(char *path)
 {
 	char	*expanded_path;
 	size_t	expanded_size;
@@ -120,5 +161,6 @@ int	ft_cd(char **arguments, t_list *env_list)
 		error = change_directory(arguments[1]);
 	if (error == 0)
 		error = send_old_directory(env_list, save_old_directory);
+	free(save_old_directory);
 	return (error);
 }

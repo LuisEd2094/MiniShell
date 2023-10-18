@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 11:56:28 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/13 11:57:03 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/18 10:24:22 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,31 @@
 
 void	print_shlvl_high(char *lvl)
 {
-	write(STDERR_FILENO,"minishell: warning: shell level (", \
+	write(STDERR_FILENO, "minishell: warning: shell level (", \
 	ft_strlen("minishell: warning: shell level ("));
 	write(STDERR_FILENO, lvl, ft_strlen(lvl));
-	write(STDERR_FILENO,") too high, resetting to 1\n", \
+	write(STDERR_FILENO, ") too high, resetting to 1\n", \
 	ft_strlen(") too high, resetting to 1\n"));
+}
+
+int	check_level(int level)
+{
+	char	*str;
+
+	if (level >= 1000)
+	{
+		str = ft_itoa(level);
+		print_shlvl_high(str);
+		free(str);
+		level = 0;
+	}
+	return (level);
 }
 
 t_env	*check_shlvl(t_list	*env_list)
 {
 	t_list	*list_node;
 	t_env	*env_node;
-	char	*str;
 	int		level;
 
 	list_node = get_env_node(env_list, "SHLVL");
@@ -33,39 +46,16 @@ t_env	*check_shlvl(t_list	*env_list)
 		return (create_or_update_env_node(env_list, "SHLVL", "0"));
 	else
 	{
-		env_node = ((t_env	*)(list_node->content));
+		env_node = ((t_env *)(list_node->content));
 		level = ft_atoi(env_node->value);
 		free(env_node->value);
 		level++;
-		if (level >= 1000)
-		{
-			str = ft_itoa(level);
-			print_shlvl_high(str);
-			free(str);
-			level = 0;
-		}
+		level = check_level(level);
 		env_node->value = ft_itoa(level);
 		if (!env_node->value)
 			return (NULL);
 	}
 	return ((void *) 1);
-}
-
-t_list	*iter_env(char *env)
-{
-	t_list	*new;
-	t_env	*env_node;
-
-	env_node = create_new_env_node(env);
-	if (!env_node)
-		return (NULL);
-	new = ft_lstnew(env_node);
-	if (!new)
-	{
-		free_env_node(env_node);
-		return (print_perror());
-	}
-	return (new);
 }
 
 t_list	*fill_up_env_list(t_list *env_list, char **env)

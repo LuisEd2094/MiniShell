@@ -1,36 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   handle_terminal.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/13 14:00:49 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/13 14:03:21 by lsoto-do         ###   ########.fr       */
+/*   Created: 2023/10/18 10:28:50 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/18 10:28:56 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-#include "../../readline/readline.h"
 
-static	void	action(int signal)
+void	reset_terminal(t_minishell *mini)
 {
-	if (signal == SIGINT)
-	{
-		g_received_signal = SIGINT;
-		ioctl(STDIN_FILENO, TIOCSTI, "\n");
-		rl_replace_line("", 0);
-		rl_on_new_line();
-	}
+	tcsetattr(STDIN_FILENO, TCSANOW, &(mini->old));
 }
 
-void	signal_action(void)
+void	prep_terminal(t_minishell *mini)
 {
-	struct sigaction	act;
-
-	sigemptyset(&act.sa_mask);
-	act.sa_handler = action;
-	act.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &act, NULL);
-	signal(SIGQUIT, SIG_IGN);
+	tcgetattr(STDIN_FILENO, &(mini->old));
+	mini->new = mini->old;
+	mini->new.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &(mini->new));
 }

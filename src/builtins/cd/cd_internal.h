@@ -1,35 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   remove_cmds_from_cmds.c                            :+:      :+:    :+:   */
+/*   cd_internal.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/18 10:29:26 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/18 10:29:30 by lsoto-do         ###   ########.fr       */
+/*   Created: 2023/10/18 10:18:07 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/18 10:19:18 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#ifndef CD_INTERNAL_H
+# define CD_INTERNAL_H
+#   include <minishell.h>
+#   include <builtins.h>
+#   include <shared.h>
 
-void	remove_cmds_from_cmds(char **cmds, int i, int next_valid)
-{
-	int		j;
-	char	*temp;
+int	execute_change_old_dir(char *old_dir);
 
-	j = i + next_valid;
-	while (cmds[j])
-	{
-		temp = cmds[i];
-		cmds[i] = cmds[j];
-		cmds[j] = temp;
-		i++;
-		j++;
-	}
-	while (i < j)
-	{
-		free(cmds[i]);
-		cmds[i] = NULL;
-		i++;
-	}
-}
+#endif 

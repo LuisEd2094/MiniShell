@@ -20,22 +20,26 @@
 # include <shared.h>
 # include <signal.h>
 # include <sys/ioctl.h>
+# include <termios.h>
+# include <termios.h>
 
 typedef struct s_minishell
 {
-	t_list	*env_list;
-	char	***cmds;
-	char	*input;
-	int		code_here_doc;
-	int		**pipes;
-	int		og_in;
-	int		og_out;
-	int		exit_code;
-	int		input_code;
-	int		here_doc_number;
-	char	here_doc_name[200];
-	char	*here_doc_end;
-	pid_t	last_pid;
+	t_list			*env_list;
+	char			***cmds;
+	char			*input;
+	int				code_here_doc;
+	int				**pipes;
+	int				og_in;
+	int				og_out;
+	int				exit_code;
+	int				input_code;
+	int				here_doc_number;
+	char			here_doc_name[200];
+	char			*here_doc_end;
+	pid_t			last_pid;
+	struct termios	old;
+	struct termios	new;
 }	t_minishell;
 
 # define TEMP_FILE_NAME "/tmp/mini_temp_"
@@ -70,9 +74,11 @@ int		ft_exit(char **cmd, t_minishell	*mini);
 int		parse_input(char *input);
 void	free_env_node(t_env *env_node);
 
-void	check_quotes_and_env(char **cmd, t_minishell *mini);
+int		check_quotes_and_env_and_redirections(char **cmd, t_minishell *mini);
 t_env	*check_shlvl(t_list	*env_list);
 void	remove_node(char *str, t_minishell *mini);
 
+void	reset_terminal(t_minishell *mini);
+void	prep_terminal(t_minishell *mini);
 
 #endif

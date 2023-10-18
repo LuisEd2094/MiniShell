@@ -1,35 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   remove_cmds_from_cmds.c                            :+:      :+:    :+:   */
+/*   cd_aux.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/18 10:29:26 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/18 10:29:30 by lsoto-do         ###   ########.fr       */
+/*   Created: 2023/10/18 10:17:54 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/18 10:20:00 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "cd_internal.h"
 
-void	remove_cmds_from_cmds(char **cmds, int i, int next_valid)
+int	execute_change_old_dir(char *old_dir)
 {
-	int		j;
-	char	*temp;
-
-	j = i + next_valid;
-	while (cmds[j])
+	if (!old_dir)
 	{
-		temp = cmds[i];
-		cmds[i] = cmds[j];
-		cmds[j] = temp;
-		i++;
-		j++;
+		perror("minishell ");
+		return (-1);
 	}
-	while (i < j)
+	if (!old_dir[0])
 	{
-		free(cmds[i]);
-		cmds[i] = NULL;
-		i++;
+		free(old_dir);
+		return (print_error("minishell: cd: OLDPWD not set\n", 1));
 	}
+	if (chdir(old_dir) == -1)
+	{
+		free(old_dir);
+		perror("Error al cambiar al antiguo directorio");
+		return (-1);
+	}
+	return (0);
 }
