@@ -19,7 +19,8 @@ char	*ft_get_arg(char *cmd, int arg_start)
 	arg_len = 0;
 	if (cmd[arg_start])
 	{
-		if (cmd[arg_start] == '\"' || cmd[arg_start] == '\'')
+		if ((arg_start == 0 && (cmd[arg_start] == '\"' || cmd[arg_start] == '\'')) || \
+				((cmd[arg_start] == '\"' || cmd[arg_start] == '\'') && cmd[arg_start - 1] == ' '))
 			arg_len += get_quotes_size(&cmd[arg_start]);
 		else if (cmd[arg_start] == '>' || cmd[arg_start] == '<')
 			arg_len += get_redirection_size(&cmd[arg_start]);
@@ -39,6 +40,7 @@ char	**ft_argument_split(char *cmd)
 	int		arg_start;
 
 	arg_count = get_argument_count(cmd);
+	printf("%d\n", get_argument_count(cmd));
 	args = (char **)malloc(sizeof(char *) * (arg_count + 1));
 	if (!args)
 		exit (1);
@@ -48,6 +50,7 @@ char	**ft_argument_split(char *cmd)
 	{
 		arg_start += get_white_space_size(&cmd[arg_start]);
 		args[i] = ft_get_arg(cmd, arg_start);
+		printf("el argumento: %s\n", args[i]);
 		if (!args[i])
 			exit (1);
 		arg_start += ft_strlen(args[i]);

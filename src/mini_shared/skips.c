@@ -22,7 +22,13 @@ int	get_quotes_size(char *input)
 	i++;
 	while (input[i] && input[i] != quote)
 		i++;
-	i++;
+	if (input[i] == quote)
+		i++;
+	if(input[i] == '\0' || input[i] == ' ')
+		return(i);
+	while (input[i] && is_ascii_no_space(input[i]) && \
+	!(input[i] == '>' || input[i] == '<'))
+			i++;
 	return (i);
 }
 

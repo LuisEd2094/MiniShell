@@ -12,15 +12,22 @@
 
 #include "execute_cmds_internal.h"
 
-char	*remove_single_quote(char *str)
+char	*remove_single_quote(char *str, int i)
 {
-	int	i;
 	int	j;
 
-	i = 0;
-	j = 1;
+	j = i + 1;
+	while (str[j] != '\'')
+	{
+		j = i + 1;
+		str[i] = str[j];
+		i++;
+		j++;
+	}
+	j = i + 1;
 	while (str[j])
 	{
+		j = i + 1;
 		str[i] = str[j];
 		i++;
 		j++;
@@ -51,16 +58,21 @@ char	*replace_values(char *cmd, t_minishell *mini)
 	i = -1;
 	while (cmd[++i])
 	{
-		if (cmd[i] == '"' || cmd[i] == '\'' || cmd[i] == '$')
+		if (cmd[i] == '"' || cmd[i] == '\'' || (cmd[i] == '$' && cmd[i + 1] && is_ascii_no_space(cmd[i + 1])))
 		{
 			if (cmd[i] == '"')
 			{
 				temp = cmd;
 				cmd = get_double_quote(&cmd[i + 1], mini->env_list);
 				free(temp);
+				ft_printf("double [%s]\n", cmd);
 			}
 			else if (cmd[i] == '\'')
-				cmd = remove_single_quote(cmd);
+			{				
+				cmd = remove_single_quote(cmd, i);
+				ft_printf("single [%s]\n", cmd);
+
+			}
 			else if (cmd[i] == '$' && cmd[i + 1] == '?')
 				cmd = replace_exit_code(mini, cmd);
 			else if (cmd[i] == '$' && \

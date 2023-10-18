@@ -45,6 +45,8 @@ int	ft_echo(char **arguments)
 	}
 	while (arguments[++i] != NULL)
 	{
+		if (flag_n && ft_flag_n(arguments[i]))
+			i++;
 		ft_printf("%s", arguments[i]);
 		if (arguments[i + 1] != NULL)
 			ft_printf(" ");
