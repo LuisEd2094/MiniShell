@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 13:09:41 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/13 13:59:51 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/18 13:05:39 by gmacias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ static char	*check_input(char *input, t_minishell *mini)
 	i = 0;
 	while (input[i])
 	{
-		if (input[i] == '$' && input[i + 1] && input[i + 1] != '$' && ft_isprint(input[i + 1])  && !ft_isspace(input[i + 1]))
+		if (input[i] == '$' && input[i + 1] && input[i + 1] != '$' && \
+				ft_isprint(input[i + 1]) && !ft_isspace(input[i + 1]))
 		{
 			env = get_env_str(get_next_word(&input[i + 1]), mini->env_list);
 			input = ft_replace(input, env, i, 1);
