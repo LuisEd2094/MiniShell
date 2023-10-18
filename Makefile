@@ -26,6 +26,7 @@ MINI_SHARED_PATH	= mini_shared/
 SIGNALS_PATH		= signals/
 PARSE_INPUT_PATH	= parse_input/
 
+READL			= ./readline/
 
 ## Add new path, just need name/
 MAKE_OBJ_DIR		= $(OBJS_PATH) $(addprefix $(OBJS_PATH), \
@@ -173,11 +174,10 @@ OBJS        =	$(addprefix $(OBJS_PATH), $(SRC:.c=.o))
 all: conf make_lib $(NAME)
 
 conf:
-##
-##	@if [ ! -f $(READL)config.status ]; then\
+	@if [ ! -f $(READL)config.status ]; then\
 		cd $(READL) && ./configure &> /dev/null; \
-#		echo "✅ ==== $(G)$(ligth)Create config.status$(E)==== ✅"; \
-##	fi
+		echo "✅ ==== $(G)$(ligth)Create config.status$(E)==== ✅"; \
+	fi
 
 $(OBJS_PATH)%.o: $(SRCS_PATH)%.c | $(MAKE_OBJ_DIR) $(DEPS_PATH)
 			@echo "$(CYAN)Compiling $< $(DEF_COLOR)"
@@ -190,7 +190,7 @@ $(NAME): $(OBJS) $(LIB) Makefile
 	@echo "$(LIGHT_GREEN)Created $(NAME) executable$(DEF_COLOR)"
 
 make_lib:
-	make -C ./readline/ --no-print-directory &> /dev/null
+	@make -C ./readline/ --no-print-directory &> /dev/null
 	@echo "$(GREEN)Checking Libft$(DEF_COLOR)"
 	@$(MAKE) -s -C $(LIB_PATH)
 	@echo "$(BLUE)Done checking Libft$(DEF_COLOR)"
