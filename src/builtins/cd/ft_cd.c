@@ -6,7 +6,7 @@
 /*   By: gmacias- <gmacias-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 08:50:32 by gmacias-          #+#    #+#             */
-/*   Updated: 2023/10/13 11:12:08 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/18 10:08:11 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 int	send_old_directory(t_list *env_list, char *sol)
 {
 	char	*old_directory;
-	
+
 	old_directory = malloc((ft_strlen("OLDPWD") + 1) * sizeof(char));
 	if (old_directory == NULL)
 	{
@@ -40,7 +40,6 @@ int	change_old_directory(t_list *env_list)
 {
 	char	*old_dir;
 	char	*word_OD;
-
 	word_OD = malloc((ft_strlen("OLDPWD") + 1) * sizeof(char));	
 	if (word_OD == NULL)
 	{
@@ -49,12 +48,12 @@ int	change_old_directory(t_list *env_list)
 	}
 	ft_strlcpy(word_OD, "OLDPWD", ft_strlen("OLDPWD") + 1);
 	old_dir = get_env_str(word_OD, env_list);
-	if (!old_dir)//malloc fallo
+	if (!old_dir)
 	{
 		perror("minishell ");
 		return (-1);
 	}
-	if (!old_dir[0])//malloc fue exitoso pero OLDPWD no esta set
+	if (!old_dir[0])
 	{
 		free(old_dir);
 		return (print_error("minishell: cd: OLDPWD not set\n", 1));
