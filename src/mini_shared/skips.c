@@ -43,7 +43,12 @@ int	get_arg_size_skip_redirections(char *input)
 	i = 0;
 	while (input[i] && is_ascii_no_space(input[i]) && \
 	!(input[i] == '>' || input[i] == '<'))
-		i++;
+	{
+		if (input[i] == '"' || input[i] == '\'')
+			i += get_quotes_size(&input[i]);
+		else
+			i++;
+	}
 	return (i);
 }
 
