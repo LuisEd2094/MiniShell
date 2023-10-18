@@ -60,16 +60,11 @@ char	*replace_values(char *cmd, t_minishell *mini)
 		{
 			if (cmd[i] == '"')
 			{
-				cmd = get_double_quote(cmd, mini->env_list, &i);
-				printf("after double [%s] \n", cmd);
-				cmd = remove_quote(cmd, i, '"');
-				printf("after remove quotes[%s]\n", cmd);
+				cmd = get_double_quote(cmd, mini->env_list, i);
+				printf("{%s}\n", cmd);
 			}
-			else if (cmd[i] == '\'')
-			{				
+			else if (cmd[i] == '\'')		
 				cmd = remove_quote(cmd, i, '\'');
-				ft_printf("single [%s]\n", cmd);
-			}
 			else if (cmd[i] == '$' && cmd[i + 1] == '?')
 				cmd = replace_exit_code(mini, cmd);
 			else if (cmd[i] == '$' && \
