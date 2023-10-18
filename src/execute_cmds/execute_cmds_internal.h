@@ -19,7 +19,7 @@
 # include <shared.h>
 
 char	*get_double_quote(char *cmd, t_list *env_list, int i);
-char    *remove_quote(char *str, int i, char quote);
+int     remove_quote(char *str, int i, char quote);
 
 
 #endif

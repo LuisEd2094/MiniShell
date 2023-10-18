@@ -38,7 +38,6 @@ char	*get_double_quote(char *cmd, t_list *env_list, int i)
 		}
 		i++;
 	}
-	printf("beofre remove[%s]\n", new);
-	new = remove_quote(new, start, '"');
+	remove_quote(new, start, '"');
 	return (new);
 }
