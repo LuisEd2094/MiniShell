@@ -41,7 +41,7 @@ int	get_arg_size_skip_redirections(char *input)
 	int	i;
 
 	i = 0;
-	while (input[i] && is_ascii_no_space(input[i]) || \
+	while (input[i] && is_ascii_no_space(input[i]) && \
 	!(input[i] == '>' || input[i] == '<'))
 		i++;
 	return (i);
