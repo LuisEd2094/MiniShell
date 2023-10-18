@@ -1,4 +1,4 @@
- /* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
@@ -6,7 +6,7 @@
 /*   By: gmacias- <gmacias-@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 08:50:32 by gmacias-          #+#    #+#             */
-/*   Updated: 2023/10/18 10:08:11 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/18 12:08:17 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int	change_old_directory(t_list *env_list)
 {
 	char	*old_dir;
 	char	*word_od;
-	int		status;
 
 	word_od = malloc((ft_strlen("OLDPWD") + 1) * sizeof(char));
 	if (word_od == NULL)
@@ -48,48 +47,6 @@ int	change_old_directory(t_list *env_list)
 	}
 	ft_strlcpy(word_od, "OLDPWD", ft_strlen("OLDPWD") + 1);
 	old_dir = get_env_str(word_od, env_list);
-	status = execute_change_old_dir(old_dir);
-	if (status == -1)
-		return (status);
-	free(old_dir);
-	return (status);
-}
-
-int	send_old_directory(t_list *env_list, char *sol)
-{
-	char	*old_directory;
-	
-	old_directory = malloc((ft_strlen("OLDPWD") + 1) * sizeof(char));
-	if (old_directory == NULL)
-	{
-		perror("Error OLDPWD: Fallo en malloc");
-		return (3);
-	}
-	if (sol == NULL)
-	{
-		free(old_directory);
-		perror("Error OLDPWD: Fallo en malloc");
-		return (3);
-	}
-	ft_strlcpy(old_directory, "OLDPWD", ft_strlen("OLDPWD") + 1);
-	create_or_update_env_node(env_list, old_directory, sol);
-	free(old_directory);
-	return (0);
-}
-
-int	change_old_directory(t_list *env_list)
-{
-	char	*old_dir;
-	char	*word_OD;
-
-	word_OD = malloc((ft_strlen("OLDPWD") + 1) * sizeof(char));	
-	if (word_OD == NULL)
-	{
-		perror("Error OLDPWD: Fallo en malloc");
-		return (3);
-	}
-	ft_strlcpy(word_OD, "OLDPWD", ft_strlen("OLDPWD") + 1);
-	old_dir = get_env_str(word_OD, env_list);
 	if (!old_dir[0])
 	{
 		perror("No se pudo obtener el antiguo directorio");
