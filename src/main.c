@@ -38,7 +38,8 @@ void	main_loop(t_minishell *mini)
 		mini->input = readline(">> ");
 		if (!mini->input)
 		{
-			ft_printf("exit\n");
+			if (isatty(STDIN_FILENO))
+				write(2, "exit\n", 6);
 			exit_mini(mini);
 		}
 		if (mini->input[0] != '\0')
