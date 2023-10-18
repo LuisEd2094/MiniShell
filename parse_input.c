@@ -159,6 +159,5 @@ int	parse_input(char *input)
 		if (checker.return_val == 258)
 			return (258);
 	}
-	printf("checker.redirections {%i}\n", checker.redirections);
 	return (check_vals(&checker));
 }
