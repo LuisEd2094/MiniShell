@@ -12,12 +12,13 @@
 
 #include <minishell.h>
 
-char	*get_second_half(char *cmd)
+char	*get_second_half(char *cmd, int start)
 {
 	int	j;
 	int	k;
 
 	j = 0;
+	printf("start second hañf [%s]\n", &cmd[start + 1]);
 	while (cmd[j] && cmd[j] != '$')
 		j++;
 	j++;
@@ -45,8 +46,9 @@ char	*ft_replace(char *cmd, char *env, int i, bool found)
 	char	*str_second_half;
 	char	*new;
 
+	int env_name_size = get_next_word_len(&cmd [i  + 1]) + 1;
 	str_first_half = get_first_half(cmd, i);
-	str_second_half = get_second_half(cmd);
+	str_second_half = ft_substr(cmd, i + env_name_size, ft_strlen(cmd) - (i  + env_name_size));
 	new = (char *)malloc(sizeof(char) * (ft_strlen(str_first_half) + \
 				ft_strlen(str_second_half) + ft_strlen(env)) + 1);
 	ft_strlcpy(new, str_first_half, ft_strlen(str_first_half) + 1);

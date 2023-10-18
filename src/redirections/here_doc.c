@@ -59,7 +59,9 @@ static char	*check_input(char *input, t_minishell *mini)
 		{
 			env = get_env_str(get_next_word(&input[i + 1]), mini->env_list);
 			input = ft_replace(input, env, i, 1);
+			printf("input after replacer{%s}\n", input);
 			free(env);
+			i--;
 		}
 		i++;
 	}
