@@ -63,6 +63,8 @@ void check_redirectionstest(void)
     TEST_ASSERT_EQUAL(0, parse_input("hola >>hola"));
     TEST_ASSERT_EQUAL(0, parse_input("hola>hola"));
     TEST_ASSERT_EQUAL(0, parse_input("hola>>hola"));
+    TEST_ASSERT_EQUAL(0, parse_input("hola > \"hola\""));
+
 
 
     TEST_ASSERT_EQUAL(0, parse_input("hola <hola"));
@@ -119,6 +121,8 @@ void check_all(void)
     TEST_ASSERT_EQUAL(0, parse_input("ls | > #outfile")); //newline
     TEST_ASSERT_EQUAL(0, parse_input("ls|>outfile")); //newline
     TEST_ASSERT_EQUAL(0, parse_input("ls|cat -e")); //newline
+    TEST_ASSERT_EQUAL(0, parse_input("> ls|cat -e")); //newline
+
 
     
 
@@ -131,6 +135,7 @@ void check_all(void)
     TEST_ASSERT_EQUAL(258, parse_input("hola > "));
     TEST_ASSERT_EQUAL(258, parse_input("ls>|cat")); //newline
     TEST_ASSERT_EQUAL(258, parse_input("ls>|cat -e")); //newline
+
 
 
 

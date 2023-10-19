@@ -29,29 +29,33 @@ void	check_quotes(t_input *checker, int i, char *input)
 
 void	checker_redirections(t_input *checker, int i, char *input)
 {
-	if (i == checker->redir_pos + 1 && (input[i] == '|' || \
-				(input[i] == '>' || input[i] == '<')))
+	if (i == checker->redir_pos + 1 && ((input[i] == '>' || input[i] == '<')))
 	{
-		if (checker->redir_token == '>' && input[i] == '<')
+		if (input[i] != checker->redir_token)
 			checker->return_val = (258);
-		else
-			checker->return_val = -1;
 	}
 	else
 	{
-		if (input[i] == '>' || input[i] == '<')
-			checker->return_val = ( 258);
+		if (input[i] == '>' || input[i] == '<' || input[i] == '|')
+			checker->return_val = (258);
+		else if (!ft_isspace(input[i]))
+		{
+			checker->redirections = 0;
+			checker->return_val = 0;
+		}
 	}
-	if (input[i] != '|' && !ft_isspace(input[i]) && input[i] != checker->redir_token)
+	/*if (input[i] != '|' && !ft_isspace(input[i]) && input[i] != checker->redir_token)
 		checker->redirections = 0;
     else if (input[i] == '|')
         checker->return_val = 258;
 	if ((input[i] == '>' || input[i] == '<') && input[i] != checker->redir_token)
-		checker->return_val = (258);
+		checker->return_val = (258);*/
 }
 
 void	check_pipes(t_input *checker, char *input, int i)
 {
+	if (!checker->left_of_pipe && input[i] != '|')
+			checker->left_of_pipe = 1;
 	if (!checker->pipe && input[i] == '|')
 	{
 		if (!checker->left_of_pipe)
@@ -65,36 +69,7 @@ void	check_pipes(t_input *checker, char *input, int i)
 		checker->pipe = 0;
 	}
 }
-/*
-int	(char *str, char *error, int code)
-{
-	print_error(str, code);
-	if (error)
-	{
-		if (error[1])
-		{
-			if (error[0] == '|' && error[1] == '|')
-				print_error("||", code);
-			else if (error[0] == '|')
-				print_error("|", code);
-			else if (error[0] == '>' && error[1] == '>')
-				print_error(">>", code);
-			else if (error[0] == '>')
-				print_error(">", code);
-			else if (error[0] == '<')
-			{
-				if (error[2] && error[1] == '<' && error[2] == '<' )
-					print_error("<<<", code);
-				else if (error[0] == '<' && error[1] == '<')
-					print_error("<<", code);
-			}
-		}
-		else
-			print_error(error, code);
-	}
-	return (print_error("\n", code));
-}
-*/
+
 int	check_vals(t_input *checker)
 {
 	if (checker->quote)
@@ -125,9 +100,6 @@ static void	set_vals_redirections(t_input *checker, char *input, int i)
 
 static void	parse_2(t_input *checker, char *input, int i)
 {
-	if (!checker->left_of_pipe && input[i] != '|')
-		checker->left_of_pipe = 1;
-	check_quotes(checker, i, input);
 	check_pipes(checker, input, i);
 }
 
@@ -142,21 +114,15 @@ int	parse_input(char *input)
 	{
 		if (ft_isspace(input[i]))
 			continue ;
-		if (!checker.redirections && !checker.quote && \
+		if (checker.redirections && !checker.quote)
+			checker_redirections(&checker, i, input);
+		if (checker.quote || (input[i] == '\'' || input[i] == '"'))
+			check_quotes(&checker, i, input);
+		else if (!checker.redirections && \
 		(input[i] == '>' || input[i] == '<'))
 			set_vals_redirections(&checker, input, i);
-		else if (checker.redirections)
-		{
-			//printf("character [%s] checker.redirections {%i}\n", &input[i], checker.redirections);
-			checker_redirections(&checker, i, input);
-			//printf("checker.redirections {%i}\n", checker.redirections);
-
-			if (checker.return_val == -1)
-				continue ;
-			else if (checker.return_val == 258)
-				return (258);
-		}
-		parse_2(&checker, input, i);
+		if (!checker.quote)
+			check_pipes(&checker, input, i); 
 		if (checker.return_val == 258)
 			return (258);
 	}
