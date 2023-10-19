@@ -1978,8 +1978,8 @@ configure:7017: $? = 0
 configure:7017: result: yes
 configure:7043: checking for tgetent
 configure:7043: gcc -o conftest -g -O2   conftest.c  >&5
-/usr/bin/ld: /tmp/ccbe1YYB.o: in function `main':
-/home/luised2094/MiniShell/readline/conftest.c:123: undefined reference to `tgetent'
+/usr/bin/ld: /tmp/ccOoHBcf.o: in function `main':
+/home/luised2094/testMini/readline/conftest.c:123: undefined reference to `tgetent'
 collect2: error: ld returned 1 exit status
 configure:7043: $? = 1
 configure: failed program was:
@@ -2273,8 +2273,8 @@ configure:7383: $? = 0
 configure:7383: result: yes
 configure:7390: checking for mbscasecmp
 configure:7390: gcc -o conftest -g -O2   conftest.c  >&5
-/usr/bin/ld: /tmp/cc9gQ4KL.o: in function `main':
-/home/luised2094/MiniShell/readline/conftest.c:128: undefined reference to `mbscasecmp'
+/usr/bin/ld: /tmp/ccAqJHCo.o: in function `main':
+/home/luised2094/testMini/readline/conftest.c:128: undefined reference to `mbscasecmp'
 collect2: error: ld returned 1 exit status
 configure:7390: $? = 1
 configure: failed program was:
@@ -2412,8 +2412,8 @@ configure: failed program was:
 configure:7390: result: no
 configure:7397: checking for mbscmp
 configure:7397: gcc -o conftest -g -O2   conftest.c  >&5
-/usr/bin/ld: /tmp/ccmk9T5N.o: in function `main':
-/home/luised2094/MiniShell/readline/conftest.c:128: undefined reference to `mbscmp'
+/usr/bin/ld: /tmp/ccKdHXat.o: in function `main':
+/home/luised2094/testMini/readline/conftest.c:128: undefined reference to `mbscmp'
 collect2: error: ld returned 1 exit status
 configure:7397: $? = 1
 configure: failed program was:
@@ -2559,8 +2559,8 @@ configure:7411: $? = 0
 configure:7411: result: yes
 configure:7419: checking for mbschr
 configure:7419: gcc -o conftest -g -O2   conftest.c  >&5
-/usr/bin/ld: /tmp/ccuvlcLn.o: in function `main':
-/home/luised2094/MiniShell/readline/conftest.c:130: undefined reference to `mbschr'
+/usr/bin/ld: /tmp/ccdvF55Z.o: in function `main':
+/home/luised2094/testMini/readline/conftest.c:130: undefined reference to `mbschr'
 collect2: error: ld returned 1 exit status
 configure:7419: $? = 1
 configure: failed program was:
@@ -3131,7 +3131,7 @@ bash_cv_wcwidth_broken=no
 AR='ar'
 ARFLAGS='cr'
 BRACKETED_PASTE='-DBRACKETED_PASTE_DEFAULT=1'
-BUILD_DIR='/home/luised2094/MiniShell/readline'
+BUILD_DIR='/home/luised2094/testMini/readline'
 CC='gcc'
 CFLAGS='-g -O2 -Wno-parentheses -Wno-format-security -Wno-tautological-constant-out-of-range-compare'
 CPP='gcc -E'

@@ -12,7 +12,7 @@
 
 #include "parse_input_internal.h"
 
-void	init_checker(t_input *checker)
+static void	init_checker(t_input *checker)
 {
 	checker->quote = 0;
 	checker->left_of_pipe = 0;
@@ -22,19 +22,42 @@ void	init_checker(t_input *checker)
 	checker->return_val = 0;
 }
 
-static void	check_redirections(t_input *checker, char *input, int i)
+
+static void	set_vals_redirections(t_input *checker, char *input, int i)
 {
 	checker->redirections = 1;
 	checker->redir_token = input[i];
 	checker->redir_pos = i;
 }
 
-static void	parse_2(t_input *checker, char *input, int i)
+void	check_quotes(t_input *checker, int i, char *input)
 {
-	if (!checker->left_of_pipe && input[i] != '|')
-		checker->left_of_pipe = 1;
-	check_quotes(checker, i, input);
-	check_pipes(checker, input, i);
+	if (!checker->quote && (input[i] == '\'' || input[i] == '"'))
+		checker->quote = input[i];
+	else if (checker->quote)
+	{
+		if (input[i] == checker->quote)
+			checker->quote = 0;
+	}
+}
+
+void	checker_redirections(t_input *checker, int i, char *input)
+{
+	if (i == checker->redir_pos + 1 && ((input[i] == '>' || input[i] == '<')))
+	{
+		if (input[i] != checker->redir_token)
+			checker->return_val = print_input_error(UNEXPECTED, &input[i], 258);
+	}
+	else
+	{
+		if (input[i] == '>' || input[i] == '<' || input[i] == '|')
+			checker->return_val = print_input_error(UNEXPECTED, &input[i], 258);
+		else if (!ft_isspace(input[i]))
+		{
+			checker->redirections = 0;
+			checker->return_val = 0;
+		}
+	}
 }
 
 int	parse_input(char *input)
@@ -48,20 +71,15 @@ int	parse_input(char *input)
 	{
 		if (ft_isspace(input[i]))
 			continue ;
-		if (input[i] == ';')
-			return (1);
-		if (!checker.redirections && !checker.quote && \
-		(input[i] == '>' || input[i] == '<'))
-			check_redirections(&checker, input, i);
-		else if (checker.redirections)
-		{
+		if (checker.redirections && !checker.quote)
 			checker_redirections(&checker, i, input);
-			if (checker.return_val == -1)
-				continue ;
-			else if (checker.return_val == 258)
-				return (checker.return_val);
-		}
-		parse_2(&checker, input, i);
+		if (checker.quote || (input[i] == '\'' || input[i] == '"'))
+			check_quotes(&checker, i, input);
+		else if (!checker.redirections && \
+		(input[i] == '>' || input[i] == '<'))
+			set_vals_redirections(&checker, input, i);
+		if (!checker.quote)
+			check_pipes(&checker, input, i); 
 		if (checker.return_val == 258)
 			return (checker.return_val);
 	}
