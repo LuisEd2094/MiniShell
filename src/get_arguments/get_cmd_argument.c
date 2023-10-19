@@ -19,8 +19,9 @@ char	*ft_get_arg(char *cmd, int arg_start)
 	arg_len = 0;
 	if (cmd[arg_start])
 	{
-		if ((arg_start == 0 && (cmd[arg_start] == '\"' || cmd[arg_start] == '\'')) || \
-				((cmd[arg_start] == '\"' || cmd[arg_start] == '\'') && cmd[arg_start - 1] == ' '))
+		if ((arg_start == 0 && (cmd[arg_start] == '\"' || \
+		cmd[arg_start] == '\'')) || ((cmd[arg_start] == '\"' || \
+		cmd[arg_start] == '\'') && cmd[arg_start - 1] == ' '))
 			arg_len += get_quotes_size(&cmd[arg_start]);
 		else if (cmd[arg_start] == '>' || cmd[arg_start] == '<')
 			arg_len += get_redirection_size(&cmd[arg_start]);

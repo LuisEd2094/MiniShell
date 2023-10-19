@@ -22,7 +22,8 @@ char	*ft_replace(char *cmd, char *env, int i, bool found)
 
  	env_name_size = get_next_word_len(&cmd [i  + 1]) + 1;
 	str_first_half = ft_substr(cmd, 0, i);
-	str_second_half = ft_substr(cmd, i + env_name_size, ft_strlen(cmd) - (i  + env_name_size));
+	str_second_half = ft_substr(cmd, i + env_name_size, \
+	ft_strlen(cmd) - (i  + env_name_size));
 	new = (char *)malloc(sizeof(char) * (ft_strlen(str_first_half) + \
 				ft_strlen(str_second_half) + ft_strlen(env)) + 1);
 	ft_strlcpy(new, str_first_half, ft_strlen(str_first_half) + 1);
