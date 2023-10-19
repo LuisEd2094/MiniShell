@@ -54,36 +54,44 @@ char	*replace_exit_code(t_minishell *mini, char *cmd)
 	return (cmd);
 }
 
-char	*replace_values(char *cmd, t_minishell *mini)
+static	char *replace_values_aux(char *cmd, t_minishell *mini, int *og_i)
 {
 	int i;
 	char	*env;
 
+	i = *og_i;
+	if (cmd[i] == '"')
+	{
+		cmd = get_double_quote(cmd, mini->env_list, i);
+		i += remove_quote(cmd,  '"', i);
+	}
+	else if (cmd[i] == '\'')
+		i += remove_quote(cmd,  '\'', i);		
+	else if (cmd[i] == '$' && cmd[i + 1] && is_ascii_no_space(cmd[i + 1]))
+	{
+		if (cmd[i + 1] == '?')
+			env = get_env_str(ft_substr(cmd, i + 1, 1), mini->env_list);
+		else
+			env = get_env_str_from_quote(&cmd[i + 1], mini->env_list);
+		cmd = replace_env(cmd, env, i);
+		i += ft_strlen(env);
+		free(env);
+	}
+	*og_i = i;
+	return (cmd);
+}
+
+char	*replace_values(char *cmd, t_minishell *mini)
+{
+	int i;
+
 	i = 0;
-	printf("cmd [%s]\n", cmd);
 	while (cmd[i])
 	{
-		if (cmd[i] == '"' || cmd[i] == '\'' || (cmd[i] == '$' && cmd[i + 1] && is_ascii_no_space(cmd[i + 1])))
+		if (cmd[i] == '"' || cmd[i] == '\'' || (cmd[i] == '$' && cmd[i + 1] \
+		&& is_ascii_no_space(cmd[i + 1])))
 		{
-			if (cmd[i] == '"')
-			{
-				cmd = get_double_quote(cmd, mini->env_list, i);
-				i += remove_quote(cmd,  '"', i);
-			}
-			else if (cmd[i] == '\'')
-				i += remove_quote(cmd,  '\'', i);		
-			else if (cmd[i] == '$' && \
-			cmd[i + 1] && \
-			is_ascii_no_space(cmd[i + 1]))
-			{
-				if (cmd[i + 1] == '?')
-					env = get_env_str(ft_substr(cmd, i + 1, 1), mini->env_list);
-				else
-					env = get_env_str_from_quote(&cmd[i + 1], mini->env_list);
-				cmd = replace_env(cmd, env, i);
-				i += ft_strlen(env);
-				free(env);
-			}
+			cmd = replace_values_aux(cmd, mini, &i);
 			if (!cmd)
 				return (NULL);
 		}
