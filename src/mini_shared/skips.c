@@ -24,11 +24,11 @@ int	get_quotes_size(char *input)
 		i++;
 	if (input[i] == quote)
 		i++;
-	if(input[i] == '\0' || input[i] == ' ')
+	if (input[i] == '\0' || input[i] == ' ')
 		return(i);
-	while (input[i] && is_ascii_no_space(input[i]) && \
-	!(input[i] == '>' || input[i] == '<'))
-			i++;
+	if (input[i] == '"' || input[i] == '\'')
+	    i += get_quotes_size(&input[i]);
+	i += get_arg_size_skip_redirections(&input[i]);
 	return (i);
 }
 

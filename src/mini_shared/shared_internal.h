@@ -13,6 +13,7 @@
 #ifndef SHARED_INTERNAL_H
 # define SHARED_INTERNAL_H
 # include <libft.h>
+# include <shared.h>
 
 int	is_ascii_no_space(char c);
 
