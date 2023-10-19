@@ -12,7 +12,7 @@
 
 #include "execute_cmds_internal.h"
 
-int	remove_quote(char *str, char quote)
+int	remove_quote(char *str, char quote, int quote_pos)
 {
 	int	j;
 	int	k;
@@ -26,7 +26,7 @@ int	remove_quote(char *str, char quote)
 	size = 0;
 	while(str[++j])
 	{
-		if (str[j] == quote && quote_counter < 2)
+		if (str[j] == quote && quote_counter < 2 && j >= quote_pos)
 			quote_counter++;
 		else
 		{
@@ -68,10 +68,10 @@ char	*replace_values(char *cmd, t_minishell *mini)
 			if (cmd[i] == '"')
 			{
 				cmd = get_double_quote(cmd, mini->env_list, i);
-				i += remove_quote(cmd,  '"');
+				i += remove_quote(cmd,  '"', i);
 			}
 			else if (cmd[i] == '\'')
-				i += remove_quote(cmd,  '\'');		
+				i += remove_quote(cmd,  '\'', i);		
 			else if (cmd[i] == '$' && \
 			cmd[i + 1] && \
 			is_ascii_no_space(cmd[i + 1]))
