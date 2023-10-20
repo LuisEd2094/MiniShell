@@ -12,7 +12,7 @@
 
 #include <minishell.h>
 
-static	void *free_strs(char *s1, char *s2)
+static void	*free_strs(char *s1, char *s2)
 {
 	if (s1)
 		free(s1);
@@ -28,10 +28,10 @@ char	*ft_replace(char *cmd, char *env, int i, bool found)
 	char	*new;
 	int		env_name_size;
 
- 	env_name_size = get_next_word_len(&cmd [i  + 1]) + 1;
+	env_name_size = get_next_word_len(&cmd [i + 1]) + 1;
 	str_first_half = ft_substr(cmd, 0, i);
 	str_second_half = ft_substr(cmd, i + env_name_size, \
-	ft_strlen(cmd) - (i  + env_name_size));
+	ft_strlen(cmd) - (i + env_name_size));
 	if (!str_first_half || !str_second_half)
 		return (free_strs(str_first_half, str_second_half));
 	new = (char *)malloc(sizeof(char) * (ft_strlen(str_first_half) + \

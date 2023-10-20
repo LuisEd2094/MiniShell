@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "get_arguments_internal.h"
+
 int	get_argument_count(char *cmd)
 {
 	int	i;

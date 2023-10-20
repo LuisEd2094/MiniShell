@@ -13,19 +13,19 @@
 #include <libft.h>
 #include <minishell.h>
 
-static int get_pos(char *cmd, int move, int pos)
+static int	get_pos(char *cmd, int move, int pos)
 {
 	if (pos < 0)
 		return (0);
-	while (pos >= 0 && cmd[pos]&& ft_isspace(cmd[pos]))
+	while (pos >= 0 && cmd[pos] && ft_isspace(cmd[pos]))
 		pos += move;
 	return (pos);
 }
 
-int	is_only_num(char	*cmd)
+int	is_only_num(char *cmd)
 {
 	int	i;
-	int j;
+	int	j;
 
 	i = get_pos(cmd, 1, 0);
 	j = get_pos(cmd, -1, ft_strlen(cmd) - 1);
@@ -38,7 +38,7 @@ int	is_only_num(char	*cmd)
 	while (i <= j)
 	{
 		if (!ft_isdigit(cmd[j--]) || !ft_isdigit(cmd[i++]))
-			return(0);
+			return (0);
 	}
 	return (1);
 }

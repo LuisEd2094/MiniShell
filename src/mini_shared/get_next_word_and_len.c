@@ -12,16 +12,15 @@
 
 #include "shared_internal.h"
 
-static	int is_quote(char c)
+static int	is_quote(char c)
 {
 	if (c == '"' || c == '\'')
 		return (1);
 	return (0);
 }
 
-static int is_valid_char(char *cmd, int len)
+static int	is_valid_char(char *cmd, int len)
 {
-
 	if (ft_isdigit(cmd[len]) && len == 0)
 		return (0);
 	else if (is_quote(cmd[len]))

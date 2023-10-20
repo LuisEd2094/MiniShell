@@ -25,9 +25,9 @@ int	get_quotes_size(char *input)
 	if (input[i] == quote)
 		i++;
 	if (input[i] == '\0' || input[i] == ' ')
-		return(i);
+		return (i);
 	if (input[i] == '"' || input[i] == '\'')
-	    i += get_quotes_size(&input[i]);
+		i += get_quotes_size(&input[i]);
 	i += get_arg_size_skip_redirections(&input[i]);
 	return (i);
 }

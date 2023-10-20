@@ -22,7 +22,6 @@ static void	init_checker(t_input *checker)
 	checker->return_val = 0;
 }
 
-
 static void	set_vals_redirections(t_input *checker, char *input, int i)
 {
 	checker->redirections = 1;
@@ -79,7 +78,7 @@ int	parse_input(char *input)
 		(input[i] == '>' || input[i] == '<'))
 			set_vals_redirections(&checker, input, i);
 		if (!checker.quote)
-			check_pipes(&checker, input, i); 
+			check_pipes(&checker, input, i);
 		if (checker.return_val == 258)
 			return (checker.return_val);
 	}

@@ -12,7 +12,6 @@
 
 #include "parse_input_internal.h"
 
-
 void	check_pipes(t_input *checker, char *input, int i)
 {
 	if (!checker->left_of_pipe && input[i] != '|')
@@ -31,7 +30,7 @@ void	check_pipes(t_input *checker, char *input, int i)
 	}
 }
 
-static void print_input_helper(char *error, int code)
+static void	print_input_helper(char *error, int code)
 {
 	if (error[0] == '|' && error[1] == '|')
 		print_error("||", code);

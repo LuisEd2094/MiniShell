@@ -18,12 +18,12 @@ int	remove_quote(char *str, char quote, int quote_pos)
 	int	k;
 	int	quote_counter;
 	int	str_len;
-	int last_pos;
+	int	last_pos;
 
 	quote_counter = 0;
 	j = -1;
 	k = 0;
-	while(str[++j])
+	while (str[++j])
 	{
 		if (str[j] == quote && quote_counter < 2 && j >= quote_pos)
 		{
@@ -40,20 +40,19 @@ int	remove_quote(char *str, char quote, int quote_pos)
 	return (last_pos);
 }
 
-static	char *replace_values_aux(char *cmd, t_minishell *mini, int *og_i)
+static char	*replace_values_aux(char *cmd, t_minishell *mini, int *og_i)
 {
-	int i;
+	int		i;
 	char	*env;
 
 	i = *og_i;
-
 	if (cmd[i] == '"')
 	{
 		cmd = get_double_quote(cmd, mini->env_list, i);
-		i = remove_quote(cmd,  '"', i);
+		i = remove_quote(cmd, '"', i);
 	}
 	else if (cmd[i] == '\'')
-		i = remove_quote(cmd,  '\'', i);		
+		i = remove_quote(cmd, '\'', i);
 	else if (cmd[i] == '$' && cmd[i + 1] && is_ascii_no_space(cmd[i + 1]))
 	{
 		if (cmd[i + 1] == '?')
@@ -70,7 +69,7 @@ static	char *replace_values_aux(char *cmd, t_minishell *mini, int *og_i)
 
 char	*replace_values(char *cmd, t_minishell *mini)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (cmd[i])
