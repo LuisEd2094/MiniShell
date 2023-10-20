@@ -16,13 +16,15 @@ int	change_directory(char *directory)
 {
 	if (directory == NULL)
 	{
-		perror(directory);
-		return (-1);
+		print_error("minishell: cd: ", -1);
+		print_error(directory, -1);
+		return (print_error(": No file or directory\n", -1));
 	}
 	if (chdir(directory) == -1)
 	{
-		perror(directory);
-		return (-1);
+		print_error("minishell: cd: ", -1);
+		print_error(directory, -1);
+		return (print_error(": No file or directory\n", -1));
 	}
 	return (0);
 }
@@ -31,7 +33,7 @@ int	send_old_directory(t_list *env_list, char *sol)
 {
 	if (sol == NULL)
 	{
-		perror("Where am I: current directory not found, redirecting to HOME");
+		perror("Current directory not found: redirecting to HOME");
 		change_directory(getenv("HOME"));
 	}
 	new_pwd(env_list);
@@ -50,8 +52,8 @@ int	change_old_directory(t_list *env_list)
 	word_od = malloc((ft_strlen("OLDPWD") + 1) * sizeof(char));
 	if (word_od == NULL)
 	{
-		perror("malloc() failed: insufficient memory");
-		return (3);
+		return (print_error("minishell: cd: malloc() failed: \
+			insufficient memory\n", 3));
 	}
 	ft_strlcpy(word_od, "OLDPWD", ft_strlen("OLDPWD") + 1);
 	old_dir = get_env_str(word_od, env_list);
@@ -66,7 +68,7 @@ char	*expand_tilde(char *path)
 
 	if (getenv("HOME") == NULL)
 	{
-		perror("No se pudo obtener el directorio");
+		perror("minishell: cd: Cannot set HOME");
 		return (NULL);
 	}
 	expanded_size = ft_strlen(getenv("HOME")) + ft_strlen(path);
