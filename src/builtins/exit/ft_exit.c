@@ -43,7 +43,7 @@ int	is_only_num(char	*cmd)
 	return (1);
 }
 
-int	print_only_numeric_error(char *cmd, t_minishell *mini)
+void	print_only_numeric_error(char *cmd, t_minishell *mini)
 {
 	write(STDERR_FILENO, "minishell: exit: ", ft_strlen("minishell: exit: "));
 	write(STDERR_FILENO, cmd, ft_strlen(cmd));
@@ -51,7 +51,6 @@ int	print_only_numeric_error(char *cmd, t_minishell *mini)
 			ft_strlen(": numeric argument required\n"));
 	mini->exit_code = 255;
 	exit_mini(mini);
-	return (0);
 }
 
 int	ft_exit(char **cmd, t_minishell *mini)
@@ -64,7 +63,7 @@ int	ft_exit(char **cmd, t_minishell *mini)
 	if (len > 2)
 	{
 		if (!is_only_num(cmd[1]) || !cmd[1][0])
-			return (print_only_numeric_error(cmd[1], mini));
+			print_only_numeric_error(cmd[1], mini);
 		else
 			return (print_error("minishell: exit: too many arguments\n", 1));
 	}
