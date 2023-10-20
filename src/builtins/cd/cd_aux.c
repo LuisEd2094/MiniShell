@@ -34,3 +34,12 @@ int	execute_change_old_dir(char *old_dir)
 	free(old_dir);
 	return (0);
 }
+
+void	new_pwd(t_list *env_list)
+{
+	char	*pwd;
+
+	pwd = getcwd(NULL, 0);
+	create_or_update_env_node(env_list, "PWD", pwd);
+	free(pwd);
+}
