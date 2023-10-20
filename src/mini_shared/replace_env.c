@@ -12,6 +12,14 @@
 
 #include <minishell.h>
 
+static	void *free_strs(char *s1, char *s2)
+{
+	if (s1)
+		free(s1);
+	if (s2)
+		free(s2);
+	return (NULL);
+}
 
 char	*ft_replace(char *cmd, char *env, int i, bool found)
 {
@@ -24,14 +32,17 @@ char	*ft_replace(char *cmd, char *env, int i, bool found)
 	str_first_half = ft_substr(cmd, 0, i);
 	str_second_half = ft_substr(cmd, i + env_name_size, \
 	ft_strlen(cmd) - (i  + env_name_size));
+	if (!str_first_half || !str_second_half)
+		return (free_strs(str_first_half, str_second_half));
 	new = (char *)malloc(sizeof(char) * (ft_strlen(str_first_half) + \
 				ft_strlen(str_second_half) + ft_strlen(env)) + 1);
+	if (!new)
+		return (free_strs(str_first_half, str_second_half));
 	ft_strlcpy(new, str_first_half, ft_strlen(str_first_half) + 1);
 	ft_strlcat(new, env, ft_strlen(env) + ft_strlen(new) + 1);
 	ft_strlcat(new, str_second_half, ft_strlen(str_second_half) + \
 			ft_strlen(new) + 1);
-	free(str_first_half);
-	free(str_second_half);
+	free_strs(str_first_half, str_second_half);
 	if (found)
 		free(cmd);
 	return (new);
