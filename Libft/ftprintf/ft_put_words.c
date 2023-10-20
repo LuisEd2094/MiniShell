@@ -12,7 +12,7 @@
 
 #include "../includes/ft_printf.h"
 
-int	put_char(char c)
+int	put_char(int c)
 {
 	if (write (STDOUT_FILENO, &c, 1) != 1)
 		return (-1);

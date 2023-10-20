@@ -80,7 +80,7 @@ int	work_cmds_export(t_list *env_list, char **cmds)
 		if (!tab)
 			error = errno;
 		if (check_valid_identifier(tab[0], EXPORT) != 0)
-			error = print_invalid_identifier("export:'", cmds[i]);
+			error = print_invalid_identifier("export: '", cmds[i]);
 		else if (!create_or_update_env_node(env_list, tab[0], tab[1]))
 			error = errno;
 		if (tab[0] && tab[0][0])

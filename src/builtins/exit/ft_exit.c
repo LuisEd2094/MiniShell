@@ -17,11 +17,11 @@ int	is_only_num(char	*cmd)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	while (cmd[++i])
 	{
-		if (i == 0 && cmd[i] == '-')
-			i++;
+		if (i == 0 && (cmd[i] == '-' || cmd[i] == '+') && cmd[i + 1])
+			continue ;
 		else if (!ft_isdigit(cmd[i]))
 			return (0);
 	}
@@ -46,14 +46,16 @@ int	ft_exit(char **cmd, t_minishell *mini)
 	len = 0;
 	while (cmd[len])
 		len++;
+	//for (int i = 0; cmd[i]; i++)
+	//	ft_printf("{%s}\n", cmd[i]);
 	if (len > 2)
 	{
-		if (!is_only_num(cmd[1]))
+		if (!is_only_num(cmd[1]) || !cmd[1][0])
 			return (print_only_numeric_error(cmd[1], mini));
 		else
 			return (print_error("minishell: exit: too many arguments\n", 1));
 	}
-	if (cmd[1] && !is_only_num(cmd[1]))
+	if ((cmd[1] && !is_only_num(cmd[1])) || (cmd[1] && !cmd[1][0]))
 		print_only_numeric_error(cmd[1], mini);
 	if (cmd[1])
 		mini->exit_code = ft_atoi(cmd[1]);
