@@ -30,6 +30,7 @@ int	send_old_directory(t_list *env_list, char *sol)
 	}
 	ft_strlcpy(old_directory, "OLDPWD", ft_strlen("OLDPWD") + 1);
 	create_or_update_env_node(env_list, old_directory, sol);
+//	create_or_update_env_node(env_list, "PWD", getcwd(NULL, 0));
 	free(old_directory);
 	return (0);
 }

@@ -12,17 +12,19 @@
 
 #include <builtins.h>
 
-int	ft_pwd(char **arguments)
+int	ft_pwd(char **arguments, t_list *env_list)
 {
 	char	*current_directory;
+	char	*temp;
 
+	temp = "";
+	temp = ft_strjoin(temp, "PWD");
 	current_directory = getcwd(NULL, 0);
 	if (arguments == NULL)
 		return (-1);
 	if (current_directory == NULL)
 	{
-		perror("Error al obtener el directorio actual");
-		return (-1);
+		current_directory = get_env_str(temp, env_list);
 	}
 	ft_printf("%s\n", current_directory);
 	free(current_directory);

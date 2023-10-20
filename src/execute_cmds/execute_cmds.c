@@ -52,7 +52,7 @@ int	execute_cmds(char **cmds, t_list *env_list, t_minishell *mini)
 	else if (compare_cmds(cmds[0], "unset"))
 		return (ft_unset(cmds, mini));
 	else if (compare_cmds(cmds[0], "pwd"))
-		return (ft_pwd(cmds));
+		return (ft_pwd(cmds, env_list));
 	else if (compare_cmds(cmds[0], "echo"))
 		return (ft_echo(cmds));
 	else if (compare_cmds(cmds[0], "cd"))
