@@ -23,10 +23,10 @@
 /*	---	Memory pipe	---	*/
 int		**malloc_pipe(int num_pipes);
 void	free_pipe(int **pipes, int num_pipes);
+int		return_pipe(int last_status);
 
 /*  ---  Pipe  ---  */
 int		ft_pipe(char ***commands, int num_pipes, t_minishell *mini);
 int		get_exit_code(int status);
-int		return_pipe(int last_status);
 
 #endif
