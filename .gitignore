@@ -24,3 +24,4 @@ config.status
 readline/shlib/libhistory.so.8.2
 readline/shlib/libreadline.so.8.2
 minishell-tester/
+mpanic/
