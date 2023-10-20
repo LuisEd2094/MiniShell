@@ -27,7 +27,7 @@ int	execute_change_old_dir(char *old_dir)
 	if (chdir(old_dir) == -1)
 	{
 		free(old_dir);
-		return (print_error("minishell: cd: "Error in OLDPWD\n", 1));
+		return (print_error("minishell: cd: Error in OLDPWD\n", 1));
 	}
 	ft_printf("%s\n", old_dir);
 	free(old_dir);
