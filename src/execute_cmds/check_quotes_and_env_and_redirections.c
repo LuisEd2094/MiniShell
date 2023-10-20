@@ -104,6 +104,7 @@ char	*replace_values(char *cmd, t_minishell *mini)
 int	ft_redirections(char **cmd, t_minishell *mini, int i)
 {
 	char	*og_command;
+	int		status;
 
 	og_command = "";
 	og_command = ft_strjoin(og_command, cmd[i + 1]);
@@ -115,8 +116,10 @@ int	ft_redirections(char **cmd, t_minishell *mini, int i)
 		free(og_command);
 		return (print_error(": ambiguous redirect\n", 1));
 	}
-	check_and_handle_redirections(cmd[i], cmd[i + 1], mini);
+	status = check_and_handle_redirections(cmd[i], cmd[i + 1], mini);
 	free(og_command);
+	if (status)
+		return (status);
 	remove_cmds_from_cmds(cmd, i, 2);
 	return (0);
 }
