@@ -1,15 +1,8 @@
-./readline/config.log
-./readline/Makefile
 *.swp
 *.d
 *.o
 *.so
 *.a
-readline/libhistory.a
-readline/libreadline.a
-readline/shlib/libhistory.8.2.dylib
-readline/shlib/libreadline.8.2.dylib
-readline/config.status
 minishell
 *.txt
 *.exe
@@ -21,7 +14,6 @@ lines.c
 macro.sh
 .vscode
 config.status
-readline/shlib/libhistory.so.8.2
-readline/shlib/libreadline.so.8.2
 minishell-tester/
 mpanic
+readline/*
