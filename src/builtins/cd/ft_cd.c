@@ -12,15 +12,31 @@
 
 #include "cd_internal.h"
 
+int	change_directory(char *directory)
+{
+	if (directory == NULL)
+	{
+		perror(directory);
+		return (-1);
+	}
+	if (chdir(directory) == -1)
+	{
+		perror(directory);
+		return (-1);
+	}
+	return (0);
+}
+
 int	send_old_directory(t_list *env_list, char *sol)
 {
-	new_pwd(env_list);
 	if (sol == NULL)
 	{
-		perror("Error OLDPWD: Fallo en malloc");
-		return (3);
+		perror("Where am I: current directory not found, redirecting to HOME");
+		change_directory(getenv("HOME"));
 	}
-	create_or_update_env_node(env_list, "OLDPWD", sol);
+	new_pwd(env_list);
+	if (sol != NULL)
+		create_or_update_env_node(env_list, "OLDPWD", sol);
 	return (0);
 }
 
@@ -34,28 +50,13 @@ int	change_old_directory(t_list *env_list)
 	word_od = malloc((ft_strlen("OLDPWD") + 1) * sizeof(char));
 	if (word_od == NULL)
 	{
-		perror("Error OLDPWD: Fallo en malloc");
+		perror("malloc() failed: insufficient memory");
 		return (3);
 	}
 	ft_strlcpy(word_od, "OLDPWD", ft_strlen("OLDPWD") + 1);
 	old_dir = get_env_str(word_od, env_list);
 	status = execute_change_old_dir(old_dir);
 	return (status);
-}
-
-int	change_directory(char *directory)
-{
-	if (directory == NULL)
-	{
-		perror("No se pudo obtener el directorio");
-		return (-1);
-	}
-	if (chdir(directory) == -1)
-	{
-		perror("Error al cambiar al directorio");
-		return (-1);
-	}
-	return (0);
 }
 
 char	*expand_tilde(char *path)

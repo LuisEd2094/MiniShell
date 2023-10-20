@@ -27,7 +27,7 @@ int	execute_change_old_dir(char *old_dir)
 	if (chdir(old_dir) == -1)
 	{
 		free(old_dir);
-		perror("Error al cambiar al antiguo directorio");
+		perror("Error changing old directory");
 		return (errno);
 	}
 	ft_printf("%s\n", old_dir);
@@ -40,6 +40,8 @@ void	new_pwd(t_list *env_list)
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		return ;
 	create_or_update_env_node(env_list, "PWD", pwd);
 	free(pwd);
 }
