@@ -15,6 +15,6 @@
 # include <libft.h>
 # include <shared.h>
 
-int	is_ascii_no_space(char c);
+int	is_ascii_no_space(int c);
 
 #endif 

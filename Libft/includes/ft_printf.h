@@ -53,7 +53,7 @@ int		i_format(const char *s, int arg);
 int		p_format(const char *s, unsigned long arg);
 int		u_format(const char *s, unsigned int arg);
 int		ft_free_strs(char **str, char **str2, char **str3);
-int		put_char(char c);
+int		put_char(int c);
 int		put_str(char *s);
 int		c_left_space(t_flags flg, char arg);
 int		c_right_space(t_flags flg, char arg);

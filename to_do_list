@@ -1,39 +1,11 @@
-Input 
+~
 
-cat hola.test > | echo hola > p
+HOME 
 
-"ls >$out" //bash: $out: ambiguous redirect
+~/
 
+HOme + /
 
-Export / unset
+~ != /
 
-unset 1 //bash: unset: `1': not a valid identifier
-
-export HOLA=
-bash-3.2$ env | grep HOLA
-HOLA=
-export | grep HOLA=
-declare -x HOLA=""
-
-export HOLA
-bash-3.2$ export | grep HOLA
-declare -x HOLA
-env | grep HOLA
-
-
-When INIT
-
-SHLVL=1
-bash: warning: shell level (1501) too high, resetting to 1// ????????
-OLDPWD !=
-
-
-
-///////////
-After commands
-
-echo $_ if pipe = ""
-echo $PWD$PWD$PWD
-
-cd - ~
-bash: cd: OLDPWD not set
+~ 

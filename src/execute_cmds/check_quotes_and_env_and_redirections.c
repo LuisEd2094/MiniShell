@@ -59,6 +59,7 @@ static	char *replace_values_aux(char *cmd, t_minishell *mini, int *og_i)
 	char	*env;
 
 	i = *og_i;
+
 	if (cmd[i] == '"')
 	{
 		cmd = get_double_quote(cmd, mini->env_list, i);
