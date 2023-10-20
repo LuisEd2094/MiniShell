@@ -32,15 +32,15 @@ int	read_here_document(t_minishell *mini)
 	std_fd = dup2(fd, STDIN_FILENO);
 	close(fd);
 	if (std_fd < 0)
-		return (0);
-	return (1);
+		return (1);
+	return (0);
 }
 
 int	check_and_handle_redirections(char *redir, char *file, t_minishell *mini)
 {
 	if (redir[0] == '<' && redir[1] == '<')
-		read_here_document(mini);
+		return (read_here_document(mini));
 	else
-		handle_redirection(redir, file);
+		return (handle_redirection(redir, file));
 	return (0);
 }

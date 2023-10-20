@@ -14,6 +14,13 @@
 #include <fcntl.h>
 #include <libft.h>
 
+int	print_file_not(char *file)
+{
+	print_error("minishell: ", -1);
+	print_error(file, -1);
+	return (print_error(": No such file or directory\n", -1));
+}
+
 int	open_file(char *file_name, int redir_type)
 {
 	int	fd;
@@ -22,7 +29,7 @@ int	open_file(char *file_name, int redir_type)
 	if (redir_type == INPUT_REDIRECT)
 	{
 		if (access(file_name, R_OK) != 0)
-			return (print_error(file_name, 1));
+			return (print_file_not(file_name));
 	}
 	if (redir_type == INPUT_REDIRECT)
 		fd = open(file_name, O_RDONLY);
@@ -31,7 +38,7 @@ int	open_file(char *file_name, int redir_type)
 	else if (redir_type == APPEND_OUTPUT)
 		fd = open(file_name, O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
-		return (print_error(file_name, 1));
+		return (print_file_not(file_name));
 	return (fd);
 }
 
@@ -39,6 +46,8 @@ int	execute_dup2(int fd, int redir_type)
 {
 	int	std_fd;
 
+	if (fd < 0)
+		return (0);
 	if (redir_type == OUTPUT_REDIRECT || redir_type == APPEND_OUTPUT)
 	{
 		std_fd = dup2(fd, STDOUT_FILENO);
@@ -60,8 +69,8 @@ int	handle_redirection(char *redirection, char *file_name)
 
 	redir_type = get_redir_type(redirection);
 	if (!execute_dup2(open_file(file_name, redir_type), redir_type))
-		return (0);
-	return (1);
+		return (1);
+	return (0);
 }
 
 void	remove_redir_from_cmds(char **cmds, int i)

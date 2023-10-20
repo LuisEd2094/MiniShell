@@ -13,17 +13,32 @@
 #include <libft.h>
 #include <minishell.h>
 
+static int get_pos(char *cmd, int move, int pos)
+{
+	if (pos < 0)
+		return (0);
+	while (pos >= 0 && cmd[pos]&& ft_isspace(cmd[pos]))
+		pos += move;
+	return (pos);
+}
+
 int	is_only_num(char	*cmd)
 {
 	int	i;
+	int j;
 
-	i = -1;
-	while (cmd[++i])
+	i = get_pos(cmd, 1, 0);
+	j = get_pos(cmd, -1, ft_strlen(cmd) - 1);
+	if (cmd[i] == '-' || cmd[i] == '+')
+		i++;
+	if (i > j && !ft_isdigit(cmd[i]))
+		return (0);
+	if (j < 0)
+		return (0);
+	while (i <= j)
 	{
-		if (i == 0 && (cmd[i] == '-' || cmd[i] == '+') && cmd[i + 1])
-			continue ;
-		else if (!ft_isdigit(cmd[i]))
-			return (0);
+		if (!ft_isdigit(cmd[j--]) || !ft_isdigit(cmd[i++]))
+			return(0);
 	}
 	return (1);
 }
@@ -46,8 +61,6 @@ int	ft_exit(char **cmd, t_minishell *mini)
 	len = 0;
 	while (cmd[len])
 		len++;
-	//for (int i = 0; cmd[i]; i++)
-	//	ft_printf("{%s}\n", cmd[i]);
 	if (len > 2)
 	{
 		if (!is_only_num(cmd[1]) || !cmd[1][0])
