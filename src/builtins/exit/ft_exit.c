@@ -61,8 +61,6 @@ int	ft_exit(char **cmd, t_minishell *mini)
 	len = 0;
 	while (cmd[len])
 		len++;
-	//for (int i = 0; cmd[i]; i++)
-	//	ft_printf("{%s}\n", cmd[i]);
 	if (len > 2)
 	{
 		if (!is_only_num(cmd[1]) || !cmd[1][0])
