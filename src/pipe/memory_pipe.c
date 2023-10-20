@@ -40,7 +40,7 @@ int	**malloc_pipe(int num_pipes)
 	pipes = (int **)malloc((num_pipes + 1) * sizeof(int *));
 	if (pipes == NULL)
 	{
-		perror("Error en malloc");
+		perror("minishell: pipe: malloc() failed:");
 		return (NULL);
 	}
 	i = -1;
@@ -50,7 +50,7 @@ int	**malloc_pipe(int num_pipes)
 		if (pipes[i] == NULL)
 		{
 			free_pipe(pipes, i);
-			perror("Error en malloc");
+			perror("minishell: pipe: malloc() failed:");
 			return (NULL);
 		}
 	}
