@@ -40,19 +40,6 @@ int	remove_quote(char *str, char quote, int quote_pos)
 	return (last_pos);
 }
 
-char	*replace_exit_code(t_minishell *mini, char *cmd)
-{
-	char	*exit_code;
-	char	*temp;
-
-	exit_code = get_env_str_from_quote("?", mini->env_list);
-	temp = cmd;
-	cmd = ft_replace(cmd, exit_code, 0, 0);
-	free(temp);
-	free(exit_code);
-	return (cmd);
-}
-
 static	char *replace_values_aux(char *cmd, t_minishell *mini, int *og_i)
 {
 	int i;
@@ -116,6 +103,11 @@ int	ft_redirections(char **cmd, t_minishell *mini, int i)
 		free(og_command);
 		return (print_error(": ambiguous redirect\n", 1));
 	}
+	if (!cmd[i + 1])
+	{
+		perror("minishell ");
+		return (errno);
+	}
 	status = check_and_handle_redirections(cmd[i], cmd[i + 1], mini);
 	free(og_command);
 	if (status)
@@ -129,9 +121,9 @@ int	check_quotes_and_env_and_redirections(char **cmd, t_minishell *mini)
 	int	i;
 	int	status;
 
-	i = 0;
+	i = -1;
 	status = 0;
-	while (cmd[i])
+	while (cmd[++i])
 	{
 		if (cmd[i][0] == '>' || cmd[i][0] == '<')
 		{
@@ -140,10 +132,15 @@ int	check_quotes_and_env_and_redirections(char **cmd, t_minishell *mini)
 				return (status);
 			i--;
 		}
-
 		else
+		{
 			cmd[i] = replace_values(cmd[i], mini);
-		i++;
+			if (!cmd[i])
+			{
+				perror("minishell ");
+				return (errno);
+			}
+		}
 	}
 	return (status);
 }
