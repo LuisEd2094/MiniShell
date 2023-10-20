@@ -107,7 +107,7 @@ REDIRECTIONS	= aux_handle_redirections.c  handle_redirections.c  here_doc.c
 
 SIGNALS		=	signals.c
 
-PIPE 		=	memory_pipe.c  pipe.c pipe_aux.c
+PIPE 		=	memory_pipe.c  pipe.c
 
 
 PARSE_INPUT =	parse_input.c parse_input_aux.c
