@@ -12,7 +12,7 @@
 
 #include <pipe.h>
 
-int	wait_pipe(int status)
+int	return_pipe(int status)
 {
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
