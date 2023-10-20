@@ -1,0 +1,170 @@
+
+**************************************************************
+*                          CARE!                             *
+*                                                            * 
+* This tester doesnt work if ur readline prompt have '\n'    *
+*                                                            *
+**************************************************************
+
+---------------------------------------------> test [263]
+|  CMD: ->ls -l | cat -e<-
+|--------------------------------
+|  EXPECTED (BASH OUTP)  |  exit status: (0)
+|
+|--- STDOUT:
+| ->total 1400$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       5 Oct 20 12:11 &4$$
+| -rw-r--r--   1 gmacias-  2021_barcelona    4864 Oct 18 13:26 README.md$$
+| -rwxr-xr-x   1 gmacias-  2021_barcelona   50352 Oct 20 14:16 cleaner$$
+| -rw-r--r--   1 gmacias-  2021_barcelona    2326 Oct 18 13:26 cleaner.c$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       3 Oct 18 17:00 doble$$
+| -rwxr-xr-x   1 gmacias-  2021_barcelona   49424 Oct 20 14:16 echo$$
+| -rw-r--r--   1 gmacias-  2021_barcelona      21 Oct 20 12:11 file2$$
+| -rwxrwxrwx   1 gmacias-  2021_barcelona  528512 Oct 20 14:16 minishell$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       7 Oct 18 17:00 mixed$$
+| -rwxr-xr-x   1 gmacias-  2021_barcelona   26106 Oct 18 13:26 mpanic.sh$$
+| -rw-r--r--   1 gmacias-  2021_barcelona    8909 Oct 20 14:16 my_history.txt$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       3 Oct 18 14:25 simple$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       3 Oct 18 17:00 simple'quot$$
+| drwxr-xr-x   6 gmacias-  2021_barcelona     204 Oct 18 13:26 test$$
+| drwxr-xr-x  10 gmacias-  2021_barcelona     340 Oct 20 14:16 traces$$<-
+|
+|--- STDERR:
+| -><-
+|
+|--- COMPARED STR:
+| -><-
+|--------------------------------
+|--->FOUND (MINISHELL OUTP)  |  exit status: (0)
+|
+|--- STDOUT:
+| ->total 1400$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       5 Oct 20 12:11 &4$$
+| -rw-r--r--   1 gmacias-  2021_barcelona    4864 Oct 18 13:26 README.md$$
+| -rwxr-xr-x   1 gmacias-  2021_barcelona   50352 Oct 20 14:16 cleaner$$
+| -rw-r--r--   1 gmacias-  2021_barcelona    2326 Oct 18 13:26 cleaner.c$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       3 Oct 18 17:00 doble$$
+| -rwxr-xr-x   1 gmacias-  2021_barcelona   49424 Oct 20 14:16 echo$$
+| -rw-r--r--   1 gmacias-  2021_barcelona      21 Oct 20 12:11 file2$$
+| -rwxrwxrwx   1 gmacias-  2021_barcelona  528512 Oct 20 14:16 minishell$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       7 Oct 18 17:00 mixed$$
+| -rwxr-xr-x   1 gmacias-  2021_barcelona   26106 Oct 18 13:26 mpanic.sh$$
+| -rw-r--r--   1 gmacias-  2021_barcelona    8894 Oct 20 14:16 my_history.txt$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       3 Oct 18 14:25 simple$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       3 Oct 18 17:00 simple'quot$$
+| drwxr-xr-x   6 gmacias-  2021_barcelona     204 Oct 18 13:26 test$$
+| drwxr-xr-x  10 gmacias-  2021_barcelona     340 Oct 20 14:16 traces$$<-
+|
+|--- STDERR:
+| -><-
+|
+---------------------------------------------<
+
+---------------------------------------------> test [264]
+|  CMD: ->ls -l | cat -e | cat | cat | cat<-
+|--------------------------------
+|  EXPECTED (BASH OUTP)  |  exit status: (0)
+|
+|--- STDOUT:
+| ->total 1400$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       5 Oct 20 12:11 &4$$
+| -rw-r--r--   1 gmacias-  2021_barcelona    4864 Oct 18 13:26 README.md$$
+| -rwxr-xr-x   1 gmacias-  2021_barcelona   50352 Oct 20 14:16 cleaner$$
+| -rw-r--r--   1 gmacias-  2021_barcelona    2326 Oct 18 13:26 cleaner.c$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       3 Oct 18 17:00 doble$$
+| -rwxr-xr-x   1 gmacias-  2021_barcelona   49424 Oct 20 14:16 echo$$
+| -rw-r--r--   1 gmacias-  2021_barcelona      21 Oct 20 12:11 file2$$
+| -rwxrwxrwx   1 gmacias-  2021_barcelona  528512 Oct 20 14:16 minishell$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       7 Oct 18 17:00 mixed$$
+| -rwxr-xr-x   1 gmacias-  2021_barcelona   26106 Oct 18 13:26 mpanic.sh$$
+| -rw-r--r--   1 gmacias-  2021_barcelona    8942 Oct 20 14:16 my_history.txt$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       3 Oct 18 14:25 simple$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       3 Oct 18 17:00 simple'quot$$
+| drwxr-xr-x   6 gmacias-  2021_barcelona     204 Oct 18 13:26 test$$
+| drwxr-xr-x  10 gmacias-  2021_barcelona     340 Oct 20 14:16 traces$$<-
+|
+|--- STDERR:
+| -><-
+|
+|--- COMPARED STR:
+| -><-
+|--------------------------------
+|--->FOUND (MINISHELL OUTP)  |  exit status: (0)
+|
+|--- STDOUT:
+| ->total 1400$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       5 Oct 20 12:11 &4$$
+| -rw-r--r--   1 gmacias-  2021_barcelona    4864 Oct 18 13:26 README.md$$
+| -rwxr-xr-x   1 gmacias-  2021_barcelona   50352 Oct 20 14:16 cleaner$$
+| -rw-r--r--   1 gmacias-  2021_barcelona    2326 Oct 18 13:26 cleaner.c$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       3 Oct 18 17:00 doble$$
+| -rwxr-xr-x   1 gmacias-  2021_barcelona   49424 Oct 20 14:16 echo$$
+| -rw-r--r--   1 gmacias-  2021_barcelona      21 Oct 20 12:11 file2$$
+| -rwxrwxrwx   1 gmacias-  2021_barcelona  528512 Oct 20 14:16 minishell$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       7 Oct 18 17:00 mixed$$
+| -rwxr-xr-x   1 gmacias-  2021_barcelona   26106 Oct 18 13:26 mpanic.sh$$
+| -rw-r--r--   1 gmacias-  2021_barcelona    8909 Oct 20 14:16 my_history.txt$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       3 Oct 18 14:25 simple$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       3 Oct 18 17:00 simple'quot$$
+| drwxr-xr-x   6 gmacias-  2021_barcelona     204 Oct 18 13:26 test$$
+| drwxr-xr-x  10 gmacias-  2021_barcelona     340 Oct 20 14:16 traces$$<-
+|
+|--- STDERR:
+| -><-
+|
+---------------------------------------------<
+
+---------------------------------------------> test [265]
+|  CMD: ->ls -l | cat -e | cat -e | cat -e | cat -e<-
+|--------------------------------
+|  EXPECTED (BASH OUTP)  |  exit status: (0)
+|
+|--- STDOUT:
+| ->total 1400$$$$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       5 Oct 20 12:11 &4$$$$$
+| -rw-r--r--   1 gmacias-  2021_barcelona    4864 Oct 18 13:26 README.md$$$$$
+| -rwxr-xr-x   1 gmacias-  2021_barcelona   50352 Oct 20 14:16 cleaner$$$$$
+| -rw-r--r--   1 gmacias-  2021_barcelona    2326 Oct 18 13:26 cleaner.c$$$$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       3 Oct 18 17:00 doble$$$$$
+| -rwxr-xr-x   1 gmacias-  2021_barcelona   49424 Oct 20 14:16 echo$$$$$
+| -rw-r--r--   1 gmacias-  2021_barcelona      21 Oct 20 12:11 file2$$$$$
+| -rwxrwxrwx   1 gmacias-  2021_barcelona  528512 Oct 20 14:16 minishell$$$$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       7 Oct 18 17:00 mixed$$$$$
+| -rwxr-xr-x   1 gmacias-  2021_barcelona   26106 Oct 18 13:26 mpanic.sh$$$$$
+| -rw-r--r--   1 gmacias-  2021_barcelona    8984 Oct 20 14:16 my_history.txt$$$$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       3 Oct 18 14:25 simple$$$$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       3 Oct 18 17:00 simple'quot$$$$$
+| drwxr-xr-x   6 gmacias-  2021_barcelona     204 Oct 18 13:26 test$$$$$
+| drwxr-xr-x  10 gmacias-  2021_barcelona     340 Oct 20 14:16 traces$$$$$<-
+|
+|--- STDERR:
+| -><-
+|
+|--- COMPARED STR:
+| -><-
+|--------------------------------
+|--->FOUND (MINISHELL OUTP)  |  exit status: (0)
+|
+|--- STDOUT:
+| ->total 1400$$$$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       5 Oct 20 12:11 &4$$$$$
+| -rw-r--r--   1 gmacias-  2021_barcelona    4864 Oct 18 13:26 README.md$$$$$
+| -rwxr-xr-x   1 gmacias-  2021_barcelona   50352 Oct 20 14:16 cleaner$$$$$
+| -rw-r--r--   1 gmacias-  2021_barcelona    2326 Oct 18 13:26 cleaner.c$$$$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       3 Oct 18 17:00 doble$$$$$
+| -rwxr-xr-x   1 gmacias-  2021_barcelona   49424 Oct 20 14:16 echo$$$$$
+| -rw-r--r--   1 gmacias-  2021_barcelona      21 Oct 20 12:11 file2$$$$$
+| -rwxrwxrwx   1 gmacias-  2021_barcelona  528512 Oct 20 14:16 minishell$$$$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       7 Oct 18 17:00 mixed$$$$$
+| -rwxr-xr-x   1 gmacias-  2021_barcelona   26106 Oct 18 13:26 mpanic.sh$$$$$
+| -rw-r--r--   1 gmacias-  2021_barcelona    8942 Oct 20 14:16 my_history.txt$$$$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       3 Oct 18 14:25 simple$$$$$
+| -rw-r--r--   1 gmacias-  2021_barcelona       3 Oct 18 17:00 simple'quot$$$$$
+| drwxr-xr-x   6 gmacias-  2021_barcelona     204 Oct 18 13:26 test$$$$$
+| drwxr-xr-x  10 gmacias-  2021_barcelona     340 Oct 20 14:16 traces$$$$$<-
+|
+|--- STDERR:
+| -><-
+|
+---------------------------------------------<
+

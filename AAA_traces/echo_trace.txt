@@ -1,0 +1,33 @@
+
+**************************************************************
+*                          CARE!                             *
+*                                                            * 
+* This tester doesnt work if ur readline prompt have '\n'    *
+*                                                            *
+**************************************************************
+
+---------------------------------------------> test [16]
+|  CMD: ->eCho what u execute bro?
+| cat ~/echo<-
+|--------------------------------
+|  EXPECTED (BASH OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| ->what u execute bro?$<-
+|
+|--- STDERR:
+| ->cat: /Users/gmacias-/echo: No such file or directory$<-
+|
+|--- COMPARED STR:
+| ->acias-/echo: No such file or directory<-
+|--------------------------------
+|--->FOUND (MINISHELL OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| ->Thats the file bro gjn<-
+|
+|--- STDERR:
+| ->cat: ~/echo: No such file or directory$<-
+|
+---------------------------------------------<
+

@@ -1,0 +1,275 @@
+
+**************************************************************
+*                          CARE!                             *
+*                                                            * 
+* This tester doesnt work if ur readline prompt have '\n'    *
+*                                                            *
+**************************************************************
+
+---------------------------------------------> test [319]
+|  CMD: ->bash 4> outpfile
+| echo hola >&4
+| cat outpfile
+| rm outpfile<-
+|--------------------------------
+|  EXPECTED (BASH OUTP)  |  exit status: (0)
+|
+|--- STDOUT:
+| ->hola$<-
+|
+|--- STDERR:
+| -><-
+|
+|--- COMPARED STR:
+| -><-
+|--------------------------------
+|--->FOUND (MINISHELL OUTP)  |  exit status: (0)
+|
+|--- STDOUT:
+| -><-
+|
+|--- STDERR:
+| ->bash: 4: No such file or directory$<-
+|
+---------------------------------------------<
+
+---------------------------------------------> test [320]
+|  CMD: ->echo hi > testfolder<-
+|--------------------------------
+|  EXPECTED (BASH OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| -><-
+|
+|--- STDERR:
+| ->bash: line 1: testfolder: Is a directory$<-
+|
+|--- COMPARED STR:
+| ->testfolder: Is a directory<-
+|--------------------------------
+|--->FOUND (MINISHELL OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| -><-
+|
+|--- STDERR:
+| ->minishell: testfolder: No such file or directory$<-
+|
+---------------------------------------------<
+
+---------------------------------------------> test [321]
+|  CMD: ->echo hi >> testfolder<-
+|--------------------------------
+|  EXPECTED (BASH OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| -><-
+|
+|--- STDERR:
+| ->bash: line 1: testfolder: Is a directory$<-
+|
+|--- COMPARED STR:
+| ->testfolder: Is a directory<-
+|--------------------------------
+|--->FOUND (MINISHELL OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| -><-
+|
+|--- STDERR:
+| ->minishell: testfolder: No such file or directory$<-
+|
+---------------------------------------------<
+
+---------------------------------------------> test [322]
+|  CMD: ->echo hi 2> testfolder<-
+|--------------------------------
+|  EXPECTED (BASH OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| -><-
+|
+|--- STDERR:
+| ->bash: line 1: testfolder: Is a directory$<-
+|
+|--- COMPARED STR:
+| ->testfolder: Is a directory<-
+|--------------------------------
+|--->FOUND (MINISHELL OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| -><-
+|
+|--- STDERR:
+| ->minishell: testfolder: No such file or directory$<-
+|
+---------------------------------------------<
+
+---------------------------------------------> test [323]
+|  CMD: ->echo hi 2>> testfolder<-
+|--------------------------------
+|  EXPECTED (BASH OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| -><-
+|
+|--- STDERR:
+| ->bash: line 1: testfolder: Is a directory$<-
+|
+|--- COMPARED STR:
+| ->testfolder: Is a directory<-
+|--------------------------------
+|--->FOUND (MINISHELL OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| -><-
+|
+|--- STDERR:
+| ->minishell: testfolder: No such file or directory$<-
+|
+---------------------------------------------<
+
+---------------------------------------------> test [324]
+|  CMD: ->echo hi > testfolder<-
+|--------------------------------
+|  EXPECTED (BASH OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| -><-
+|
+|--- STDERR:
+| ->bash: line 1: testfolder: Is a directory$<-
+|
+|--- COMPARED STR:
+| ->testfolder: Is a directory<-
+|--------------------------------
+|--->FOUND (MINISHELL OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| -><-
+|
+|--- STDERR:
+| ->minishell: testfolder: No such file or directory$<-
+|
+---------------------------------------------<
+
+---------------------------------------------> test [325]
+|  CMD: ->echo hi >> testfolder<-
+|--------------------------------
+|  EXPECTED (BASH OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| -><-
+|
+|--- STDERR:
+| ->bash: line 1: testfolder: Is a directory$<-
+|
+|--- COMPARED STR:
+| ->testfolder: Is a directory<-
+|--------------------------------
+|--->FOUND (MINISHELL OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| -><-
+|
+|--- STDERR:
+| ->minishell: testfolder: No such file or directory$<-
+|
+---------------------------------------------<
+
+---------------------------------------------> test [326]
+|  CMD: ->echo hi 2> testfolder<-
+|--------------------------------
+|  EXPECTED (BASH OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| -><-
+|
+|--- STDERR:
+| ->bash: line 1: testfolder: Is a directory$<-
+|
+|--- COMPARED STR:
+| ->testfolder: Is a directory<-
+|--------------------------------
+|--->FOUND (MINISHELL OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| -><-
+|
+|--- STDERR:
+| ->minishell: testfolder: No such file or directory$<-
+|
+---------------------------------------------<
+
+---------------------------------------------> test [327]
+|  CMD: ->echo hi 2>> testfolder<-
+|--------------------------------
+|  EXPECTED (BASH OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| -><-
+|
+|--- STDERR:
+| ->bash: line 1: testfolder: Is a directory$<-
+|
+|--- COMPARED STR:
+| ->testfolder: Is a directory<-
+|--------------------------------
+|--->FOUND (MINISHELL OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| -><-
+|
+|--- STDERR:
+| ->minishell: testfolder: No such file or directory$<-
+|
+---------------------------------------------<
+
+---------------------------------------------> test [336]
+|  CMD: ->cat < file3<-
+|--------------------------------
+|  EXPECTED (BASH OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| -><-
+|
+|--- STDERR:
+| ->bash: line 1: file3: Permission denied$<-
+|
+|--- COMPARED STR:
+| ->file3: Permission denied<-
+|--------------------------------
+|--->FOUND (MINISHELL OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| -><-
+|
+|--- STDERR:
+| ->minishell: file3: No such file or directory$<-
+|
+---------------------------------------------<
+
+---------------------------------------------> test [337]
+|  CMD: ->echo hi 2> error_outp < non_exist<-
+|--------------------------------
+|  EXPECTED (BASH OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| -><-
+|
+|--- STDERR:
+| -><-
+|
+|--- COMPARED STR:
+| -><-
+|--------------------------------
+|--->FOUND (MINISHELL OUTP)  |  exit status: (1)
+|
+|--- STDOUT:
+| -><-
+|
+|--- STDERR:
+| ->minishell: non_exist: No such file or directory$<-
+|
+---------------------------------------------<
+

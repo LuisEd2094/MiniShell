@@ -1,0 +1,104 @@
+
+**************************************************************
+*                          CARE!                             *
+*                                                            * 
+* This tester doesnt work if ur readline prompt have '\n'    *
+*                                                            *
+**************************************************************
+
+---------------------------------------------> test [373]
+|  CMD: ->echo $SHLVL 'entry value 1000'<-
+|--------------------------------
+|  EXPECTED (BASH OUTP)  |  exit status: (0)
+|
+|--- STDOUT:
+| ->1 entry value 1000$<-
+|
+|--- STDERR:
+| ->bash: warning: shell level (1001) too high, resetting to 1$<-
+|
+|--- COMPARED STR:
+| -> shell level (1001) too high, resetting to 1<-
+|--------------------------------
+|--->FOUND (MINISHELL OUTP)  |  exit status: (0)
+|
+|--- STDOUT:
+| ->0 entry value 1000$<-
+|
+|--- STDERR:
+| ->minishell: warning: shell level (1001) too high, resetting to 1$<-
+|
+---------------------------------------------<
+
+---------------------------------------------> test [374]
+|  CMD: ->echo $SHLVL 'entry value 5000000'<-
+|--------------------------------
+|  EXPECTED (BASH OUTP)  |  exit status: (0)
+|
+|--- STDOUT:
+| ->1 entry value 5000000$<-
+|
+|--- STDERR:
+| ->bash: warning: shell level (5000001) too high, resetting to 1$<-
+|
+|--- COMPARED STR:
+| -> shell level (5000001) too high, resetting to 1<-
+|--------------------------------
+|--->FOUND (MINISHELL OUTP)  |  exit status: (0)
+|
+|--- STDOUT:
+| ->0 entry value 5000000$<-
+|
+|--- STDERR:
+| ->minishell: warning: shell level (5000001) too high, resetting to 1$<-
+|
+---------------------------------------------<
+
+---------------------------------------------> test [375]
+|  CMD: ->echo $SHLVL 'unset SHLVL before ./minishell'<-
+|--------------------------------
+|  EXPECTED (BASH OUTP)  |  exit status: (0)
+|
+|--- STDOUT:
+| ->1 unset SHLVL before ./minishell$<-
+|
+|--- STDERR:
+| -><-
+|
+|--- COMPARED STR:
+| -><-
+|--------------------------------
+|--->FOUND (MINISHELL OUTP)  |  exit status: (0)
+|
+|--- STDOUT:
+| ->0 unset SHLVL before ./minishell$<-
+|
+|--- STDERR:
+| -><-
+|
+---------------------------------------------<
+
+---------------------------------------------> test [376]
+|  CMD: ->echo $SLVL 'export SHLVL='' before ./minishell'<-
+|--------------------------------
+|  EXPECTED (BASH OUTP)  |  exit status: (0)
+|
+|--- STDOUT:
+| ->export SHLVL= before ./minishell$<-
+|
+|--- STDERR:
+| -><-
+|
+|--- COMPARED STR:
+| -><-
+|--------------------------------
+|--->FOUND (MINISHELL OUTP)  |  exit status: (0)
+|
+|--- STDOUT:
+| -> export SHLVL= before ./minishell$<-
+|
+|--- STDERR:
+| -><-
+|
+---------------------------------------------<
+
