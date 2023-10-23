@@ -25,6 +25,7 @@ char	*expand_tilde(char *path)
 	expanded_size = ft_strlen(getenv("HOME")) + ft_strlen(path) + 1;
 	expanded_path = malloc(expanded_size * sizeof(char));
 	ft_strlcpy(expanded_path, getenv("HOME"), expanded_size);
-	ft_strlcat(expanded_path, path + 1, expanded_size);
+	if (path)
+		ft_strlcat(expanded_path, path + 1, expanded_size);
 	return (expanded_path);
 }
