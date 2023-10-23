@@ -22,7 +22,7 @@ int	make_pipe(int **pipes, int num_pipes)
 	{
 		if (pipe(pipes[i]) == -1)
 		{
-			perror("minishell: pipe: Error with pipes:");
+			perror("minishell: pipe: Error with pipes");
 			return (1);
 		}
 	}
