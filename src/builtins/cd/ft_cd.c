@@ -16,15 +16,15 @@ int	change_directory(char *directory)
 {
 	if (directory == NULL)
 	{
-		print_error("minishell: cd: ", -1);
-		print_error(directory, -1);
-		return (print_error(": No file or directory\n", -1));
+		print_error("minishell: cd: ", 1);
+		print_error(directory, 1);
+		return (print_error(": No file or directory\n", 1));
 	}
 	if (chdir(directory) == -1)
 	{
-		print_error("minishell: cd: ", -1);
-		print_error(directory, -1);
-		return (print_error(": No file or directory\n", -1));
+		print_error("minishell: cd: ", 1);
+		print_error(directory, 1);
+		return (print_error(": No file or directory\n", 1));
 	}
 	return (0);
 }
