@@ -98,7 +98,7 @@ EXECVE		=	execve.c execve_aux.c
 MINI_SHARED	=	get_next_word_and_len.c is_ascii_no_space.c skips.c \
 				builtins_shared.c ft_single_split.c get_env_value_str.c \
 				replace_env.c create_or_update_env_node.c \
-				print_error.c free_node.c \
+				print_error.c free_node.c tilde.c\
 				check_valid_identifier.c remove_cmds_from_cmds.c \
 				prep_unset_export_cmds.c handle_terminal.c
 
