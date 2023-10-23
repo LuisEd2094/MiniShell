@@ -72,14 +72,13 @@ char	*replace_values(char *cmd, t_minishell *mini)
 	int	i;
 
 	i = 0;
+	if ((cmd[0] == '~' && cmd[1] == '\0') || (cmd[0] == '~' && cmd[1] == '/'))
+	{
+		cmd = expand_tilde(cmd);
+		i += ft_strlen(getenv("HOME"));
+	}
 	while (cmd[i])
 	{
-		if ((cmd[0] == '~' && cmd[1] == '\0') \
-			|| (cmd[0] == '~' && cmd[1] == '/'))
-		{
-			cmd = expand_tilde(NULL);
-			i += ft_strlen(cmd);
-		}
 		if (cmd[i] == '"' || cmd[i] == '\'' || (cmd[i] == '$' && cmd[i + 1] \
 		&& is_ascii_no_space(cmd[i + 1])))
 		{
