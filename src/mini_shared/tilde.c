@@ -20,7 +20,7 @@ char	*expand_tilde(char *path)
 	if (getenv("HOME") == NULL)
 	{
 		perror("minishell: ~: Cannot set HOME");
-		return (NULL);
+		return (path);
 	}
 	expanded_size = ft_strlen(getenv("HOME")) + ft_strlen(path) + 1;
 	expanded_path = malloc(expanded_size * sizeof(char));
