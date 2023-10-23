@@ -74,6 +74,12 @@ char	*replace_values(char *cmd, t_minishell *mini)
 	i = 0;
 	while (cmd[i])
 	{
+		if ((cmd[0] == '~' && cmd[1] == '\0') \
+			|| (cmd[0] == '~' && cmd[1] == '/'))
+		{
+			cmd = expand_tilde(NULL);
+			i += ft_strlen(cmd);
+		}
 		if (cmd[i] == '"' || cmd[i] == '\'' || (cmd[i] == '$' && cmd[i + 1] \
 		&& is_ascii_no_space(cmd[i + 1])))
 		{
