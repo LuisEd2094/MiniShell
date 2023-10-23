@@ -33,23 +33,25 @@ int	ft_echo(char **arguments)
 {
 	int	i;
 	int	flag_n;
+	int	stop;
 
-	i = 0;
 	flag_n = 0;
+	stop = 0;
 	if (arguments == NULL)
 		return (-1);
-	if (arguments[1] != NULL && ft_flag_n(arguments[1]))
+	i = 1;
+	while (arguments[i] != NULL)
 	{
-		flag_n = 1;
+		if (ft_flag_n(arguments[i]) && stop == 0)
+			flag_n = 1;
+		else
+		{
+			ft_printf("%s", arguments[i]);
+			stop = 1;
+			if (arguments[i + 1] != NULL)
+				ft_printf(" ");
+		}
 		i++;
-	}
-	while (arguments[++i] != NULL)
-	{
-		if (flag_n && ft_flag_n(arguments[i]))
-			i++;
-		ft_printf("%s", arguments[i]);
-		if (arguments[i + 1] != NULL)
-			ft_printf(" ");
 	}
 	if (!flag_n)
 		ft_printf("\n");
