@@ -16,9 +16,17 @@
 
 int	print_file_not(char *file)
 {
+	printf("i amm here\n");
 	print_error("minishell: ", -1);
 	print_error(file, -1);
-	return (print_error(": No such file or directory\n", -1));
+	if (!errno)
+		return (print_error(": No such file or directory\n", -1));
+	else
+	{
+		print_error(": ", -1);
+		perror(NULL);
+	}
+	return (-1);
 }
 
 int	open_file(char *file_name, int redir_type)
