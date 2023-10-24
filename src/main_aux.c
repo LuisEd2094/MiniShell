@@ -48,20 +48,23 @@ int	exit_mini(t_minishell *mini)
 	exit(mini->exit_code);
 }
 
-int	close_redirections(t_minishell *mini)
+void	update_exit_value(t_minishell *mini)
 {
-	dup2 (mini->og_in, STDIN_FILENO);
-	dup2 (mini->og_out, STDOUT_FILENO);
-	return (0);
+	char *code;
+	
+	if (g_received_signal)
+		code = ft_itoa(1);
+	else
+		code = ft_itoa(mini->exit_code);
+	if (!code)
+		exit_mini(mini);
+	create_or_update_env_node(mini->env_list, "?", code);
+	free(code);
 }
 
 void	prep_mini(t_minishell *mini)
 {
-	char	*exit_code;
-
-	exit_code = ft_itoa(mini->exit_code);
-	if (!exit_code)
-		exit(EXIT_FAILURE);
+	update_exit_value(mini);
 	mini->here_doc_number = 0;
 	if (mini->cmds)
 	{
@@ -70,8 +73,6 @@ void	prep_mini(t_minishell *mini)
 	}
 	close_redirections(mini);
 	signal_action();
-	create_or_update_env_node(mini->env_list, "?", exit_code);
-	free(exit_code);
 	delete_temp_files(mini);
 	g_received_signal = 0;
 	if (errno)

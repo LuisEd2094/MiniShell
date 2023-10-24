@@ -44,3 +44,10 @@ int	check_and_handle_redirections(char *redir, char *file, t_minishell *mini)
 		return (handle_redirection(redir, file));
 	return (0);
 }
+
+int	close_redirections(t_minishell *mini)
+{
+	dup2 (mini->og_in, STDIN_FILENO);
+	dup2 (mini->og_out, STDOUT_FILENO);
+	return (0);
+}
