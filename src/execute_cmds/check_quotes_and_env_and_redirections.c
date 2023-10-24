@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 10:25:49 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/18 10:26:06 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/24 09:10:00 by gmacias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ char	*replace_values(char *cmd, t_minishell *mini)
 	int	i;
 
 	i = 0;
-	if (cmd && (cmd[0] == '~' && cmd[1] == '\0') \
-		|| (cmd[0] == '~' && cmd[1] == '/'))
+	if (cmd && ((cmd[0] == '~' && cmd[1] == '\0') \
+		|| (cmd[0] == '~' && cmd[1] == '/')))
 	{
 		cmd = expand_tilde(cmd);
 		i += ft_strlen(getenv("HOME"));
