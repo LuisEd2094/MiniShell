@@ -13,6 +13,7 @@
 #ifndef REDIRECTIONS_INTERNAL_H
 # define REDIRECTIONS_INTERNAL_H
 # include <minishell.h>
+# include <sys/wait.h>
 
 typedef enum s_redir_type
 {
@@ -23,8 +24,10 @@ typedef enum s_redir_type
 }	t_redir_type;
 
 int		get_redir_type(char *input);
-char	*get_doc_name(t_minishell *mini);
+void	get_doc_name(t_minishell *mini);
 int		handle_redirection(char *redirection, char *file_name);
 void	remove_redir_from_cmds(char **cmds, int i);
+int		handle_here_document(t_minishell *mini);
+void	check_here_doc_end(t_minishell *mini, char *end);
 
 #endif

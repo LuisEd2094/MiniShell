@@ -76,7 +76,7 @@ HISTORY		= 	add_to_history.c  close_history.c  history_init.c  \
 
 EXPORT		=	export.c bts_for_export.c
 
-ENV			= 	env.c env_aux.c
+ENV			= 	env.c env_aux.c env_check_shlvl_pwd.c
 
 UNSET		=	unset.c
 
@@ -103,7 +103,8 @@ MINI_SHARED	=	get_next_word_and_len.c is_ascii_no_space.c skips.c \
 				prep_unset_export_cmds.c handle_terminal.c
 
 
-REDIRECTIONS	= aux_handle_redirections.c  handle_redirections.c  here_doc.c
+REDIRECTIONS	=	aux_handle_redirections.c  handle_redirections.c  here_doc.c \
+					here_doc_aux.c
 
 SIGNALS		=	signals.c
 
