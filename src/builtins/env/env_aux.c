@@ -37,7 +37,25 @@ int	check_level(int level)
 	return (level);
 }
 
-t_env	*check_shlvl(t_list	*env_list)
+void	*check_pwd(t_list *env_list)
+{
+	t_list	*list_node;
+	char 	*pwd;
+	void	*return_val;
+
+	list_node = get_env_node(env_list, "PWD");
+	if (!list_node)
+	{
+		pwd = getcwd(NULL, 0);
+		return_val = create_or_update_env_node(env_list, "PWD", pwd);
+		free(pwd);
+		return (return_val);
+
+	}
+	return ((void *) 1);
+}
+
+void	*check_shlvl(t_list	*env_list)
 {
 	t_list	*list_node;
 	t_env	*env_node;
@@ -45,7 +63,7 @@ t_env	*check_shlvl(t_list	*env_list)
 
 	list_node = get_env_node(env_list, "SHLVL");
 	if (!list_node)
-		return (create_or_update_env_node(env_list, "SHLVL", "0"));
+		return (create_or_update_env_node(env_list, "SHLVL", "1"));
 	else
 	{
 		env_node = ((t_env *)(list_node->content));

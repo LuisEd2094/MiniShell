@@ -95,6 +95,8 @@ void	init_mini(t_minishell *mini, char **env)
 	remove_node("OLDPWD", mini);
 	if (!check_shlvl(mini->env_list))
 		exit(EXIT_FAILURE);
+	if (!check_pwd(mini->env_list))
+		exit(EXIT_FAILURE);
 	mini->og_in = dup(STDIN_FILENO);
 	mini->og_out = dup(STDOUT_FILENO);
 	if (!mini->env_list)
