@@ -65,7 +65,6 @@ void	update_exit_value(t_minishell *mini)
 void	prep_mini(t_minishell *mini)
 {
 	update_exit_value(mini);
-	mini->here_doc_number = 0;
 	if (mini->cmds)
 	{
 		free_cmds(mini->cmds);
@@ -73,8 +72,11 @@ void	prep_mini(t_minishell *mini)
 	}
 	close_redirections(mini);
 	signal_action();
+	mini->code_here_doc = 0;
+	mini->here_quotes = 0;
+	mini->exit_code = 0;
+	mini->input_code = 0;
 	delete_temp_files(mini);
-	g_received_signal = 0;
 	if (errno)
 		errno = 0;
 }
@@ -84,6 +86,7 @@ void	init_mini(t_minishell *mini, char **env)
 	prep_terminal(mini);
 	signal_action();
 	mini->code_here_doc = 0;
+	mini->here_quotes = 0;
 	mini->exit_code = 0;
 	mini->input_code = 0;
 	mini->env_list = init_env(env);

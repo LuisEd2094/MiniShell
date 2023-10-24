@@ -37,6 +37,7 @@ typedef struct s_minishell
 	int				here_doc_number;
 	char			here_doc_name[200];
 	char			*here_doc_end;
+	bool			here_quotes;
 	pid_t			last_pid;
 	struct termios	old;
 	struct termios	new;

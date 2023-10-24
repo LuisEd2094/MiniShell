@@ -38,5 +38,7 @@ int		print_invalid_identifier(char *cmd, char *arg);
 void	remove_cmds_from_cmds(char **cmds, int i, int next_valid);
 void	prep_unset_export_commands(char **cmds);
 char	*expand_tilde(char *path);
+int     remove_quote(char *str, char quote, int quote_pos);
+
 
 #endif

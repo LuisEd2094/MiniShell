@@ -82,7 +82,8 @@ int	handle_here_document(t_minishell *mini)
 			break ;
 		if (ft_strcmp(input, mini->here_doc_end) == 0)
 			break ;
-		input = check_input(input, mini);
+		if (!mini->here_quotes)
+			input = check_input(input, mini);
 		write (fd, input, ft_strlen(input));
 		write (fd, "\n", 1);
 		free(input);
@@ -91,6 +92,25 @@ int	handle_here_document(t_minishell *mini)
 	if (g_received_signal)
 		return (g_received_signal);
 	return (0);
+}
+
+void	check_here_doc_end(t_minishell *mini, char *end)
+{
+	int i;
+
+	mini->here_quotes = ft_strnstr(end, "\"", ft_strlen(end)) != NULL;
+	if (mini->here_quotes)
+	{
+		i = 0;
+		while (end[i])
+		{
+			if (end[i] == '\'' || end[i] == '"')
+				i = remove_quote(end, end[i], i);
+			else
+				i++;
+		}	
+	}
+	mini->here_doc_end = end;
 }
 
 int	create_here_doc(t_minishell *mini)
@@ -108,7 +128,7 @@ int	create_here_doc(t_minishell *mini)
 		{
 			if (mini->cmds[i][j][0] == '<' && mini->cmds[i][j][1] == '<')
 			{
-				mini->here_doc_end = mini->cmds[i][j + 1];
+				check_here_doc_end(mini, mini->cmds[i][j + 1]);
 				status = handle_here_document(mini);
 				if (status)
 					return (status);
