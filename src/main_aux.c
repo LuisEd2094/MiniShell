@@ -76,6 +76,7 @@ void	prep_mini(t_minishell *mini)
 	mini->here_quotes = 0;
 	mini->exit_code = 0;
 	mini->input_code = 0;
+	g_received_signal = 0;
 	delete_temp_files(mini);
 	if (errno)
 		errno = 0;

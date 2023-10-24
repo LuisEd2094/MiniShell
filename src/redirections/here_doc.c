@@ -87,7 +87,10 @@ int	handle_here_document(t_minishell *mini)
 		write (fd, input, ft_strlen(input));
 		write (fd, "\n", 1);
 		free(input);
+		input = NULL;
 	}
+	if (input)
+		free(input);
 	close(fd);
 	if (g_received_signal)
 		return (g_received_signal);
