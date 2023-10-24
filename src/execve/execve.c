@@ -84,6 +84,8 @@ char	*check_path_name(char **cmd, t_list *env_list)
 				return (cmd[0]);
 			return (NULL);
 		}
+	else if (cmd[0] && cmd[0][0] == '\0')
+		return (NULL);
 	else
 		return (get_path_name(cmd, \
 				get_paths(get_env_node(env_list, "PATH"))));
@@ -97,6 +99,7 @@ int	try_execve(char **cmd, t_list *env_list)
 	if (!cmd || !cmd[0])
 		return (0);
 	path_name = check_path_name(cmd, env_list);
+	printf("[%s]\n", path_name);
 	if (path_name)
 	{
 		converted_env_list = conver_env_list(env_list);
