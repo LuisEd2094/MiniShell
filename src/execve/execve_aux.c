@@ -74,7 +74,7 @@ int	no_path_name_found(char *cmd)
 		write(STDERR_FILENO, "minishell: ", ft_strlen("minishell: "));
 		write(STDERR_FILENO, cmd, ft_strlen(cmd));
 		write(STDERR_FILENO, ": ", ft_strlen(": "));
-		if (errno == ENOENT)
+		if (errno)
 			perror(NULL);
 		else
 			write(STDERR_FILENO, "command not found\n", \

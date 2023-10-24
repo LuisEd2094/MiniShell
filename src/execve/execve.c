@@ -76,6 +76,19 @@ char	*get_path_name(char **cmd, char **path_list)
 	return (path_name);
 }
 
+char	*check_path_name(char **cmd, t_list *env_list)
+{
+	if (ft_strnstr(cmd[0], "/", ft_strlen(cmd[0])) != NULL)
+		{
+			if (access(cmd[0], F_OK) != -1 && access(cmd[0], X_OK) != -1)
+				return (cmd[0]);
+			return (NULL);
+		}
+	else
+		return (get_path_name(cmd, \
+				get_paths(get_env_node(env_list, "PATH"))));
+}
+
 int	try_execve(char **cmd, t_list *env_list)
 {
 	char	**converted_env_list;
@@ -83,11 +96,7 @@ int	try_execve(char **cmd, t_list *env_list)
 
 	if (!cmd || !cmd[0])
 		return (0);
-	if (access(cmd[0], F_OK) != -1 && access(cmd[0], X_OK) != -1)
-		path_name = cmd[0];
-	else
-		path_name = get_path_name(cmd, \
-				get_paths(get_env_node(env_list, "PATH")));
+	path_name = check_path_name(cmd, env_list);
 	if (path_name)
 	{
 		converted_env_list = conver_env_list(env_list);
