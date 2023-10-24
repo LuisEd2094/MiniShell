@@ -147,15 +147,15 @@ PARSE_INPUT_FILES	= $(addprefix $(PARSE_INPUT_PATH), $(PARSE_INPUT))
 
 DEPS		= 	$(addprefix $(DEPS_PATH), $(SRC:.c=.d) \
 										$(HISTORY:.c=.d) \
-										$(BUILTINTS_FILES:.c=.d) \
-										$(ARGUMENTS_FILES:.c=.d) \
-										$(EXECVE_FILES:.c=.d) \
-										$(EXEC_CMDS_FILE:.c=.d) \
-										$(MINI_SHARED_FILES:.c=.d) \
-										$(REDIR_FILES:.c=.d) \
-										$(SIGNALS_FILES:.c=.d) \
-										$(PIPE_FILES:.c=.d)\
-										$(PARSE_INPUT_FILES:.c=.d)\
+										$(BUILTINTS:.c=.d) \
+										$(ARGUMENTS:.c=.d) \
+										$(EXECVE:.c=.d) \
+										$(EXEC_CMDS:.c=.d) \
+										$(MINI_SHARED:.c=.d) \
+										$(REDIR:.c=.d) \
+										$(SIGNALS:.c=.d) \
+										$(PIPE:.c=.d)\
+										$(PARSE_INPUT:.c=.d)\
 										) 
 										
 										
