@@ -37,70 +37,17 @@ char	**conver_env_list(t_list *env_list)
 	return (new);
 }
 
-char	**get_paths(t_list *path_node)
-{
-	char	**tab;
-
-	if (!path_node)
-		return (NULL);
-	tab = ft_split(((t_env *)(path_node->content))->value, ':');
-	if (!tab)
-		return (NULL);
-	return (tab);
-}
-
-char	*get_path_name(char **cmd, char **path_list)
-{
-	char	*path_name;
-	int		i;
-
-	if (!path_list)
-		return (no_list());
-	i = 0;
-	while (path_list[i])
-	{
-		if (path_list[i][ft_strlen(path_list[i])] != '/')
-			path_name = join_path(path_list[i], cmd[0]);
-		else
-			path_name = ft_strjoin(path_list[i], cmd[0]);
-		if (!path_name)
-			return (free_2d_array(path_list));
-		if (access(path_name, F_OK) != -1 && access(path_name, X_OK) != -1)
-			break ;
-		free(path_name);
-		path_name = NULL;
-		i++;
-	}
-	errno = 0;
-	free_2d_array(path_list);
-	return (path_name);
-}
-
-char	*check_path_name(char **cmd, t_list *env_list)
-{
-	if (ft_strnstr(cmd[0], "/", ft_strlen(cmd[0])) != NULL)
-		{
-			if (access(cmd[0], F_OK) != -1 && access(cmd[0], X_OK) != -1)
-				return (cmd[0]);
-			return (NULL);
-		}
-	else if (cmd[0] && cmd[0][0] == '\0')
-		return (NULL);
-	else
-		return (get_path_name(cmd, \
-				get_paths(get_env_node(env_list, "PATH"))));
-}
-
 int	try_execve(char **cmd, t_list *env_list)
 {
 	char	**converted_env_list;
 	char	*path_name;
+	int		is_dir;
 
 	if (!cmd || !cmd[0])
 		return (0);
-	path_name = check_path_name(cmd, env_list);
-	printf("[%s]\n", path_name);
-	if (path_name)
+	is_dir = 0;
+	path_name = check_path_name(cmd, env_list, &is_dir);
+	if (path_name && !is_dir)
 	{
 		converted_env_list = conver_env_list(env_list);
 		if (!converted_env_list)
@@ -114,5 +61,5 @@ int	try_execve(char **cmd, t_list *env_list)
 		exit(EXIT_FAILURE);
 	}
 	else
-		return (no_path_name_found(cmd[0]));
+		return (no_path_name_found(cmd[0], is_dir));
 }

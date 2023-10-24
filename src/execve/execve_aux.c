@@ -62,7 +62,7 @@ void	*no_list(void)
 	return (NULL);
 }
 
-int	no_path_name_found(char *cmd)
+int	no_path_name_found(char *cmd, int is_dir)
 {
 	if (errno == ENOMEM)
 	{
@@ -75,7 +75,12 @@ int	no_path_name_found(char *cmd)
 		write(STDERR_FILENO, cmd, ft_strlen(cmd));
 		write(STDERR_FILENO, ": ", ft_strlen(": "));
 		if (errno)
+		{
 			perror(NULL);
+			return (errno);
+		}
+		else if (is_dir)
+			return (print_error("Is a directory\n", 126));
 		else
 			write(STDERR_FILENO, "command not found\n", \
 					ft_strlen("command not found\n"));

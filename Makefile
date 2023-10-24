@@ -92,7 +92,7 @@ ARGUMENTS	=	get_cmd_value.c get_cmd_argument.c  get_cmd_argument_aux.c
 
 EXEC_CMDS	=	execute_cmds.c check_quotes_and_env_and_redirections.c get_double_quote.c
 
-EXECVE		=	execve.c execve_aux.c
+EXECVE		=	execve.c execve_aux.c get_path_name.c
 
 
 MINI_SHARED	=	get_next_word_and_len.c is_ascii_no_space.c skips.c \
