@@ -27,5 +27,6 @@ char	*expand_tilde(char *path)
 	ft_strlcpy(expanded_path, getenv("HOME"), expanded_size);
 	if (path)
 		ft_strlcat(expanded_path, path + 1, expanded_size);
+	free(path);
 	return (expanded_path);
 }
