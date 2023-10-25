@@ -53,7 +53,7 @@ int	handle_here_document(t_minishell *mini)
 
 void	check_here_doc_end(t_minishell *mini, char *end)
 {
-	int i;
+	int	i;
 
 	mini->here_quotes = ft_strnstr(end, "\"", ft_strlen(end)) != NULL;
 	if (mini->here_quotes)

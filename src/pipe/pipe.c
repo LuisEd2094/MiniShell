@@ -32,7 +32,7 @@ void	setup_pipe(int **pipes, int num_pipes, int i)
 
 int	return_fork_error(int i, char *cmd)
 {
-	char *itoa;
+	char	*itoa;
 
 	itoa = ft_itoa(i);
 	print_error("Minishell: fork: Resource temporarily unavailable\
@@ -51,9 +51,7 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 
 	pid = fork();
 	if (pid == -1)
-	{
-		return (return_fork_error(i,commands[i][0]));
-	}
+		return (return_fork_error(i, commands[i][0]));
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);

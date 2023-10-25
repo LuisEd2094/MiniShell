@@ -50,8 +50,8 @@ int	exit_mini(t_minishell *mini)
 
 void	update_exit_value(t_minishell *mini)
 {
-	char *code;
-	
+	char	*code;
+
 	if (g_received_signal)
 		code = ft_itoa(1);
 	else

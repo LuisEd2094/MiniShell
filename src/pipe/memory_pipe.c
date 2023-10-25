@@ -80,7 +80,7 @@ int	make_pipe(int **pipes, int num_pipes)
 		if (pipe(pipes[i]) == -1)
 		{
 			refinement(pipes, i - 1);
-           	free_pipe(pipes, num_pipes);
+			free_pipe(pipes, num_pipes);
 			perror("minishell: pipe: Error with pipes");
 			return (1);
 		}

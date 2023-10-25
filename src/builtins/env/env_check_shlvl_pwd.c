@@ -3,7 +3,7 @@
 void	*check_pwd(t_list *env_list)
 {
 	t_list	*list_node;
-	char 	*pwd;
+	char	*pwd;
 	void	*return_val;
 
 	list_node = get_env_node(env_list, "PWD");
@@ -13,7 +13,6 @@ void	*check_pwd(t_list *env_list)
 		return_val = create_or_update_env_node(env_list, "PWD", pwd);
 		free(pwd);
 		return (return_val);
-
 	}
 	return ((void *) 1);
 }

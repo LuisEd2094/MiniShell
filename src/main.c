@@ -51,8 +51,8 @@ void	main_loop(t_minishell *mini)
 
 void	check_fd(void)
 {
-	int fd[3];
-	int i;
+	int	fd[3];
+	int	i;
 	int	error;
 
 	i = -1;
@@ -65,7 +65,8 @@ void	check_fd(void)
 	while (++i < 3)
 		close(fd[i]);
 	if (error)
-		exit(print_error("minishell: start_pipeline: pgrp pipe: Too many open files\n", 1));
+		exit(print_error("minishell: start_pipeline: pgrp pipe: \
+					Too many open files\n", 1));
 }
 
 int	main(int argc, char **argv, char **env)

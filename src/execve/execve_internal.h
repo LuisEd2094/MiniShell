@@ -25,7 +25,6 @@ char	*reconstruct_env(char	*variable, char	*value);
 int		get_env_list_size(t_list *env_list);
 void	*no_list(void);
 int		no_path_name_found(char *cmd, int is_dir);
-char    *check_path_name(char **cmd, t_list *env_list, int *is_dir);
-
+char	*check_path_name(char **cmd, t_list *env_list, int *is_dir);
 
 #endif

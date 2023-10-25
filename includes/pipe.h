@@ -24,13 +24,11 @@
 int		**malloc_pipe(int num_pipes);
 void	free_pipe(int **pipes, int num_pipes);
 int		return_pipe(int last_status);
-int     make_pipe(int **pipes, int num_pipes);
+int		make_pipe(int **pipes, int num_pipes);
 void	refinement(int **pipes, int num_pipes);
-
 
 /*  ---  Pipe  ---  */
 int		ft_pipe(char ***commands, int num_pipes, t_minishell *mini);
 int		get_exit_code(int status);
-
 
 #endif

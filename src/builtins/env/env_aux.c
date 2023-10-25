@@ -37,8 +37,6 @@ int	check_level(int level)
 	return (level);
 }
 
-
-
 t_list	*fill_up_env_list(t_list *env_list, char **env)
 {
 	int		i;
