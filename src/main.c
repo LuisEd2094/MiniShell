@@ -48,13 +48,31 @@ void	main_loop(t_minishell *mini)
 		free(mini->input);
 	}
 }
+/*
+void	check_fd(void)
+{
+	int	fd;
+	int fd2;
+	int	error;
 
+	fd = open();
+	fd2 = open();
+	error = 0;
+	if (fd < 0 || fd2 < 0)
+		error = 1;
+	close();
+	close();
+	if (error)
+	exit (print_error("mensaje d bash", numero));
+}
+*/
 int	main(int argc, char **argv, char **env)
 {
 	t_minishell	mini;
 
 	if (argc > 1 || argv[1])
 		exit(1);
+//	check_fd();
 	init_mini(&mini, env);
 	main_loop(&mini);
 	exit_mini(&mini);

@@ -34,3 +34,24 @@ void	signal_action(void)
 	sigaction(SIGINT, &act, NULL);
 	signal(SIGQUIT, SIG_IGN);
 }
+
+static	void	pipe_action(int signal)
+{
+	if (signal == SIGINT)
+	{
+		g_received_signal = SIGINT;
+		rl_replace_line("", 0);
+		rl_on_new_line();
+	}
+}
+
+void	pipe_signal_action(void)
+{
+	struct sigaction	act;
+
+	sigemptyset(&act.sa_mask);
+	act.sa_handler = pipe_action;
+	act.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &act, NULL);
+	signal(SIGQUIT, SIG_IGN);
+}

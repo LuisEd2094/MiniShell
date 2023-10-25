@@ -13,22 +13,6 @@
 #include <pipe.h>
 #include <minishell.h>
 
-int	make_pipe(int **pipes, int num_pipes)
-{
-	int	i;
-
-	i = -1;
-	while (++i < num_pipes)
-	{
-		if (pipe(pipes[i]) == -1)
-		{
-			perror("minishell: pipe: Error with pipes");
-			return (1);
-		}
-	}
-	return (0);
-}
-
 void	refinement(int **pipes, int num_pipes)
 {
 	int	i;
@@ -39,6 +23,23 @@ void	refinement(int **pipes, int num_pipes)
 		close(pipes[i][0]);
 		close(pipes[i][1]);
 	}
+}
+
+int	make_pipe(int **pipes, int num_pipes)
+{
+	int	i;
+
+	i = -1;
+	while (++i < num_pipes)
+	{
+		if (pipe(pipes[i]) == -1)
+		{
+			refinement(pipes, i);
+			perror("minishell: pipe: Error with pipes");
+			return (1);
+		}
+	}
+	return (0);
 }
 
 void	setup_pipe(int **pipes, int num_pipes, int i)
@@ -65,10 +66,7 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 
 	pid = fork();
 	if (pid == -1)
-	{
-		perror("Error en fork");
-		exit(EXIT_FAILURE);
-	}
+		return (print_error("Minishell: pipe: Error fork: Lot of forks\n", 1));
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
@@ -80,8 +78,6 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 		status = execute_cmds(commands[i], mini->env_list, mini);
 		exit(status);
 	}
-	else
-		signal(SIGINT, SIG_IGN);
 	if (i == num_pipes)
 		mini->last_pid = pid;
 	return (0);
@@ -93,19 +89,20 @@ int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 	int	status;
 	int	last_status;
 
+	status = 0;
 	mini->pipes = malloc_pipe(num_pipes);
 	if (mini->pipes == NULL)
 		return (1);
 	if (make_pipe(mini->pipes, num_pipes))
 		return (1);
 	i = -1;
-	while (++i <= num_pipes)
-		execute_pipe(commands, mini, num_pipes, i);
+	pipe_signal_action();
+	while (++i <= num_pipes && status == 0 && g_received_signal == 0)
+		status = execute_pipe(commands, mini, num_pipes, i);
 	refinement(mini->pipes, num_pipes);
-	i = -1;
-	while (++i <= num_pipes)
+	status = 0;
+	while (i-- != 0)
 	{
-		status = 0;
 		if (mini->last_pid == waitpid(-1, &status, 0))
 			last_status = status;
 	}

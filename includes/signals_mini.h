@@ -19,4 +19,5 @@
 # include <unistd.h>
 
 void	signal_action(void);
+void    pipe_signal_action(void);
 #endif
