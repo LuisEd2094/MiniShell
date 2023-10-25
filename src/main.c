@@ -48,31 +48,33 @@ void	main_loop(t_minishell *mini)
 		free(mini->input);
 	}
 }
-/*
+
 void	check_fd(void)
 {
-	int	fd;
-	int fd2;
+	int fd[3];
+	int i;
 	int	error;
 
-	fd = open();
-	fd2 = open();
+	i = -1;
 	error = 0;
-	if (fd < 0 || fd2 < 0)
+	while (++i < 3)
+		fd[i] = open("/dev/null", O_WRONLY);
+	if (fd[0] < 0 || fd[1] < 0 || fd[2] < 0)
 		error = 1;
-	close();
-	close();
+	i = -1;
+	while (++i < 3)
+		close(fd[i]);
 	if (error)
-	exit (print_error("mensaje d bash", numero));
+		exit(print_error("minishell: start_pipeline: pgrp pipe: Too many open files\n", 1));
 }
-*/
+
 int	main(int argc, char **argv, char **env)
 {
 	t_minishell	mini;
 
 	if (argc > 1 || argv[1])
 		exit(1);
-//	check_fd();
+	check_fd();
 	init_mini(&mini, env);
 	main_loop(&mini);
 	exit_mini(&mini);
