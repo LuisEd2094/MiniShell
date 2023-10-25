@@ -18,7 +18,7 @@ int	return_pipe(int status)
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
 		return (WTERMSIG(status) + 128);
-	return (0);
+	return (status);
 }
 
 void	free_pipe(int **pipes, int num_pipes)
@@ -56,4 +56,34 @@ int	**malloc_pipe(int num_pipes)
 	}
 	pipes[i] = NULL;
 	return (pipes);
+}
+
+void	refinement(int **pipes, int num_pipes)
+{
+	int	i;
+
+	i = -1;
+	while (++i < num_pipes)
+	{
+		close(pipes[i][0]);
+		close(pipes[i][1]);
+	}
+}
+
+int	make_pipe(int **pipes, int num_pipes)
+{
+	int	i;
+
+	i = -1;
+	while (++i < num_pipes)
+	{
+		if (pipe(pipes[i]) == -1)
+		{
+			refinement(pipes, i - 1);
+           	free_pipe(pipes, num_pipes);
+			perror("minishell: pipe: Error with pipes");
+			return (1);
+		}
+	}
+	return (0);
 }

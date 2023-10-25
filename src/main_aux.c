@@ -76,6 +76,7 @@ void	prep_mini(t_minishell *mini)
 	mini->here_quotes = 0;
 	mini->exit_code = 0;
 	mini->input_code = 0;
+	mini->last_pid = 0;
 	g_received_signal = 0;
 	delete_temp_files(mini);
 	if (errno)
@@ -90,6 +91,7 @@ void	init_mini(t_minishell *mini, char **env)
 	mini->here_quotes = 0;
 	mini->exit_code = 0;
 	mini->input_code = 0;
+	mini->last_pid = 0;
 	mini->env_list = init_env(env);
 	create_or_update_env_node(mini->env_list, "?", "0");
 	remove_node("OLDPWD", mini);

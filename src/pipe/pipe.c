@@ -13,36 +13,6 @@
 #include <pipe.h>
 #include <minishell.h>
 
-void	refinement(int **pipes, int num_pipes)
-{
-	int	i;
-
-	i = -1;
-	while (++i < num_pipes)
-	{
-		close(pipes[i][0]);
-		close(pipes[i][1]);
-	}
-}
-
-int	make_pipe(int **pipes, int num_pipes)
-{
-	int	i;
-
-	i = -1;
-	while (++i < num_pipes)
-	{
-		if (pipe(pipes[i]) == -1)
-		{
-			refinement(pipes, i - 1);
-           	free_pipe(pipes, num_pipes);
-			perror("minishell: pipe: Error with pipes");
-			return (1);
-		}
-	}
-	return (0);
-}
-
 void	setup_pipe(int **pipes, int num_pipes, int i)
 {
 	if (i > 0)
@@ -60,6 +30,20 @@ void	setup_pipe(int **pipes, int num_pipes, int i)
 	refinement(pipes, num_pipes);
 }
 
+int	return_fork_error(int i, char *cmd)
+{
+	char *itoa;
+
+	itoa = ft_itoa(i);
+	print_error("Minishell: fork: Resource temporarily unavailable\
+	\nMaking until command: ", 254);
+	print_error(itoa, 254);
+	free(itoa);
+	print_error("\nCommand: ", 254);
+	print_error(cmd, 254);
+	return (print_error("\n", 254));
+}
+
 int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 {
 	pid_t	pid;
@@ -67,15 +51,17 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 
 	pid = fork();
 	if (pid == -1)
-		return (print_error("Minishell: pipe: Error fork: Lots of forks\n", 1));
+	{
+		return (return_fork_error(i,commands[i][0]));
+	}
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		setup_pipe(mini->pipes, num_pipes, i);
 		status = check_quotes_and_env_and_redirections(mini->cmds[i], mini);
 		if (status)
 			exit(status);
+		setup_pipe(mini->pipes, num_pipes, i);
 		status = execute_cmds(commands[i], mini->env_list, mini);
 		exit(status);
 	}
@@ -90,7 +76,7 @@ int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 	int	status;
 	int	last_status;
 
-	status = 0;
+	last_status = 0;
 	mini->pipes = malloc_pipe(num_pipes);
 	if (mini->pipes == NULL)
 		return (1);
@@ -98,13 +84,13 @@ int	ft_pipe(char ***commands, int num_pipes, t_minishell *mini)
 		return (1);
 	i = -1;
 	pipe_signal_action();
-	while (++i <= num_pipes && status == 0 && g_received_signal == 0)
-		status = execute_pipe(commands, mini, num_pipes, i);
+	while (++i <= num_pipes && last_status == 0 && g_received_signal == 0)
+		last_status = execute_pipe(commands, mini, num_pipes, i);
 	refinement(mini->pipes, num_pipes);
 	status = 0;
 	while (i-- != 0)
 	{
-		if (mini->last_pid == waitpid(-1, &status, 0))
+		if (mini->last_pid == waitpid(-1, &status, 0) && last_status != 254)
 			last_status = status;
 	}
 	free_pipe(mini->pipes, num_pipes);
