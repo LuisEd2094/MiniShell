@@ -74,7 +74,8 @@ int	main(int argc, char **argv, char **env)
 	t_minishell	mini;
 
 	if (argc > 1 || argv[1])
-		exit(1);
+		exit(print_error("Incorrect usage. run ./minishell \
+with no extra arguments\n", 1));
 	check_fd();
 	init_mini(&mini, env);
 	main_loop(&mini);
