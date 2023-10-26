@@ -66,7 +66,7 @@ void	check_fd(void)
 		close(fd[i]);
 	if (error)
 		exit(print_error("minishell: start_pipeline: pgrp pipe: \
-					Too many open files\n", 1));
+Too many open files\n", 1));
 }
 
 int	main(int argc, char **argv, char **env)
