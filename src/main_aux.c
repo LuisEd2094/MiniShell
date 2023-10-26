@@ -83,6 +83,12 @@ void	prep_mini(t_minishell *mini)
 		errno = 0;
 }
 
+void	exit_init(t_minishell *mini)
+{
+	mini->exit_code = errno;
+	exit_mini(mini);
+}
+
 void	init_mini(t_minishell *mini, char **env)
 {
 	prep_terminal(mini);
@@ -93,16 +99,17 @@ void	init_mini(t_minishell *mini, char **env)
 	mini->input_code = 0;
 	mini->last_pid = 0;
 	mini->env_list = init_env(env);
-	create_or_update_env_node(mini->env_list, "?", "0");
+	if (!mini->env_list)
+		exit_init(mini);
+	if (create_or_update_env_node(mini->env_list, "?", "0") == NULL)
+		exit_init(mini);
 	remove_node("OLDPWD", mini);
 	if (!check_shlvl(mini->env_list))
-		exit(EXIT_FAILURE);
+		exit_init(mini);
 	if (!check_pwd(mini->env_list))
-		exit(EXIT_FAILURE);
+		exit_init(mini);
 	mini->og_in = dup(STDIN_FILENO);
 	mini->og_out = dup(STDOUT_FILENO);
-	if (!mini->env_list)
-		exit(EXIT_FAILURE);
 	work_history(INIT, NULL);
 	mini->here_doc_number = 0;
 	mini->cmds = NULL;

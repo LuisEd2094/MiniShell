@@ -1,5 +1,5 @@
 NAME        = minishell
-CFLAGS      = -g  -Wall -Wextra  -Werror -fsanitize=address
+CFLAGS      = -g  -Wall -Wextra  -Werror #-fsanitize=address
 RM          = rm -f
 SRCS_PATH           = src/
 OBJS_PATH           = obj/

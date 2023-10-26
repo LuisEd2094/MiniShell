@@ -62,6 +62,6 @@ t_list	*create_empty_list(void)
 
 	env_list = ft_lstnew(NULL);
 	if (!env_list)
-		exit (EXIT_FAILURE);
+		return (print_perror());
 	return (env_list);
 }

@@ -10,8 +10,12 @@ void	*check_pwd(t_list *env_list)
 	if (!list_node)
 	{
 		pwd = getcwd(NULL, 0);
+		if (!pwd)
+			return (print_perror());
 		return_val = create_or_update_env_node(env_list, "PWD", pwd);
 		free(pwd);
+		if (!return_val)
+			return (print_perror());
 		return (return_val);
 	}
 	return ((void *) 1);
@@ -35,7 +39,7 @@ void	*check_shlvl(t_list	*env_list)
 		level = check_level(level);
 		env_node->value = ft_itoa(level);
 		if (!env_node->value)
-			return (NULL);
+			return (print_perror());
 	}
 	return ((void *) 1);
 }
