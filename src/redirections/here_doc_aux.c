@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   here_doc_aux.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/26 16:08:13 by lsoto-do          #+#    #+#             */
+/*   Updated: 2023/10/26 16:08:35 by lsoto-do         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "redirections_internal.h"
 
 static char	*check_input(char *input, t_minishell *mini)
@@ -65,7 +77,7 @@ void	check_here_doc_end(t_minishell *mini, char *end)
 				i = remove_quote(end, end[i], i);
 			else
 				i++;
-		}	
+		}
 	}
 	mini->here_doc_end = end;
 }

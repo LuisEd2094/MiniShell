@@ -16,5 +16,12 @@ macro.sh
 config.status
 minishell-tester/
 mpanic
-readline/*
+readline/*/*/*/*/*
+readline/Makefile
+readline/config.log
+readline/doc/Makefile
+readline/examples/Makefile
+readline/shlib/Makefile
 mpanic/
+readline/shlib/libhistory.8.2.dylib
+readline/shlib/libreadline.8.2.dylib

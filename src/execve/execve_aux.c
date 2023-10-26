@@ -6,7 +6,7 @@
 /*   By: lsoto-do <lsoto-do@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 11:56:04 by lsoto-do          #+#    #+#             */
-/*   Updated: 2023/10/13 14:05:09 by lsoto-do         ###   ########.fr       */
+/*   Updated: 2023/10/26 16:06:50 by lsoto-do         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	no_path_name_found(char *cmd, int is_dir)
 		if (errno)
 		{
 			perror(NULL);
-			return (errno); // need to check return value on Macs
+			return (127);
 		}
 		else if (is_dir)
 			return (print_error("Is a directory\n", 126));
