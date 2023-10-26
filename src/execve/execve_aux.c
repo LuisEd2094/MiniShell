@@ -77,7 +77,7 @@ int	no_path_name_found(char *cmd, int is_dir)
 		if (errno)
 		{
 			perror(NULL);
-			return (errno);
+			return (errno); // need to check return value on Macs
 		}
 		else if (is_dir)
 			return (print_error("Is a directory\n", 126));
