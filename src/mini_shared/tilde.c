@@ -19,7 +19,7 @@ char	*expand_tilde(char *path)
 
 	if (getenv("HOME") == NULL)
 	{
-		perror("minishell: ~: Cannot set HOME");
+		print_error("minishell: ~: Cannot set HOME\n", 0);
 		return (path);
 	}
 	expanded_size = ft_strlen(getenv("HOME")) + ft_strlen(path) + 1;
