@@ -53,7 +53,6 @@ void	prep_mini(t_minishell *mini)
 	signal_action();
 	mini->code_here_doc = 0;
 	mini->here_quotes = 0;
-	mini->exit_code = 0;
 	mini->input_code = 0;
 	mini->last_pid = 0;
 	g_received_signal = 0;

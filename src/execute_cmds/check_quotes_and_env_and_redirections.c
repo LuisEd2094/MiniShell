@@ -76,7 +76,8 @@ char	*replace_values(char *cmd, t_minishell *mini)
 		|| (cmd[0] == '~' && cmd[1] == '/')))
 	{
 		cmd = expand_tilde(cmd);
-		i += ft_strlen(getenv("HOME"));
+		if (getenv("HOME"))
+			i += ft_strlen(getenv("HOME"));
 	}
 	while (cmd[i])
 	{

@@ -78,6 +78,8 @@ t_env	*create_new_env_node(char *env)
 	free_2d_array(tab);
 	if (!env_node)
 		return (print_perror());
+	if (has_equal(env))
+		env_node->assigned = 1;
 	return (env_node);
 }
 

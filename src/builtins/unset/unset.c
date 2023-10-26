@@ -77,7 +77,7 @@ int	ft_unset(char **cmds, t_minishell *mini)
 	while (cmds[i])
 	{
 		if (check_valid_identifier(cmds[i], UNSET) != 0)
-			error = print_invalid_identifier("unset:'", cmds[i]);
+			error = print_invalid_identifier("unset: `", cmds[i]);
 		else
 			remove_node(cmds[i], mini);
 		i++;
