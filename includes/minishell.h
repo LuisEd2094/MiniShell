@@ -82,5 +82,6 @@ void	reset_terminal(t_minishell *mini);
 void	prep_terminal(t_minishell *mini);
 
 int		close_redirections(t_minishell *mini);
+int		check_number_of_here(char **cmd);
 
 #endif

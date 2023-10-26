@@ -81,3 +81,19 @@ void	check_here_doc_end(t_minishell *mini, char *end)
 	}
 	mini->here_doc_end = end;
 }
+
+int	check_number_of_here(char **cmd)
+{
+	int	count;
+	int	i;
+
+	i = 0;
+	count = 0;
+	while (cmd[i])
+	{
+		if (cmd[i][0] == '<' && cmd[i][1] == '<')
+			count++;
+		i++;
+	}
+	return (count);
+}

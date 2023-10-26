@@ -65,6 +65,7 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 	}
 	if (i == num_pipes)
 		mini->last_pid = pid;
+	mini->here_doc_number += check_number_of_here(commands[i]);
 	return (0);
 }
 
