@@ -56,10 +56,10 @@ int	execute_pipe(char ***commands, t_minishell *mini, int num_pipes, int i)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
+		setup_pipe(mini->pipes, num_pipes, i);
 		status = check_quotes_and_env_and_redirections(mini->cmds[i], mini);
 		if (status)
 			exit(status);
-		setup_pipe(mini->pipes, num_pipes, i);
 		status = execute_cmds(commands[i], mini->env_list, mini);
 		exit(status);
 	}
