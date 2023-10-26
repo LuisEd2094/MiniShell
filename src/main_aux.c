@@ -12,27 +12,6 @@
 
 #include <minishell.h>
 
-void	free_cmds(char ***cmds)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (cmds[i])
-	{
-		j = 0;
-		while (cmds[i][j])
-		{
-			if (cmds[i][j])
-				free(cmds[i][j]);
-			j++;
-		}
-		free(cmds[i]);
-		i++;
-	}
-	free(cmds);
-}
-
 int	exit_mini(t_minishell *mini)
 {
 	reset_terminal(mini);
@@ -40,7 +19,7 @@ int	exit_mini(t_minishell *mini)
 	free_env_list(mini->env_list);
 	if (mini->cmds)
 	{
-		free_cmds(mini->cmds);
+		free_3d_array(mini->cmds);
 		mini->cmds = NULL;
 	}
 	if (mini->input)
@@ -67,7 +46,7 @@ void	prep_mini(t_minishell *mini)
 	update_exit_value(mini);
 	if (mini->cmds)
 	{
-		free_cmds(mini->cmds);
+		free_3d_array(mini->cmds);
 		mini->cmds = NULL;
 	}
 	close_redirections(mini);

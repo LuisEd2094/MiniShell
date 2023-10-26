@@ -1,5 +1,5 @@
 NAME        = minishell
-CFLAGS      = -g  -Wall -Wextra  -Werror #-fsanitize=address
+CFLAGS      = -g  -Wall -Wextra  -Werror -fsanitize=address
 RM          = rm -f
 SRCS_PATH           = src/
 OBJS_PATH           = obj/
@@ -48,7 +48,6 @@ DEPS_PATH	= deps/
 LIB_PATH	= 	./Libft
 LIB			=	$(LIB_PATH)/libft.a ./readline/libreadline.a ./readline/libhistory.a
 LDFLAGS		= 	-L$(LIB_PATH) -lft 
-#LINEFLAGS	=	-lreadline
 
 INCS        = -I./includes/ \
 -I./readline/ 

@@ -48,7 +48,7 @@ LIBFT_FILES		=	ft_atoi.c ft_isalpha.c ft_itoa.c ft_lstdelone.c ft_lstnew.c \
 					ft_memcmp.c ft_putchar_fd.c ft_split.c ft_striteri.c ft_strlen.c\
 					ft_strrchr.c ft_toupper.c ft_check_if_int.c ft_isspace.c \
 					ft_remove_white_space.c check_if_white_right_left.c ft_get_sign.c \
-					ft_remove_zeros.c free_2d_array.c
+					ft_remove_zeros.c free_2d_array.c ft_free_3d_array.c
 
 
 NEXT_LINE_FILES	=	get_next_line.c get_next_line_utils.c

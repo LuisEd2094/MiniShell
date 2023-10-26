@@ -76,5 +76,6 @@ int		check_if_white_right_left(char *argv);
 void	remove_white_space(char *argv);
 int		get_sign(char *argv);
 void	*free_2d_array(char **array);
+void	free_3d_array(char ***array);
 
 #endif

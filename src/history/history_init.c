@@ -27,7 +27,6 @@ void	read_from_file(int fd, t_list **head, int *size, char *line)
 		{
 			remove_new_line(line);
 			new = ft_lstnew(line);
-			printf("Historyhola\n");
 			if (!new)
 				exit(1);
 			*(size) += 1;
@@ -44,14 +43,11 @@ t_list	*ft_read_history(int fd, t_list **head, int *size)
 
 	if (fd <= 0)
 		return (NULL);
-	printf("hola\n");
-
 	line = get_next_line(fd, 10);
 	if (!line)
 		return (NULL);
 	remove_new_line(line);
 	*(head) = ft_lstnew(line);
-	printf("hola\n");
 	if (!*head)
 		exit(1);
 	read_from_file(fd, head, size, line);
