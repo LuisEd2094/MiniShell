@@ -17,14 +17,13 @@ int	change_directory(char *directory)
 	if (directory == NULL)
 	{
 		print_error("minishell: cd: ", 1);
-		print_error(directory, 1);
-		return (print_error(": No file or directory\n", 1));
+		return (print_error("directory is NULL\n", 1));
 	}
 	if (chdir(directory) == -1)
 	{
 		print_error("minishell: cd: ", 1);
 		print_error(directory, 1);
-		return (print_error(": No file or directory\n", 1));
+		return (print_error(": No such file or directory\n", 1));
 	}
 	return (0);
 }
@@ -68,6 +67,8 @@ int	ft_cd(char **arguments, t_list *env_list)
 	char	*save_old_directory;
 	int		error;
 
+	if (arguments[1] && !arguments[1][0])
+		return (0);
 	error = 0;
 	home_directory = getenv("HOME");
 	save_old_directory = getcwd(NULL, 0);
