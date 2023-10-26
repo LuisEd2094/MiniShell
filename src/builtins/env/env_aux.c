@@ -30,7 +30,7 @@ int	check_level(int level)
 		str = ft_itoa(level);
 		print_shlvl_high(str);
 		free(str);
-		level = 0;
+		level = 1;
 	}
 	if (level < 0)
 		level = 0;
