@@ -62,7 +62,6 @@ int	change_old_directory(t_list *env_list)
 
 int	ft_cd(char **arguments, t_list *env_list)
 {
-	char	*home_directory;
 	char	*tilde_directory;
 	char	*save_old_directory;
 	int		error;
@@ -70,10 +69,9 @@ int	ft_cd(char **arguments, t_list *env_list)
 	if (arguments[1] && !arguments[1][0])
 		return (0);
 	error = 0;
-	home_directory = getenv("HOME");
 	save_old_directory = getcwd(NULL, 0);
 	if (arguments[1] == NULL)
-		error = change_directory(home_directory);
+		error = change_directory(getenv("HOME"));
 	else if (arguments[1][0] == '-' && arguments[1][1] == '\0')
 		error = change_old_directory(env_list);
 	else if (arguments[1][0] == '~')

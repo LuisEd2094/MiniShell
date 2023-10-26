@@ -16,7 +16,6 @@
 
 int	print_file_not(char *file)
 {
-	printf("i amm here\n");
 	print_error("minishell: ", -1);
 	print_error(file, -1);
 	if (!errno)

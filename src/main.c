@@ -73,8 +73,6 @@ int	main(int argc, char **argv, char **env)
 {
 	t_minishell	mini;
 
-	/*for (int i = 0; env[i]; i++)
-		printf("%s\n", env[i]);*/
 	if (argc > 1 || argv[1])
 		exit(print_error("Incorrect usage. run ./minishell \
 with no extra arguments\n", 1));
