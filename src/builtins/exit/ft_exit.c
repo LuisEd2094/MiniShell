@@ -70,6 +70,10 @@ int	ft_exit(char **cmd, t_minishell *mini)
 	if ((cmd[1] && !is_only_num(cmd[1])) || (cmd[1] && !cmd[1][0]))
 		print_only_numeric_error(cmd[1], mini);
 	if (cmd[1])
+	{
+		if (!check_if_int(cmd[1]))
+			print_only_numeric_error(cmd[1], mini);
 		mini->exit_code = ft_atoi(cmd[1]);
+	}
 	return (exit_mini(mini));
 }
