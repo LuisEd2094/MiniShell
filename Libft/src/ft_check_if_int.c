@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <libft.h>
+
 static int	check_last_digit(int sign, char *argv, int i)
 {
 	if (argv[i + 1] != '\0')
@@ -28,14 +30,7 @@ static int	check_last_digit(int sign, char *argv, int i)
 	}
 }
 
-static int	ft_isdigit(int c)
-{
-	if (c >= '0' && c <= '9')
-		return (1);
-	return (0);
-}
-
-static int	get_sign(char *argv)
+static int	get_sign_int(char *argv)
 {
 	int	sign;
 	int	i;
@@ -55,19 +50,34 @@ static int	get_sign(char *argv)
 	return (sign);
 }
 
+int	check_last_space(char *str, int i)
+{
+	while (ft_isspace(str[i]))
+		i++;
+	if (str[i])
+		return (0);
+	return (1);
+}
+
 int	check_if_int(char *str)
 {
 	int	i;
 	int	sign;
 
 	i = 0;
-	sign = get_sign(str);
+	sign = get_sign_int(str);
+	while (ft_isspace(str[i]))
+		i++;
+	while (str[i] == '0')
+		i++;
 	if (sign)
 		i++;
 	while (str[i])
 	{
 		if ((sign && i == 10) || (!sign && i == 9))
 			return (check_last_digit(sign, str, i));
+		if (ft_isspace(str[i]))
+			return (check_last_space(str, i));
 		if (!ft_isdigit(str[i]))
 			return (0);
 		i++;
